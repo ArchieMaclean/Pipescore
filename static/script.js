@@ -21,7 +21,7 @@ class Stave {
     draw() {
         stroke(0);
         strokeWeight(2);
-        for (var stavenum=1;stavenum<=this.num_staves;stavenum++) {
+		for (var stavenum=1;stavenum<=this.num_staves;stavenum++) {
             image(trebleClef,MARGIN-5,stavenum*STAVEWIDTH,50,64);
             for (var linenum=0;linenum<5;linenum++) {
                 var y = linenum*STAVELINEWIDTH+stavenum*STAVEWIDTH;
@@ -222,9 +222,9 @@ class Note {
 function setup() {
     cnv = createCanvas(210*5,297*5);
     cnv.parent('page')
-    trebleClef = loadImage('/static/images/trebleClef.png');     // 375 x 640
-    note_tail = loadImage('/static/images/noteTail.png');          // 72 x 155
-	blue_note_tail = loadImage('/static/images/blueNoteTail.png');
+    trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
+    note_tail = loadImage('/images/noteTail.png');          // 72 x 155
+	blue_note_tail = loadImage('/images/blueNoteTail.png');
     stave = new Stave(2);
     demo_note = new DemoNote();
     pdf = createPDF();

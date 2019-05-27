@@ -2,12 +2,12 @@
 
 body {
     font-family: Montserrat;
-    background: lightgrey;
+    background: #e2ddff;
     margin: 0;
 }
 
 nav {
-    background: grey;
+    background: #26a5ff;
     padding: 1.5em;
     position: sticky;
     top: 0;
@@ -25,18 +25,17 @@ h1 {
 }
 
 #page {
-    display: grid;
     justify-content: center;
     margin: 3em;
 }
 
-#footer {
-	padding: 0.4em 1em;
+footer {
+	padding: 0.6em 1em;
 	background: grey;
 	position: sticky;
 	bottom: 0;
 }
 
-#footer p {
+footer p {
 	margin: 0;
 }

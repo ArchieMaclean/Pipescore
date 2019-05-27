@@ -21,7 +21,7 @@ class Stave {
     draw() {
         stroke(0);
         strokeWeight(2);
-        for (var stavenum=1;stavenum<=this.num_staves;stavenum++) {
+		for (var stavenum=1;stavenum<=this.num_staves;stavenum++) {
             image(trebleClef,MARGIN-5,stavenum*STAVEWIDTH,50,64);
             for (var linenum=0;linenum<5;linenum++) {
                 var y = linenum*STAVELINEWIDTH+stavenum*STAVEWIDTH;
@@ -192,7 +192,8 @@ class Note {
 			strokeWeight(2);
 			for (var tailnum=0;tailnum<tail;tailnum++) {
 				for (var note of notes) {
-					line(this.x-this.width/2,this.y+this.stem_height,note.x-note.width/2,note.y+note.stem_height);
+					line(this.x-this.width/2,this.y+this.stem_height-10*y,note.x-note.width/2,note.y+note.stem_height-10*y);
+					y++;
 				}
 			}
 		}

@@ -11,19 +11,25 @@ html(lang="en")
 		script(src="/script.js")
 		link(rel="stylesheet" type="text/css" href="/style.css")
 	body
-		nav
-			ul
-				li: h1 PipeScore
-				li: form#note_mode
-					input(type="radio" name="note" value="semibreve")
-					input(type="radio" name="note" value="minim")
-					input(type="radio" name="note" value="crotchet" checked)
-					input(type="radio" name="note" value="quaver")
-					input(type="radio" name="note" value="semiquaver")
-					input(type="radio" name="note" value="demisemiquaver")
+		header
+			nav
+				ul
+					li: h1 PipeScore
+					li: form#note_mode
+						label Semibreve
+						input(type="radio" name="note" value="semibreve")
+						label Minim
+						input(type="radio" name="note" value="minim")
+						label Crotchet
+						input(type="radio" name="note" value="crotchet" checked)
+						label Quaver
+						input(type="radio" name="note" value="quaver")
+						label Semiquaver
+						input(type="radio" name="note" value="semiquaver")
+						label Demisemiquaver
+						input(type="radio" name="note" value="demisemiquaver")
+					li: label Mode: 
+						select#mode
+							option(value="create") Create
+							option(value="select") Select
 		div#page
-		div#footer
-			p Mode:
-			select#mode
-				option(value="create") Create
-				option(value="select") Select
