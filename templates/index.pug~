@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+	head
+		title PipeScore
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		meta(charset="UTF-8")
+		meta(http-equiv="X-UA-Compatible" content="ie=edge")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js")
+		script(src="http://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous")
+		script(src="static/p5.pdf.js")
+		script(src="static/script.js")
+		link(rel="stylesheet" type="text/css" href="/style.css")
+	body
+		nav
+			ul
+				li: h1 PipeScore
+				li: form#note_mode
+					input(type="radio" name="note" value="semibreve")
+					input(type="radio" name="note" value="minim")
+					input(type="radio" name="note" value="crotchet" checked)
+					input(type="radio" name="note" value="quaver")
+					input(type="radio" name="note" value="semiquaver")
+					input(type="radio" name="note" value="demisemiquaver")
+		div#page
+		div#footer
+			p Mode:
+			select#mode
+				option(value="create") Create
+				option(value="select") Select
