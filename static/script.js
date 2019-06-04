@@ -165,18 +165,7 @@ class Note {
 
         line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
 
-		var tail;
-		switch (this.type) {
-			case "semibreve":
-			case "minim":
-			case "crotchet":
-				tail=0; break;
-			case "quaver": tail=1; break;
-			case "semiquaver": tail=2; break;
-			case "demisemiquaver": tail=3; break;
-			default: console.log("Error!");
-		}
-		
+		let tail = this.tailSize;
 		var y = 0;
 		var tail_image;
 		switch (this.selected) {
@@ -190,11 +179,23 @@ class Note {
 			}
 		} else {
 			strokeWeight(2);
-			for (var tailnum=0;tailnum<tail;tailnum++) {
-				for (var note of notes) {
-					line(this.x-this.width/2,this.y+this.stem_height-10*y,note.x-note.width/2,note.y+note.stem_height-10*y);
-					y++;
-				}
+			for (var note of this.connected) {
+				let other_tail = note.tailSize;
+				if (tail == other_tail && this.x>note.x) {
+					for (var tailnum=0;tailnum<tail;tailnum++) {
+						line(this.x-this.width/2,this.y+this.stem_height-10*y,note.x-note.width/2,note.y+note.stem_height-10*y);
+						y++;
+					}
+				} else if (tail > other_tail) {
+					for (var tailnum=0;tailnum<other_tail;tailnum++) {
+						line(this.x-this.width/2,this.y+this.stem_height-10*y,note.x-note.width/2,note.y+note.stem_height-10*y);
+						y++;
+					}
+					for (var tailnum=0;tailnum<(tail-other_tail);tailnum++) {
+						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2-20,this.y+this.stem_height-10*y);
+						y++;
+					}
+				}	
 			}
 		}
     }
@@ -216,6 +217,32 @@ class Note {
        var right = this.x+this.width/2+CLICK_MARGIN;
        return ((x>left)&&(x<right)&&(y>top)&&(y<height));
    }
+	addConnected(note) {
+		let need_to_add = true;
+		for (var selectednote of this.connected) {
+			if (selectednote.x==note.x && selectednote.y==othernote.y) {
+				need_to_add = false;
+			}
+
+		}
+		if (need_to_add) {
+			this.connected.push(note);
+		}
+	}
+	get tailSize() {
+		let tail;
+		switch (this.type) {
+			case "semibreve":
+			case "minim":
+			case "crotchet":
+				tail=0; break;
+			case "quaver": tail=1; break;
+			case "semiquaver": tail=2; break;
+			case "demisemiquaver": tail=3; break;
+			default: console.log("Error!");
+		}
+		return tail;
+	}
 }
 
 
@@ -342,7 +369,7 @@ function keyPressed() {
 			for (eachnote of selectedNotes()) {
 				for (othernote of selectedNotes()) {
 					if (eachnote!=othernote) {
-						eachnote.connected.push(othernote);
+						eachnote.addConnected(othernote);
 					}
 				}
 			}
