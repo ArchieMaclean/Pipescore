@@ -14,7 +14,6 @@ var mouse_original_x_y;
 var mouse_dragged_displacement;
 
 
-	
 
 
 function setup() {
@@ -85,14 +84,14 @@ function mousePressed() {
 		if (mode=="create") {
 			selected_note = getSelectedNote();
 			if (selected_note==null) {
-				var x = mouseX;
+				const x = mouseX;
 				if (x>0 && x<width) {
-					var snapped = stave.snapToLine(mouseY);
+					const snapped = stave.snapToLine(mouseY);
 					if (snapped!=null) {
-						var y = snapped[0];
-						var note = snapped[1];
+						const y = snapped[0];
+						let note = snapped[1];
 					
-						var note = new Note(stave, mouseX,mouseY,note_mode,note_colour);
+						note = new Note(stave, mouseX,mouseY,note_mode,note_colour);
 						notes.push(note);
 					}
 				}
@@ -100,7 +99,7 @@ function mousePressed() {
 		} else if (mode=="select") {
 			mouse_original_x_y = [mouseX,mouseY];
 			mouse_dragged_displacement = [0,0];
-			var selected_note = getSelectedNote();
+			const selected_note = getSelectedNote();
 			if (selected_note != null) {
 				selected_note.selected=!(selected_note.selected);
 			} else {
@@ -125,6 +124,8 @@ function selectedNotes() {
 			selected.push(note);
 		}
 	}
+	selected.sort((a,b) => (a.x>b.x) ? 1 : ((a.x<b.x) ? -1 : 0));
+	console.log(selected);
 	return selected;
 }
 
@@ -137,12 +138,10 @@ function keyPressed() {
 		}
 	} else if (keyCode == 71) {	// g
 		if (mode=="select") {
-			for (eachnote of selectedNotes()) {
-				for (othernote of selectedNotes()) {
-					if (eachnote!=othernote) {
-						eachnote.addConnected(othernote);
-					}
-				}
+			selected_notes = selectedNotes();
+			for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
+				selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
+				selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 			}
 		}
 	}

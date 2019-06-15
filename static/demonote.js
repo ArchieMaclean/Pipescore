@@ -20,7 +20,7 @@ class DemoNote {
 
     update(stave) {
 		this.x = mouseX;
-		var staveline = stave.snapToLine(mouseY);
+		const staveline = stave.snapToLine(mouseY);
 		if (staveline!=null) {
 			this.y = staveline[0];
 			this.note = staveline[1];
