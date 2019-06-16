@@ -14,20 +14,16 @@ class Stave {
             }
         }
     }
-
     getNoteFromLine(line, inbetween=false) {
-        var notes = ["g","a","b","c","d","e","f","G","A"]
-		var thenote = (-2*line)+6;
-        if (inbetween) {
-            thenote+=1;
-        }
-
+        const notes = ["g","a","b","c","d","e","f","G","A"]
+		let thenote = (-2*line)+6;
+        if (inbetween) thenote+=1;
         return notes[thenote];
     }
-
     snapToLine(y) {
         for (var stavenum=1;stavenum<=this.num_staves;stavenum++) {
             for (var linenum=0;linenum<4;linenum++) {
+				// var because scoping issues with return (end of method return)
                 var stave_y = linenum*STAVELINEWIDTH+stavenum*STAVEWIDTH;
                 if (y<=stave_y && y>0) {
 					if ((linenum==0)&&(stavenum!=1)) {

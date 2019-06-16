@@ -13,9 +13,6 @@ var note_colour=0;
 var mouse_original_x_y;
 var mouse_dragged_displacement;
 
-
-
-
 function setup() {
     cnv = createCanvas(210*5,297*5);
     cnv.parent('page')
@@ -74,7 +71,7 @@ function getSelectedNote() {
 }
 
 function deselectAllNotes() {
-	for (note of notes) {
+	for (note of selectedNotes()) {
 		note.selected=false;
 	}
 }
@@ -124,8 +121,6 @@ function selectedNotes() {
 			selected.push(note);
 		}
 	}
-	selected.sort((a,b) => (a.x>b.x) ? 1 : ((a.x<b.x) ? -1 : 0));
-	console.log(selected);
 	return selected;
 }
 
@@ -138,7 +133,7 @@ function keyPressed() {
 		}
 	} else if (keyCode == 71) {	// g
 		if (mode=="select") {
-			selected_notes = selectedNotes();
+			selected_notes = selectedNotes().sort((a,b) => (a.x>b.x) ? 1 : -1);
 			for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
 				selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 				selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
@@ -152,11 +147,9 @@ function mouseDragged() {
 		if (mouseButton==LEFT) {
 			mouse_dragged_displacement[0]+=mouseX-mouse_original_x_y[0];
 			mouse_dragged_displacement[1]+=mouseY-mouse_original_x_y[1];
-			for (note of notes) {
-				if (note.selected) {
-					note.x += mouse_dragged_displacement[0];
-					note.actual_y += mouse_dragged_displacement[1];
-				}
+			for (note of selectedNotes()) {
+				note.x += mouse_dragged_displacement[0];
+				note.actual_y += mouse_dragged_displacement[1];
 			}
 			mouse_original_x_y = [mouseX,mouseY];
 			mouse_dragged_displacement = [0,0];

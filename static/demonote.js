@@ -9,6 +9,7 @@ class DemoNote {
     }
 
     draw() {
+		strokeWeight(0);
 		fill(this.col);
 		stroke(this.col);
 		strokeWeight(2);
@@ -21,9 +22,6 @@ class DemoNote {
     update(stave) {
 		this.x = mouseX;
 		const staveline = stave.snapToLine(mouseY);
-		if (staveline!=null) {
-			this.y = staveline[0];
-			this.note = staveline[1];
-		}
+		if (staveline!=null) this.y = staveline[0];
     }
 }

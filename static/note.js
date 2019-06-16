@@ -21,7 +21,10 @@ class Note {
     }
 	drawHead() {
 		const snapped = stave.snapToLine(this.actual_y);
-		if (snapped != null) this.y = snapped[0];	// snaps note to line
+		if (snapped != null) {
+			this.y = snapped[0];
+			this.name = snapped[1]	// snaps note to line
+		}
         
 		stroke(this.selected ? SELECTED_COLOUR : (this.type=="semibreve" || this.type=="minim") ? 0 : this.col);
 		strokeWeight((this.type=="semibreve" || this.type=="minim") ? 2 : 0);
@@ -51,9 +54,9 @@ class Note {
 				y++;
 			}
 		} else {
-			strokeWeight(2);
-			// Doesn't work with larger tail - smaller tail for some reason :(
+			strokeWeight(3);
 			for (const note of [this.connected_before,this.connected_after]) {
+				y = 0;
 				if (note==null) continue;
 				const other_tail = note.num_of_tails;
 				if (num_of_tails == other_tail && this.x>note.x) {
@@ -66,8 +69,10 @@ class Note {
 						this.drawConnectingLine(note,y);
 						y++;
 					}
+					const gradient_between_notes = (this.y-note.y)/(this.x-note.x);
+					const distance = 1/5 * (note.x-this.x);
 					for (var tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
-						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2-20,this.y+this.stem_height-10*y);
+						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2+distance,this.y+this.stem_height-10*y+gradient_between_notes*distance);
 						y++;
 					}
 				}	
