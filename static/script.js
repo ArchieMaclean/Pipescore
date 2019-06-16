@@ -4,18 +4,22 @@ const MARGIN = 30;
 const SELECTED_COLOUR = [0,0,200];
 const CLICK_MARGIN = 5;
 
-var notes = [];
-var trebleClef,note_tail, blue_note_tail,stave,demo_note,cnv;
+let notes = [];
+let trebleClef,note_tail, blue_note_tail,stave,demo_note,cnv;
 
-var mode = "create";
-var note_mode="crotchet";
-var note_colour=0;
-var mouse_original_x_y;
-var mouse_dragged_displacement;
+let mode = "create";
+let note_mode="crotchet";
+let note_colour=0;
+let mouse_last_x_y;
+let mouse_original_x_y;
+let mouse_dragged_displacement;
+let box_select = false;
+let mouse_dragged = false;
 
 function setup() {
     cnv = createCanvas(210*5,297*5);
     cnv.parent('page')
+	background(255);
     trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
     note_tail = loadImage('/images/noteTail.png');          // 72 x 155
 	blue_note_tail = loadImage('/images/blueNoteTail.png');
@@ -26,11 +30,12 @@ function setup() {
 }
 
 function draw() {
-    background(255);
+	background(255);
     update_note_mode();
     stave.draw();
     update_demo_note();
     drawNotes();
+	if (mouse_dragged) mouseDraggedUpdate();
 }
 
 function update_note_mode() {
@@ -60,6 +65,21 @@ function drawNotes() {
     }
 }
 
+function boxSelect() {
+	fill(50,50,150,150);
+	strokeWeight(0);
+	const x = mouse_original_x_y[0];
+	const y = mouse_original_x_y[1]
+	rect(x,y,mouseX-x,mouseY-y);
+	const left = Math.min(x,mouseX);
+	const right = Math.max(x,mouseX);
+	const top = Math.min(y,mouseY);
+	const bottom = Math.max(y,mouseY);
+	notes.forEach(note => {
+		if (note.x>left && note.x<right && note.actual_y>top && note.actual_y<bottom) note.selected=true;
+	});
+}
+
 function getSelectedNote() {
     var selected;
     for (note of notes) {
@@ -74,6 +94,7 @@ function deselectAllNotes() {
 	for (note of selectedNotes()) {
 		note.selected=false;
 	}
+	box_select = false;
 }
 
 function mousePressed() {
@@ -95,23 +116,27 @@ function mousePressed() {
 			}
 		} else if (mode=="select") {
 			mouse_original_x_y = [mouseX,mouseY];
+			mouse_last_x_y = [mouseX,mouseY];
 			mouse_dragged_displacement = [0,0];
 			const selected_note = getSelectedNote();
 			if (selected_note != null) {
-				selected_note.selected=!(selected_note.selected);
+				selected_note.selected=true;
+				box_select = false;
 			} else {
 				deselectAllNotes();
+				box_select = true;
 			}
 		}
-    } else if (mouseButton==MIDDLE) {
+    } else if (mouseButton==CENTER) {
         pdf.save();
     }
 }
 
 function mouseReleased() {
-	for (note of notes) {
+	for (note of selectedNotes()) {
 		note.actual_y = note.y;	// so that when dragging again, note starts at right place
 	}
+	mouse_dragged = false;
 }
 
 function selectedNotes() {
@@ -142,17 +167,25 @@ function keyPressed() {
 	}
 }
 
-function mouseDragged() {
+// function containing stuff that updates when mouse dragged, so I can control order of draw
+function mouseDraggedUpdate() {
 	if (mode=="select") {
 		if (mouseButton==LEFT) {
-			mouse_dragged_displacement[0]+=mouseX-mouse_original_x_y[0];
-			mouse_dragged_displacement[1]+=mouseY-mouse_original_x_y[1];
-			for (note of selectedNotes()) {
-				note.x += mouse_dragged_displacement[0];
-				note.actual_y += mouse_dragged_displacement[1];
+			if (box_select) boxSelect();
+			else {
+				mouse_dragged_displacement[0]+=mouseX-mouse_last_x_y[0];
+				mouse_dragged_displacement[1]+=mouseY-mouse_last_x_y[1];
+				for (note of selectedNotes()) {
+					note.x += mouse_dragged_displacement[0];
+					note.actual_y += mouse_dragged_displacement[1];
+				}
+				mouse_last_x_y = [mouseX,mouseY];
+				mouse_dragged_displacement = [0,0];
 			}
-			mouse_original_x_y = [mouseX,mouseY];
-			mouse_dragged_displacement = [0,0];
 		}
 	}
+}
+
+function mouseDragged() {
+	mouse_dragged = true;	
 }

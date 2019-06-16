@@ -10,7 +10,6 @@ class Note {
         this.height = 10;
 		this.stem_height = 50;
 		this.selected = false;
-		this.connected = [];
 		this.connected_before = null;
 		this.connected_after = null;
     }
