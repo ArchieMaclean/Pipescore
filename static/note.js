@@ -42,6 +42,7 @@ class Note {
 	drawTail() {
         line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
 
+		stroke(0);
 		const num_of_tails = this.num_of_tails;
 		let y = 0;
 		let tail_image;

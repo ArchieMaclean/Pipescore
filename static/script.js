@@ -40,11 +40,7 @@ function draw() {
 
 function update_note_mode() {
     note_mode = $('input[name=note]:checked', '#note_mode').val();
-    switch (note_mode) {
-        case 'semibreve':note_colour=[0,0,0,0]; break;
-        case 'minim':note_colour=[0,0,0,0]; break;
-        default: note_colour=0;
-    }
+	note_colour = (note_mode=="semibreve" || note_mode=="minim") ? [0,0,0,0] : 0;
 	mode = $("#mode").val();
 	if (mode!="select") {
 		deselectAllNotes();
@@ -181,6 +177,27 @@ function mouseDraggedUpdate() {
 				}
 				mouse_last_x_y = [mouseX,mouseY];
 				mouse_dragged_displacement = [0,0];
+
+
+				selected_notes = selectedNotes().sort((a,b) => (a.x>b.x) ? 1 : -1);
+				selected_notes.forEach(note => {
+					if (note.connected_before!=null && note.x<note.connected_before.x) {
+						const first_note = note.connected_before.connected_before;
+						note.connected_before.connected_before = note;
+						note.connected_before.connected_after = note.connected_after;
+						if (note.connected_after!=null) note.connected_after.connected_before = note.connected_before;
+						note.connected_after = note.connected_before;
+						note.connected_before = first_note;
+					} else if (note.connected_after!=null && note.x>note.connected_after.x) {
+						const final_note = note.connected_after.connected_after;
+						note.connected_after.connected_after = note;
+						note.connected_after.connected_before = note.connected_before;
+						if (note.connected_before!=null) note.connected_before.connected_after = note.connected_after;
+						note.connected_before = note.connected_after;
+						note.connected_after = final_note;
+						if (final_note!=null) final_note.connected_before = note;
+					}
+				});
 			}
 		}
 	}
