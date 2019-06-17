@@ -12,13 +12,20 @@ html(lang="en")
 		script(src="/demonote.js")
 		script(src="/note.js")
 		script(src="/script.js")
+		script(src="/ui.js")
 		link(rel="stylesheet" type="text/css" href="/style.css")
 	body
 		header
+			h1 PipeScore
 			nav
-				ul
-					li: h1 PipeScore
-					li: form#note_mode
+				ul#menu-titles
+					li#note-title.menu-title.viewing Note
+					li#gracenote-title.menu-title Gracenote
+					li#text-title.menu-title Text
+					li#layout-title.menu-title Layout
+					li#file-title.menu-title File
+				div#note.menu.viewing
+					form#note_mode
 						label Semibreve
 						input(type="radio" name="note" value="semibreve")
 						label Minim
@@ -31,8 +38,16 @@ html(lang="en")
 						input(type="radio" name="note" value="semiquaver")
 						label Demisemiquaver
 						input(type="radio" name="note" value="demisemiquaver")
-					li: label Mode: 
-						select#mode
-							option(value="create") Create
-							option(value="select") Select
+					label Mode: 
+					select#mode
+						option(value="create") Create
+						option(value="select") Select
+				div#gracenote.menu
+					p Gracenote menu
+				div#text.menu
+					p Text menu
+				div#layout.menu
+					p Layout menu
+				div#file.menu
+					p File menu
 		div#page

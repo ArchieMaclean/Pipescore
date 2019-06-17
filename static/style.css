@@ -6,25 +6,65 @@ body {
     margin: 0;
 }
 
-nav {
+header {
     background: #26a5ff;
-    padding: 1.5em;
+    padding: 0em;
     position: sticky;
     top: 0;
+	display: grid;
+	grid-template-rows:1fr;
+	grid-template-columns: 1fr 5fr;
+	margin: 0;
 }
 
-nav ul {
-    margin: 0;
-    list-style: none;
+nav {
+	margin: 0;
+	padding: 1em .5em 0em;
 }
 
+#menu-titles {
+	padding: 0;
+	margin: 0;
+}
 
+#menu-titles li {
+	display: inline;
+	list-style-type: none;
+	padding: .5em 1em;
+	margin: 0;
+	background: rgba(173,216,230,0.5); /* lightblue but with opacity */
+	cursor: pointer;
+	border-radius: .5em .5em 0 0;
+}
 
-h1 {
-    margin:0 0 0.5em;
+#menu-titles li.viewing {
+	background: lightblue;
+}	
+
+.menu {
+	margin: .5em 0em;
+	padding: .5em 1em 1em;
+	height: 4em;
+	border-radius: 0 .5em .5em .5em;
+}
+
+.menu.viewing {
+	grid-column: 2;
+	background: lightblue;
+}
+
+.menu:not(.viewing) {
+	display: none;
+	background: lightblue;
 }
 
 #page {
-    justify-content: center;
-    margin: 3em;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	width: 1050px; /*  need to find better way */
+}
+
+h1 {
+    margin: 1.5em;
 }
