@@ -39,6 +39,7 @@ nav {
 
 #menu-titles li.viewing {
 	background: lightblue;
+	padding: .5em 1.5em;
 }	
 
 .menu {
@@ -60,6 +61,7 @@ nav {
 
 #page {
 	display: block;
+	margin: 1em;
 	margin-right: auto;
 	margin-left: auto;
 	width: 1050px; /*  need to find better way */
@@ -67,4 +69,21 @@ nav {
 
 h1 {
     margin: 1.5em;
+}
+
+input[type="radio"] {
+	display: none;
+}
+
+input[type="radio"]+label {
+	padding: .5em .5em;
+}
+
+input[type="radio"]:checked+label {
+	background: rgba(38,21,255,.25);
+	border-radius: 0.6em;
+}
+
+#mode-placeholder {
+	padding: .5em 0em;
 }

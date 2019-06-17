@@ -20,6 +20,7 @@ function setup() {
     cnv = createCanvas(210*5,297*5);
     cnv.parent('page')
 	background(255);
+	cnv.mousePressed(mousePress);
     trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
     note_tail = loadImage('/images/noteTail.png');          // 72 x 155
 	blue_note_tail = loadImage('/images/blueNoteTail.png');
@@ -93,7 +94,7 @@ function deselectAllNotes() {
 	box_select = false;
 }
 
-function mousePressed() {
+function mousePress() {
     if (mouseButton==LEFT) {
 		if (mode=="create") {
 			selected_note = getSelectedNote();
