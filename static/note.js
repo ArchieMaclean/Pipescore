@@ -95,6 +95,7 @@ class Note {
 	   return ((x>left)&&(x<right)&&(y>top)&&(y<height));
    }
 	addConnected(note) {
+		if (this.num_of_tails==0 || note.num_of_tails==0) return;
 		if (note.x<this.x) this.connected_before=note;
 		else this.connected_after=note;
 	}

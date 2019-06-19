@@ -161,6 +161,19 @@ function keyPressed() {
 				selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 			}
 		}
+	} else if (keyCode == 85) { //u
+		if (mode=="select") {
+			selectedNotes().forEach(note=>{
+				if (note.connected_before!=null && note.connected_before.selected) {
+					note.connected_before.connected_after = null;
+					note.connected_before = null;
+				}
+				if (note.connected_after!=null && note.connected_after.selected) {
+					note.connected_after.connected_before = null;
+					note.connected_after = null;
+				}
+			});
+		}
 	}
 }
 
@@ -189,6 +202,7 @@ function mouseDraggedUpdate() {
 						if (note.connected_after!=null) note.connected_after.connected_before = note.connected_before;
 						note.connected_after = note.connected_before;
 						note.connected_before = first_note;
+						if (first_note!=null) first_note.connected_after = note;
 					} else if (note.connected_after!=null && note.x>note.connected_after.x) {
 						const final_note = note.connected_after.connected_after;
 						note.connected_after.connected_after = note;

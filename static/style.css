@@ -80,7 +80,7 @@ input[type="radio"]+label {
 }
 
 input[type="radio"]:checked+label {
-	background: rgba(38,21,255,.25);
+	background: rgba(38,165,255,.5);
 	border-radius: 0.6em;
 }
 
