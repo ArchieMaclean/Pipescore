@@ -28,6 +28,8 @@ function setup() {
     demo_note = new DemoNote();
     pdf = createPDF();
     pdf.beginRecord();
+	
+	document.getElementById('dot-notes-button').addEventListener('click',()=>dotSelectedNotes());
 }
 
 function draw() {
@@ -174,6 +176,10 @@ function keyPressed() {
 				}
 			});
 		}
+	} else if (keyCode == 68) { //d
+		if (mode=="select") {
+			dotSelectedNotes();
+		}
 	}
 }
 
@@ -220,4 +226,8 @@ function mouseDraggedUpdate() {
 
 function mouseDragged() {
 	mouse_dragged = true;	
+}
+
+function dotSelectedNotes() {
+	selectedNotes().forEach(n=>n.dotted=!n.dotted);
 }

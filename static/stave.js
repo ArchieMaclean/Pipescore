@@ -21,16 +21,15 @@ class Stave {
         return notes[thenote];
     }
     snapToLine(y) {
+		if (y<0) return null;
         for (var stavenum=1;stavenum<=this.num_staves;stavenum++) {
             for (var linenum=0;linenum<4;linenum++) {
-				// var because scoping issues with return (end of method return)
+				// var because scoping issues with return if const (end of method return)
                 var stave_y = linenum*STAVELINEWIDTH+stavenum*STAVEWIDTH;
-                if (y<=stave_y && y>0) {
+                if (y<=stave_y) {
 					if ((linenum==0)&&(stavenum!=1)) {
 						if (y<(stave_y-(STAVEWIDTH/3))) {
 							return [3*STAVELINEWIDTH+(stavenum-1)*STAVEWIDTH, "g"];
-						} else {
-							return [stave_y-STAVELINEWIDTH, "A"];
 						}
 					}
                     if (y<=stave_y-STAVELINEWIDTH) {
@@ -40,8 +39,6 @@ class Stave {
                     } else {
                         return [stave_y,this.getNoteFromLine(linenum)]
                     }
-                } else if (y<=0) {
-                    return null
                 }
             }
         }

@@ -12,6 +12,7 @@ class Note {
 		this.selected = false;
 		this.connected_before = null;
 		this.connected_after = null;
+		this.dotted = false;
     }
 
     draw() {
@@ -22,7 +23,7 @@ class Note {
 		const snapped = stave.snapToLine(this.actual_y);
 		if (snapped != null) {
 			this.y = snapped[0];
-			this.name = snapped[1]	// snaps note to line
+			this.name = snapped[1];
 		}
         
 		stroke(this.selected ? SELECTED_COLOUR : (this.type=="semibreve" || this.type=="minim") ? 0 : this.col);
@@ -30,16 +31,21 @@ class Note {
 		this.selected ? fill((this.type=="semibreve" || this.type=="minim") ? this.col : SELECTED_COLOUR) : fill(this.col);
 		
         ellipse(this.x,this.y,this.width,this.height);
+		if (this.dotted) {
+			fill(0); strokeWeight(0);
+			let y_dif;
+			(['A','f','d','b','g'].includes(this.name)) ? y_dif = -4 : y_dif = 3;
+			ellipse(this.x+this.width/2+2,this.y+y_dif,2.5,2.5);
+		}
 
 		if (this.name=="A") {
 			strokeWeight(2);
             line(this.x-11,this.y,this.x+11,this.y);
         }
-		
-		if (this.type=="semibreve") strokeWeight(0);
-		if (this.type!="semibreve" && this.type!="minim") strokeWeight(2); 
 	}
 	drawTail() {
+		if (this.type=="semibreve") strokeWeight(0);
+		if (this.type!="semibreve" && this.type!="minim") strokeWeight(2); 
         line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
 
 		stroke(0);
