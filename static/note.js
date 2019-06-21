@@ -15,11 +15,11 @@ class Note {
 		this.dotted = false;
     }
 
-    draw() {
-		this.drawHead();
-		this.drawTail();		
+    draw(stave) {
+		this.drawHead(stave);
+		this.drawTail(stave);		
     }
-	drawHead() {
+	drawHead(stave) {
 		const snapped = stave.snapToLine(this.actual_y);
 		if (snapped != null) {
 			this.y = snapped[0];
@@ -43,7 +43,7 @@ class Note {
             line(this.x-11,this.y,this.x+11,this.y);
         }
 	}
-	drawTail() {
+	drawTail(stave) {
 		if (this.type=="semibreve") strokeWeight(0);
 		if (this.type!="semibreve" && this.type!="minim") strokeWeight(2); 
         line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
