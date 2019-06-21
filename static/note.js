@@ -1,11 +1,10 @@
 class Note {
-    constructor(stave, x,actual_y,type,col) {
+    constructor(stave, x,actual_y,type) {
         this.x = x;
         this.y = stave.snapToLine(actual_y)[0];
 		this.actual_y = this.y;	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
         this.name = stave.snapToLine(actual_y)[1];
-        this.col = col;
         this.width = 15;
         this.height = 10;
 		this.stem_height = 50;
@@ -26,9 +25,9 @@ class Note {
 			this.name = snapped[1];
 		}
         
-		stroke(this.selected ? SELECTED_COLOUR : (this.type=="semibreve" || this.type=="minim") ? 0 : this.col);
+		stroke(this.selected ? SELECTED_COLOUR : 0);
 		strokeWeight((this.type=="semibreve" || this.type=="minim") ? 2 : 0);
-		this.selected ? fill((this.type=="semibreve" || this.type=="minim") ? this.col : SELECTED_COLOUR) : fill(this.col);
+		this.selected ? fill((this.type=="semibreve" || this.type=="minim") ? WHITE : SELECTED_COLOUR) : fill((this.type==="minim"||this.type==="semibreve")?WHITE:0);
 		
         ellipse(this.x,this.y,this.width,this.height);
 		if (this.dotted) {
