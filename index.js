@@ -1,5 +1,6 @@
 let express = require("express");
 let app = express();
+app.set('port',(process.env.PORT || 5000));
 app.set('view engine', 'pug');
 app.set('views','./templates');
 app.use(express.static('static'));
