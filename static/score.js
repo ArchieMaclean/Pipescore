@@ -6,7 +6,7 @@ const CLICK_MARGIN = 5;
 const BLACK = 0;
 const WHITE = [0,0,0,0];
 
-let trebleClef,note_tail,blue_note_tail;
+let trebleClef,note_tail,blue_note_tail;	// images
 
 class Score {
 	constructor() {
@@ -21,11 +21,13 @@ class Score {
 		this.demo_note = new DemoNote();
 		this.pdf = createPDF();
 		this.pdf.beginRecord();
+		this.grace = new Gracenote();
 		
 		document.getElementById('dot-notes-button').addEventListener('click',()=>this.dotSelectedNotes());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
+		this.menu_mode = 'note-title';
 		this.notes = [];
 	}
 	draw() {
@@ -34,17 +36,19 @@ class Score {
 		this.stave.draw();
 		this.update_demo_note();
 		this.drawNotes();
+		this.grace.drawNotes();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	update_note_mode() {
 		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
 		this.mode = $("#mode").val();
+		this.menu_mode = document.querySelector('#menu-titles .viewing').id.replace('-title','');
 		if (this.mode!="select") {
 			this.deselectAllNotes();
 		}
 	}
 	update_demo_note() {
-		if (this.mode=="create") {
+		if (this.mode=="create" && this.menu_mode=='note') {
 			this.demo_note.update(this.stave);
 			this.demo_note.draw();
 		}
@@ -86,19 +90,23 @@ class Score {
 	mousePress() {
 		if (mouseButton==LEFT) {
 			if (this.mode=="create") {
-				const selected_note = this.getSelectedNote();
-				if (selected_note==null) {
-					const x = mouseX;
-					if (x>0 && x<width) {
-						const snapped = this.stave.snapToLine(mouseY);
-						if (snapped!=null) {
-							const y = snapped[0];
-							let note = snapped[1];
-						
-							note = new Note(this.stave, mouseX,mouseY,this.note_mode);
-							this.notes.push(note);
+				if (this.menu_mode=='note') {
+					const selected_note = this.getSelectedNote();
+					if (selected_note==null) {
+						const x = mouseX;
+						if (x>0 && x<width) {
+							const snapped = this.stave.snapToLine(mouseY);
+							if (snapped!=null) {
+								const y = snapped[0];
+								let note = snapped[1];
+							
+								note = new Note(this.stave, mouseX,mouseY,this.note_mode);
+								this.notes.push(note);
+							}
 						}
 					}
+				} else if (this.menu_mode=='gracenote') {
+					this.grace.addNote(this.stave,mouseX,mouseY);
 				}
 			} else if (this.mode=="select") {
 				this.mouse_original_x_y = [mouseX,mouseY];
