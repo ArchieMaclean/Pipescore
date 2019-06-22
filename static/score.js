@@ -50,7 +50,7 @@ class Score {
 		}
 	}
 	drawNotes() {
-		for (note of this.notes) {
+		for (const note of this.notes) {
 			note.draw(this.stave);
 		}
 	}
@@ -70,7 +70,7 @@ class Score {
 	}
 	getSelectedNote() {
 		var selected;
-		for (note of this.notes) {
+		for (const note of this.notes) {
 			if (note.checkIfSelected(mouseX,mouseY)) {
 				selected = note;
 			}
@@ -78,7 +78,7 @@ class Score {
 		return selected;
 	}
 	deselectAllNotes() {
-		for (note of this.selectedNotes) {
+		for (const note of this.selectedNotes) {
 			note.selected=false;
 		}
 		this.box_select = false;
@@ -118,14 +118,14 @@ class Score {
 		}
 	}
 	mouseReleased() {
-		for (note of this.selectedNotes) {
+		for (const note of this.selectedNotes) {
 			note.actual_y = note.y;	// so that when dragging again, note starts at right place
 		}
 		this.mouse_dragged = false;
 	}
 	get selectedNotes() {
 		var selected = [];
-		for (note of this.notes) {
+		for (const note of this.notes) {
 			if (note.selected) {
 				selected.push(note);
 			}
@@ -173,7 +173,7 @@ class Score {
 				else {
 					this.mouse_dragged_displacement[0]+=mouseX-this.mouse_last_x_y[0];
 					this.mouse_dragged_displacement[1]+=mouseY-this.mouse_last_x_y[1];
-					for (note of this.selectedNotes) {
+					for (const note of this.selectedNotes) {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
 					}
