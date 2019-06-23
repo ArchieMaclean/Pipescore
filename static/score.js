@@ -123,6 +123,11 @@ class Score {
 		this.grace_note_selected = null;
 		this.box_select = false;
 	}
+	deleteSelectedNotes() {
+		this.selectedNotes.forEach(note => {
+			this.notes.splice(this.notes.indexOf(note),1)
+		});
+	}
 	mousePress() {
 		if (mouseButton === LEFT) {
 			if (this.mode === 'create') {
@@ -219,6 +224,8 @@ class Score {
 			if (this.mode ==='select') {
 				this.dotSelectedNotes();
 			}
+		} else if (keyCode === 46) {	// delete
+			this.deleteSelectedNotes();
 		}
 	}
 	mouseDraggedUpdate() {

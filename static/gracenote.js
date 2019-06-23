@@ -52,7 +52,7 @@ class Gracenote {
 		return highest_note_y;
 	}
 	checkIfSelected() {
-		for (const n of this.notes) {	// if arrow function, return doesn't leave outer method
+		for (const n of this.notes) {
 			if (((n.x-CLICK_MARGIN) < mouseX) && ((n.x+CLICK_MARGIN) > mouseX) && ((n.y-CLICK_MARGIN) < mouseY) && ((n.y+CLICK_MARGIN)>mouseY)) {
 				n.selected = true;
 				return true;

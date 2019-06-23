@@ -50,7 +50,18 @@ html(lang="en")
 					br
 					button(id="dot-notes-button") Dot Selected
 				div#gracenote.menu
-					p Gracenote menu
+					form#gracenote_mode
+						input(type="radio" name="gracenote-mode" value="normal" id="normal" checked)
+						label(for="normal") Add Gracenote
+						input(type="radio" name="gracenote-mode" value="place" id="place")
+						label(for="place") Add Standard Embellishment
+						select#gracenote-type
+							option(value="d-throw") Throw on D
+							option(value="c-doubling") Doubling B
+							option(value="c-doubling") Doubling C
+							option(value="c-doubling") Doubling D
+							option(value="c-doubling") Doubling E
+							option(value="c-doubling") Doubling F
 				div#text.menu
 					p Text menu
 				div#layout.menu
