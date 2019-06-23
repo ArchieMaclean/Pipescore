@@ -54,9 +54,37 @@ class Score {
 		}
 	}
 	drawNotes() {
+		this.equaliseNoteStemHeights();
 		for (const note of this.notes) {
 			note.draw(this.stave);
 		}
+	}
+	equaliseNoteStemHeights() {
+		this.getNoteGroupChains().forEach(chain=>{
+			const lowest = this.getLowestNoteOfGroup(chain)+30;
+			chain.forEach(n=>{
+				n.stem_height=lowest-n.y;
+			});
+		});
+	}
+	getNoteGroupChains() {
+		const notes = this.notes.sort((a,b)=>(a.x>b.x)?1:-1);
+		const chains = [];
+		for (const note of notes) {
+			if (note.connected_after && !note.connected_before) {
+				chains.push([note]);
+			} else if (note.connected_before) {
+				chains[chains.length-1].push(note);
+			}
+		}
+		return chains
+	}
+	getLowestNoteOfGroup(group) {
+		let lowest = -Infinity;
+		group.forEach(n=>{
+			if (n.y>lowest) lowest = n.y;
+		});
+		return lowest;
 	}
 	boxSelect() {
 		fill(50,50,150,150);
@@ -186,29 +214,7 @@ class Score {
 						note.actual_y += this.mouse_dragged_displacement[1];
 					}
 					this.mouse_last_x_y = [mouseX,mouseY];
-					this.mouse_dragged_displacement = [0,0];
-
-
-					const selected_notes = this.selectedNotes.sort((a,b) => (a.x>b.x) ? 1 : -1);
-					selected_notes.forEach(note => {
-						if (note.connected_before!=null && note.x<note.connected_before.x) {
-							const first_note = note.connected_before.connected_before;
-							note.connected_before.connected_before = note;
-							note.connected_before.connected_after = note.connected_after;
-							if (note.connected_after!=null) note.connected_after.connected_before = note.connected_before;
-							note.connected_after = note.connected_before;
-							note.connected_before = first_note;
-							if (first_note!=null) first_note.connected_after = note;
-						} else if (note.connected_after!=null && note.x>note.connected_after.x) {
-							const final_note = note.connected_after.connected_after;
-							note.connected_after.connected_after = note;
-							note.connected_after.connected_before = note.connected_before;
-							if (note.connected_before!=null) note.connected_before.connected_after = note.connected_after;
-							note.connected_before = note.connected_after;
-							note.connected_after = final_note;
-							if (final_note!=null) final_note.connected_before = note;
-						}
-					});
+					this.mouse_dragged_displacement = [0,0];					
 				}
 			}
 		}
