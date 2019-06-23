@@ -12,11 +12,13 @@ class Note {
 		this.connected_before = null;
 		this.connected_after = null;
 		this.dotted = false;
+		this.gracenote = new Gracenote();
     }
 
     draw(stave) {
 		this.drawHead(stave);
-		this.drawTail(stave);		
+		this.drawTail(stave);
+		this.gracenote.draw();		
     }
 	drawHead(stave) {
 		const snapped = stave.snapToLine(this.actual_y);
@@ -74,7 +76,7 @@ class Note {
 						this.drawConnectingLine(note,y);
 						y++;
 					}
-					const distance = 18*((this.x > note.x) ? -1 : 1);
+					const distance = 10*((this.x > note.x) ? -1 : 1);
 					for (var tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
 						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2+distance,this.y+this.stem_height-10*y);
 						y++;
@@ -110,5 +112,8 @@ class Note {
 			case 'demisemiquaver': return 3;
 			default: return 0;
 		}
+	}
+	addGracenote(stave,x,y) {
+		this.gracenote.addNote(stave,x,y);
 	}
 }

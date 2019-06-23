@@ -12,7 +12,7 @@ class Gracenote {
 		}
 		this.notes.push(note);
 	}
-	drawNotes() {
+	draw() {
 		fill(BLACK);
 		this.notes = this.notes.sort((a,b)=>(a.x>b.x)?1:-1);	// order
 		let stem_y;

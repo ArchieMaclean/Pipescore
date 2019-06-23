@@ -21,14 +21,16 @@ class Score {
 		this.demo_note = new DemoNote();
 		this.pdf = createPDF();
 		this.pdf.beginRecord();
-		this.grace = new Gracenote();
 		
-		document.getElementById('dot-notes-button').addEventListener('click',()=>this.dotSelectedNotes());
+		document.getElementById('dot-notes-button').addEventListener('click',() => this.dotSelectedNotes());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
 		this.menu_mode = 'note';
 		this.notes = [];
+		this.mouse_dragged_displacement = [0,0];
+		this.mouse_last_x_y = [0,0];
+		this.mouse_original_x_y = [0,0];
 	}
 	draw() {
 		background(255);
@@ -36,7 +38,6 @@ class Score {
 		this.stave.draw();
 		this.update_demo_note();
 		this.drawNotes();
-		this.grace.drawNotes();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	update_note_mode() {
@@ -68,7 +69,7 @@ class Score {
 		});
 	}
 	getNoteGroupChains() {
-		const notes = this.notes.sort((a,b) => (a.x>b.x) ? 1 : -1);
+		const notes = this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
 		const chains = [];
 		for (const note of notes) {
 			if (note.connected_after && !note.connected_before) {
@@ -111,7 +112,7 @@ class Score {
 	}
 	deselectAllNotes() {
 		for (const note of this.selectedNotes) {
-			note.selected=false;
+			note.selected = false;
 		}
 		this.box_select = false;
 	}
@@ -134,7 +135,15 @@ class Score {
 						}
 					}
 				} else if (this.menu_mode === 'gracenote') {
-					this.grace.addNote(this.stave,mouseX,mouseY);
+					const notes = this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
+					let note_clicked = notes[0];
+					for (const note of notes) {
+						if (note.x > mouseX) {
+							note_clicked = note;
+							break;
+						}
+					}
+					if (note_clicked != null) note_clicked.addGracenote(this.stave,mouseX,mouseY);
 				}
 			} else if (this.mode === 'select') {
 				this.mouse_original_x_y = [mouseX,mouseY];
@@ -177,7 +186,7 @@ class Score {
 			}
 		} else if (keyCode === 71) {	// g - group
 			if (this.mode === "select") {
-				const selected_notes = this.selectedNotes.sort((a,b) => (a.x>b.x) ? 1 : -1);
+				const selected_notes = this.selectedNotes.sort((a,b) => (a.x > b.x) ? 1 : -1);
 				for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
 					selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 					selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
@@ -216,7 +225,7 @@ class Score {
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
 					
-					const selected_notes = this.selectedNotes.sort((a,b) => (a.x>b.x) ? 1 : -1);
+					const selected_notes = this.selectedNotes.sort((a,b) => (a.x > b.x) ? 1 : -1);
 					selected_notes.forEach(note=>{
 						if ((note.connected_before != null) && (note.x < note.connected_before.x)) {
 							const first_note = note.connected_before.connected_before;
