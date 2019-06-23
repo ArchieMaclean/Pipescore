@@ -4,7 +4,7 @@ app.set('view engine', 'pug');
 app.set('views','./templates');
 app.use(express.static('static'));
 
-app.get('/',(req,res)=>{
+app.get('/',(req,res) => {
 	res.render('index');
 });
 

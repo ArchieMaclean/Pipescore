@@ -26,10 +26,10 @@ class Note {
 		}
         
 		stroke(this.selected ? SELECTED_COLOUR : 0);
-		strokeWeight((this.type=="semibreve" || this.type=="minim") ? 2 : 0);
-		this.selected ? fill((this.type=="semibreve" || this.type=="minim") ? WHITE : SELECTED_COLOUR) : fill((this.type==="minim"||this.type==="semibreve")?WHITE:0);
+		strokeWeight(((this.type === 'semibreve') || (this.type === 'minim')) ? 2 : 0);
+		this.selected ? fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : SELECTED_COLOUR) : fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : 0);
+		ellipse(this.x,this.y,this.width,this.height);
 		
-        ellipse(this.x,this.y,this.width,this.height);
 		if (this.dotted) {
 			fill(0); strokeWeight(0);
 			let y_dif;
@@ -37,14 +37,14 @@ class Note {
 			ellipse(this.x+this.width/2+2,this.y+y_dif,2.5,2.5);
 		}
 
-		if (this.name=="A") {
+		if (this.name === 'A') {
 			strokeWeight(2);
             line(this.x-11,this.y,this.x+11,this.y);
         }
 	}
 	drawTail(stave) {
-		if (this.type=="semibreve") strokeWeight(0);
-		if (this.type!="semibreve" && this.type!="minim") strokeWeight(2); 
+		if (this.type === 'semibreve') strokeWeight(0);
+		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
         line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
 
 		stroke(0);
@@ -62,9 +62,9 @@ class Note {
 			strokeWeight(3);
 			for (const note of [this.connected_before,this.connected_after]) {
 				y = 0;
-				if (note==null) continue;
+				if (note == null) continue;
 				const other_tail = note.num_of_tails;
-				if (num_of_tails == other_tail && this.x>note.x) {
+				if ((num_of_tails === other_tail) && (this.x > note.x)) {
 					for (var tailnum=0;tailnum<num_of_tails;tailnum++) {
 						this.drawConnectingLine(note,y);
 						y++;
@@ -74,10 +74,9 @@ class Note {
 						this.drawConnectingLine(note,y);
 						y++;
 					}
-					const gradient_between_notes = (this.y-note.y)/(this.x-note.x);
-					const distance = 1/5 * (note.x-this.x);
+					const distance = 18*((this.x > note.x) ? -1 : 1);
 					for (var tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
-						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2+distance,this.y+this.stem_height-10*y+gradient_between_notes*distance);
+						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2+distance,this.y+this.stem_height-10*y);
 						y++;
 					}
 				}	
@@ -87,28 +86,28 @@ class Note {
 	drawConnectingLine(note,y) {
 		line(this.x-this.width/2,this.y+this.stem_height-10*y,note.x-note.width/2,note.y+note.stem_height-10*y);
 	}
-    update(x=null,y=null,name=null) {
-        if (x!=null) this.x = x;
-        if (y!=null) this.y = y;
-        if (name!=null) this.name = name;
+    update(x = null,y = null,name = null) {
+        if (x != null) this.x = x;
+        if (y != null) this.y = y;
+        if (name != null) this.name = name;
     }
    checkIfSelected(x,y) {
 	   const top = this.y-this.height/2-CLICK_MARGIN;
 	   const bottom = this.y+this.height/2+CLICK_MARGIN;
 	   const left = this.x-this.width/2-CLICK_MARGIN;
 	   const right = this.x+this.width/2+CLICK_MARGIN;
-	   return ((x>left)&&(x<right)&&(y>top)&&(y<height));
+	   return ((x > left) && (x < right) && (y > top) && (y < height));
    }
 	addConnected(note) {
-		if (this.num_of_tails==0 || note.num_of_tails==0) return;
-		if (note.x<this.x) this.connected_before=note;
-		else this.connected_after=note;
+		if ((this.num_of_tails === 0) || (note.num_of_tails === 0)) return;
+		if (note.x < this.x) this.connected_before = note;
+		else this.connected_after = note;
 	}
 	get num_of_tails() {
 		switch (this.type) {
-			case "quaver": return 1;
-			case "semiquaver": return 2;
-			case "demisemiquaver": return 3;
+			case 'quaver': return 1;
+			case 'semiquaver': return 2;
+			case 'demisemiquaver': return 3;
 			default: return 0;
 		}
 	}

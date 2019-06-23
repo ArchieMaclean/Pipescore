@@ -1,4 +1,4 @@
-const STAVEWIDTH = 100;
+const STAVEWIDTH = 150;
 const STAVELINEWIDTH = 13;
 const MARGIN = 30;
 const SELECTED_COLOUR = [0,0,200];
@@ -41,14 +41,14 @@ class Score {
 	}
 	update_note_mode() {
 		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
-		this.mode = $("#mode").val();
+		this.mode = $('#mode').val();
 		this.menu_mode = document.querySelector('#menu-titles .viewing').id.replace('-title','');
-		if (this.mode!="select") {
+		if (this.mode != 'select') {
 			this.deselectAllNotes();
 		}
 	}
 	update_demo_note() {
-		if (this.mode=="create") {
+		if (this.mode === 'create') {
 			this.demo_note.update(this.stave,this.menu_mode);
 			this.demo_note.draw();
 		}
@@ -61,19 +61,19 @@ class Score {
 	}
 	equaliseNoteStemHeights() {
 		this.getNoteGroupChains().forEach(chain=>{
-			const lowest = this.getLowestNoteOfGroup(chain)+30;
-			chain.forEach(n=>{
-				n.stem_height=lowest-n.y;
+			const lowest = this.getLowestNoteOfGroup(chain)+50;
+			chain.forEach(n => {
+				n.stem_height = lowest-n.y;
 			});
 		});
 	}
 	getNoteGroupChains() {
-		const notes = this.notes.sort((a,b)=>(a.x>b.x)?1:-1);
+		const notes = this.notes.sort((a,b) => (a.x>b.x) ? 1 : -1);
 		const chains = [];
 		for (const note of notes) {
 			if (note.connected_after && !note.connected_before) {
 				chains.push([note]);
-			} else if (note.connected_before) {
+			} else if ((note.connected_before != null) && (chains.length != 0)) {
 				chains[chains.length-1].push(note);
 			}
 		}
@@ -81,7 +81,7 @@ class Score {
 	}
 	getLowestNoteOfGroup(group) {
 		let lowest = -Infinity;
-		group.forEach(n=>{
+		group.forEach(n => {
 			if (n.y>lowest) lowest = n.y;
 		});
 		return lowest;
@@ -97,7 +97,7 @@ class Score {
 		const top = Math.min(y,mouseY);
 		const bottom = Math.max(y,mouseY);
 		this.notes.forEach(note => {
-			if (note.x>left && note.x<right && note.actual_y>top && note.actual_y<bottom) note.selected=true;
+			if ((note.x > left) && (note.x < right) && (note.actual_y > top) && (note.actual_y < bottom)) note.selected=true;
 		});
 	}
 	getSelectedNote() {
@@ -116,15 +116,15 @@ class Score {
 		this.box_select = false;
 	}
 	mousePress() {
-		if (mouseButton==LEFT) {
-			if (this.mode=="create") {
-				if (this.menu_mode=='note') {
+		if (mouseButton === LEFT) {
+			if (this.mode === 'create') {
+				if (this.menu_mode === 'note') {
 					const selected_note = this.getSelectedNote();
-					if (selected_note==null) {
+					if (selected_note == null) {
 						const x = mouseX;
-						if (x>0 && x<width) {
+						if ((x > 0) && (x < width)) {
 							const snapped = this.stave.snapToLine(mouseY);
-							if (snapped!=null) {
+							if (snapped != null) {
 								const y = snapped[0];
 								let note = snapped[1];
 							
@@ -133,10 +133,10 @@ class Score {
 							}
 						}
 					}
-				} else if (this.menu_mode=='gracenote') {
+				} else if (this.menu_mode === 'gracenote') {
 					this.grace.addNote(this.stave,mouseX,mouseY);
 				}
-			} else if (this.mode=="select") {
+			} else if (this.mode === 'select') {
 				this.mouse_original_x_y = [mouseX,mouseY];
 				this.mouse_last_x_y = [mouseX,mouseY];
 				this.mouse_dragged_displacement = [0,0];
@@ -149,7 +149,7 @@ class Score {
 					this.box_select = true;
 				}
 			}
-		} else if (mouseButton==CENTER) {
+		} else if (mouseButton === CENTER) {
 			this.pdf.save();
 		}
 	}
@@ -169,46 +169,46 @@ class Score {
 		return selected;
 	}
 	keyPressed() {
-		if (keyCode == ESCAPE) {
-			if (this.mode=="create") {
-				$("#mode").val("select");
-			} else if (this.mode=="select") {
-				$("#mode").val("create");
+		if (keyCode === ESCAPE) {
+			if (this.mode === 'create') {
+				$('#mode').val('select');
+			} else if (this.mode === 'select') {
+				$('#mode').val('create');
 			}
-		} else if (keyCode == 71) {	// g - group
-			if (this.mode=="select") {
+		} else if (keyCode === 71) {	// g - group
+			if (this.mode === "select") {
 				const selected_notes = this.selectedNotes.sort((a,b) => (a.x>b.x) ? 1 : -1);
 				for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
 					selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 					selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 				}
 			}
-		} else if (keyCode == 85) { // u - ungroup
-			if (this.mode=="select") {
+		} else if (keyCode === 85) { // u - ungroup
+			if (this.mode === 'select') {
 				this.selectedNotes.forEach(note=>{
-					if (note.connected_before!=null && note.connected_before.selected) {
+					if ((note.connected_before != null) && (note.connected_before.selected)) {
 						note.connected_before.connected_after = null;
 						note.connected_before = null;
 					}
-					if (note.connected_after!=null && note.connected_after.selected) {
+					if ((note.connected_after != null) && (note.connected_after.selected)) {
 						note.connected_after.connected_before = null;
 						note.connected_after = null;
 					}
 				});
 			}
-		} else if (keyCode == 68) { //d
-			if (this.mode=="select") {
+		} else if (keyCode === 68) { //d
+			if (this.mode ==='select') {
 				this.dotSelectedNotes();
 			}
 		}
 	}
 	mouseDraggedUpdate() {
-		if (this.mode=="select") {
-			if (mouseButton==LEFT) {
+		if (this.mode=='select') {
+			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
 				else {
-					this.mouse_dragged_displacement[0]+=mouseX-this.mouse_last_x_y[0];
-					this.mouse_dragged_displacement[1]+=mouseY-this.mouse_last_x_y[1];
+					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
+					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 					for (const note of this.selectedNotes) {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
@@ -218,7 +218,7 @@ class Score {
 					
 					const selected_notes = this.selectedNotes.sort((a,b) => (a.x>b.x) ? 1 : -1);
 					selected_notes.forEach(note=>{
-						if (note.connected_before!=null && note.x<note.connected_before.x) {
+						if ((note.connected_before != null) && (note.x < note.connected_before.x)) {
 							const first_note = note.connected_before.connected_before;
 							note.connected_before.connected_before = note;
 							note.connected_before.connected_after = note.connected_after;
@@ -226,14 +226,14 @@ class Score {
 							note.connected_after = note.connected_before
 							note.connected_before = first_note;
 							if (first_note!=null) first_note.connected_after = note;
-						} else if (note.connected_after!=null && note.x>note.connected_after.x) {
+						} else if ((note.connected_after != null) && (note.x > note.connected_after.x)) {
 							const final_note = note.connected_after.connected_after;
 							note.connected_after.connected_after = note;
 							note.connected_after.connected_before = note.connected_before;
-							if (note.connected_before!=null) note.connected_before.connected_after = note.connected_after;
+							if (note.connected_before != null) note.connected_before.connected_after = note.connected_after;
 							note.connected_before = note.connected_after;
 							note.connected_after = final_note;
-							if (final_note!=null) final_note.connected_before = note;
+							if (final_note != null) final_note.connected_before = note;
 						}
 					});
 				}
@@ -244,6 +244,6 @@ class Score {
 		this.mouse_dragged = true;
 	}
 	dotSelectedNotes() {
-		this.selectedNotes.forEach(n=>n.dotted=!n.dotted);
+		this.selectedNotes.forEach(n => n.dotted =! n.dotted);
 	}
 }

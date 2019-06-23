@@ -17,12 +17,12 @@ class Gracenote {
 		this.notes = this.notes.sort((a,b)=>(a.x>b.x)?1:-1);	// order
 		let stem_y;
 		if (this.notes[0]) stem_y = this.highestNoteY-this.stem_height;
-		this.notes.forEach(note=>{
+		this.notes.forEach(note => {
 			stroke(WHITE);
 			ellipse(note.x,note.y,9,7);
 			stroke(BLACK);
 			line(note.x+4.5,note.y,note.x+4.5,stem_y);
-			if (note.name==='A') {
+			if (note.name === 'A') {
 				strokeWeight(2);
 				line(note.x-6,note.y,note.x+6,note.y);
 			}
@@ -35,8 +35,8 @@ class Gracenote {
 	}
 	get highestNoteY() {
 		let highest_note_y = Infinity;
-		this.notes.forEach(note=>{
-			if (note.y<highest_note_y) highest_note_y=note.y;
+		this.notes.forEach(note => {
+			if (note.y < highest_note_y) highest_note_y=note.y;
 		})
 		return highest_note_y;
 	}

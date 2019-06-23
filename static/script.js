@@ -1,5 +1,5 @@
-
 let score;
+
 function setup() {
 	score = new Score();
 }
