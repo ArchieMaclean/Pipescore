@@ -19,7 +19,13 @@ html(lang="en")
 		link(rel="stylesheet" type="text/css" href="/style.css")
 	body
 		header
-			h1 PipeScore
+			div#title-and-mode
+				h1 PipeScore
+				div#mode-div
+					label(for="mode") Mode: 
+					select#mode
+						option(value="create") Create
+						option(value="select") Select
 			nav
 				ul#menu-titles
 					li#note-title.menu-title.viewing Note
@@ -41,12 +47,8 @@ html(lang="en")
 						label(for="semiquaver") Semiquaver
 						input(type="radio" name="note" value="demisemiquaver" id="demisemiquaver")
 						label(for="demisemiquaver") Demisemiquaver
-					div#mode-placeholder
-							label(for="mode") Mode: 
-							select#mode
-								option(value="create") Create
-								option(value="select") Select
-							button(id="dot-notes-button") Dot Selected
+						br
+						button(id="dot-notes-button") Dot Selected
 				div#gracenote.menu
 					p Gracenote menu
 				div#text.menu

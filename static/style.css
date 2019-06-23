@@ -67,8 +67,11 @@ nav {
 	width: 1050px; /*  need to find better way */
 }
 
-h1 {
-    margin: 1.5em;
+#title-and-mode {
+    padding: 1.5em;
+}
+#mode-div {
+	float: right;
 }
 
 input[type="radio"] {
@@ -85,6 +88,6 @@ input[type="radio"]:checked+label {
 	border-radius: 0.6em;
 }
 
-#mode-placeholder {
-	padding: .5em 0em;
+#dot-notes-button {
+	margin: .5em 0em;
 }

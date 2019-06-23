@@ -27,7 +27,7 @@ class Score {
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
-		this.menu_mode = 'note-title';
+		this.menu_mode = 'note';
 		this.notes = [];
 	}
 	draw() {
@@ -48,8 +48,8 @@ class Score {
 		}
 	}
 	update_demo_note() {
-		if (this.mode=="create" && this.menu_mode=='note') {
-			this.demo_note.update(this.stave);
+		if (this.mode=="create") {
+			this.demo_note.update(this.stave,this.menu_mode);
 			this.demo_note.draw();
 		}
 	}
@@ -147,7 +147,7 @@ class Score {
 			} else if (this.mode=="select") {
 				$("#mode").val("create");
 			}
-		} else if (keyCode == 71) {	// g
+		} else if (keyCode == 71) {	// g - group
 			if (this.mode=="select") {
 				const selected_notes = this.selectedNotes.sort((a,b) => (a.x>b.x) ? 1 : -1);
 				for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
@@ -155,7 +155,7 @@ class Score {
 					selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 				}
 			}
-		} else if (keyCode == 85) { //u
+		} else if (keyCode == 85) { // u - ungroup
 			if (this.mode=="select") {
 				this.selectedNotes.forEach(note=>{
 					if (note.connected_before!=null && note.connected_before.selected) {

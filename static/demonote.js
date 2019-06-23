@@ -19,7 +19,14 @@ class DemoNote {
 		}
     }
 
-    update(stave) {
+    update(stave,menu_mode) {
+		if (menu_mode=='note') {
+			this.width = 15;
+			this.height = 10;
+		} else if (menu_mode=='gracenote') {
+			this.width = 9;
+			this.height = 7;
+		}
 		this.x = mouseX;
 		const staveline = stave.snapToLine(mouseY);
 		if (staveline!=null) this.y = staveline[0];
