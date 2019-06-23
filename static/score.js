@@ -31,6 +31,7 @@ class Score {
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
+		this.grace_note_selected = null;
 	}
 	draw() {
 		background(255);
@@ -87,7 +88,7 @@ class Score {
 		});
 		return lowest;
 	}
-	boxSelect() {
+	boxSelect() {		
 		fill(50,50,150,150);
 		strokeWeight(0);
 		const x = this.mouse_original_x_y[0];
@@ -102,18 +103,24 @@ class Score {
 		});
 	}
 	getSelectedNote() {
-		var selected;
 		for (const note of this.notes) {
 			if (note.checkIfSelected(mouseX,mouseY)) {
-				selected = note;
+				return note;
 			}
 		}
-		return selected;
+	}
+	getSelectedGracenote() {
+		for (const note of this.notes) {
+			if (note.getSelectedGracenote()) {
+				return note;
+			}
+		}
 	}
 	deselectAllNotes() {
-		for (const note of this.selectedNotes) {
-			note.selected = false;
+		for (const note of this.notes) {	// needs to be this.notes to deal with gracenotes
+			note.deselect();
 		}
+		this.grace_note_selected = null;
 		this.box_select = false;
 	}
 	mousePress() {
@@ -136,7 +143,7 @@ class Score {
 					}
 				} else if (this.menu_mode === 'gracenote') {
 					const notes = this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
-					let note_clicked = notes[0];
+					let note_clicked;
 					for (const note of notes) {
 						if (note.x > mouseX) {
 							note_clicked = note;
@@ -150,9 +157,11 @@ class Score {
 				this.mouse_last_x_y = [mouseX,mouseY];
 				this.mouse_dragged_displacement = [0,0];
 				const selected_note = this.getSelectedNote();
+				const grace_note = this.getSelectedGracenote();
 				if (selected_note != null) {
 					selected_note.selected=true;
-					this.box_select = false;
+				} else if (grace_note != null) {
+					this.grace_note_selected = grace_note;
 				} else {
 					this.deselectAllNotes();
 					this.box_select = true;
@@ -164,9 +173,10 @@ class Score {
 	}
 	mouseReleased() {
 		for (const note of this.selectedNotes) {
-			note.actual_y = note.y;	// so that when dragging again, note starts at right place
+			note.resetActualY(this.stave);	// so that when dragging again, note starts at right place
 		}
 		this.mouse_dragged = false;
+		this.box_select = false;
 	}
 	get selectedNotes() {
 		var selected = [];
@@ -215,16 +225,26 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				else {
+				else if (this.grace_note_selected != null) {
+					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
+					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
+					this.grace_note_selected.dragGracenote(...this.mouse_dragged_displacement);
+					this.mouse_last_x_y = [mouseX,mouseY];
+					this.mouse_dragged_displacement = [0,0];
+				} else if (this.selectedNotes.length>0) {
 					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 					for (const note of this.selectedNotes) {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
+						note.gracenote.notes.forEach(n=> {
+							n.x += this.mouse_dragged_displacement[0];
+						});
 					}
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
 					
+					// grouped notes
 					const selected_notes = this.selectedNotes.sort((a,b) => (a.x > b.x) ? 1 : -1);
 					selected_notes.forEach(note=>{
 						if ((note.connected_before != null) && (note.x < note.connected_before.x)) {

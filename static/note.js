@@ -18,7 +18,7 @@ class Note {
     draw(stave) {
 		this.drawHead(stave);
 		this.drawTail(stave);
-		this.gracenote.draw();		
+		this.gracenote.draw(stave);		
     }
 	drawHead(stave) {
 		const snapped = stave.snapToLine(this.actual_y);
@@ -88,18 +88,13 @@ class Note {
 	drawConnectingLine(note,y) {
 		line(this.x-this.width/2,this.y+this.stem_height-10*y,note.x-note.width/2,note.y+note.stem_height-10*y);
 	}
-    update(x = null,y = null,name = null) {
-        if (x != null) this.x = x;
-        if (y != null) this.y = y;
-        if (name != null) this.name = name;
-    }
-   checkIfSelected(x,y) {
-	   const top = this.y-this.height/2-CLICK_MARGIN;
-	   const bottom = this.y+this.height/2+CLICK_MARGIN;
-	   const left = this.x-this.width/2-CLICK_MARGIN;
-	   const right = this.x+this.width/2+CLICK_MARGIN;
-	   return ((x > left) && (x < right) && (y > top) && (y < height));
-   }
+   	checkIfSelected(x,y) {
+	   	const top = this.y-this.height/2-CLICK_MARGIN;
+	   	const bottom = this.y+this.height/2+CLICK_MARGIN;
+	   	const left = this.x-this.width/2-CLICK_MARGIN;
+	   	const right = this.x+this.width/2+CLICK_MARGIN;
+	   	return ((x > left) && (x < right) && (y > top) && (y < height));
+   	}
 	addConnected(note) {
 		if ((this.num_of_tails === 0) || (note.num_of_tails === 0)) return;
 		if (note.x < this.x) this.connected_before = note;
@@ -115,5 +110,19 @@ class Note {
 	}
 	addGracenote(stave,x,y) {
 		this.gracenote.addNote(stave,x,y);
+	}
+	resetActualY(stave) {
+		this.actual_y = this.y;
+		this.gracenote.actual_y = this.gracenote.y;
+	}
+	getSelectedGracenote() {
+		return this.gracenote.checkIfSelected();
+	}
+	dragGracenote(dx,dy) {
+		this.gracenote.dragSelected(dx,dy);
+	}
+	deselect() {
+		this.selected = false;
+		this.gracenote.deselect();
 	}
 }
