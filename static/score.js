@@ -41,6 +41,10 @@ class Score {
 		this.drawNotes();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
+	noteModeChanged() {
+		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
+		this.changeSelectedNoteNames();
+	}
 	update_note_mode() {
 		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
 		this.mode = $('#mode').val();
@@ -54,6 +58,11 @@ class Score {
 			this.demo_note.update(this.stave,this.menu_mode);
 			this.demo_note.draw();
 		}
+	}
+	changeSelectedNoteNames() {
+		this.selectedNotes.forEach(note => {
+			note.type = this.note_mode;
+		});
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();
