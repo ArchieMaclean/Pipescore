@@ -1,7 +1,6 @@
 # Things to Add
 
 * Edit stave
-* Change note value
 * Gracenotes - standard menu
 * Ties
 * Barlines

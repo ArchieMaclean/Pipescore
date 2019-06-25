@@ -62,6 +62,12 @@ class Score {
 	changeSelectedNoteNames() {
 		this.selectedNotes.forEach(note => {
 			note.type = this.note_mode;
+			if (['semibreve','minim','crotchet'].indexOf(this.note_mode) != -1) {
+				if (note.connected_after != null) note.connected_after.connected_before = null;
+				if (note.connected_before != null) note.connected_before.connected_after = null;
+				note.connected_after = null;
+				note.connected_before = null;
+			}
 		});
 	}
 	drawNotes() {
