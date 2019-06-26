@@ -1,10 +1,10 @@
 class Note {
-    constructor(stave, x,actual_y,type) {
+    constructor(snapToLine, x,actual_y,type) {
         this.x = x;
-        this.y = stave.snapToLine(actual_y)[0];
+        this.y = snapToLine(actual_y)[0];
 		this.actual_y = this.y;	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
-        this.name = stave.snapToLine(actual_y)[1];
+        this.name = snapToLine(actual_y)[1];
         this.width = 15;
         this.height = 10;
 		this.stem_height = 50;
@@ -15,13 +15,13 @@ class Note {
 		this.gracenote = new Gracenote();
     }
 
-    draw(stave) {
-		this.drawHead(stave);
-		this.drawTail(stave);
-		this.gracenote.draw(stave);		
+    draw(snapToLine) {
+		this.drawHead(snapToLine);
+		this.drawTail();
+		this.gracenote.draw(snapToLine);		
     }
-	drawHead(stave) {
-		const snapped = stave.snapToLine(this.actual_y);
+	drawHead(snapToLine) {
+		const snapped = snapToLine(this.actual_y);
 		if (snapped != null) {
 			this.y = snapped[0];
 			this.name = snapped[1];
@@ -44,7 +44,7 @@ class Note {
             line(this.x-11,this.y,this.x+11,this.y);
         }
 	}
-	drawTail(stave) {
+	drawTail() {
 		if (this.type === 'semibreve') strokeWeight(0);
 		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
         line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
@@ -93,7 +93,7 @@ class Note {
 	   	const bottom = this.y+this.height/2+CLICK_MARGIN;
 	   	const left = this.x-this.width/2-CLICK_MARGIN;
 	   	const right = this.x+this.width/2+CLICK_MARGIN;
-	   	return ((x > left) && (x < right) && (y > top) && (y < height));
+	   	return ((x > left) && (x < right) && (y > top) && (y < bottom));
    	}
 	addConnected(note) {
 		if ((this.num_of_tails === 0) || (note.num_of_tails === 0)) return;
@@ -108,10 +108,10 @@ class Note {
 			default: return 0;
 		}
 	}
-	addGracenote(stave,x,y) {
-		this.gracenote.addNote(stave,x,y);
+	addGracenote(snapToLine,x,y) {
+		this.gracenote.addNote(snapToLine,x,y);
 	}
-	resetActualY(stave) {
+	resetActualY() {
 		this.actual_y = this.y;
 		this.gracenote.actual_y = this.gracenote.y;
 	}
@@ -124,5 +124,11 @@ class Note {
 	deselect() {
 		this.selected = false;
 		this.gracenote.deselect();
+	}
+	unConnect() {
+		if (this.connected_after != null) this.connected_after.connected_before = null;
+		if (this.connected_before != null) this.connected_before.connected_after = null;
+		this.connected_after = null;
+		this.connected_before = null;
 	}
 }

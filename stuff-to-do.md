@@ -8,4 +8,5 @@
 * Harmony stave
 * Accidentals
 * Time signatures
+* Copy/Paste
 * Playback

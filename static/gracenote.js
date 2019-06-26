@@ -3,26 +3,28 @@ class Gracenote {
 		this.notes = [];
 		this.stem_height = 20;
 	}
-	addNote(stave,x,y) {
-		const snapped = stave.snapToLine(y);
-		const note = {
-			x: x,
-			y: snapped[0],
-			actual_y: snapped[0],
-			name: snapped[1],
-			selected: false,
+	addNote(snapToLine,x,y) {
+		const snapped = snapToLine(y);
+		if (snapped != null) {
+			const note = {
+				x: x,
+				y: snapped[0],
+				actual_y: snapped[0],
+				name: snapped[1],
+				selected: false,
+			}
+			this.notes.push(note);
 		}
-		this.notes.push(note);
 	}
-	draw(stave) {
+	draw(snapToLine) {
 		strokeWeight(0);
 		this.notes = this.notes.sort((a,b) => (a.x > b.x)? 1 : -1);
 		let stem_y;
 		if (this.notes[0]) stem_y = this.highestNoteY-this.stem_height;
 		this.notes.forEach(note => {
 			note.selected ? fill(SELECTED_COLOUR) : fill(BLACK);
-			note.y = stave.snapToLine(note.actual_y)[0];
-			note.name = stave.snapToLine(note.actual_y)[1];
+			note.y = (snapToLine(note.actual_y) != null) ? snapToLine(note.actual_y)[0] : note.y;
+			note.name = (snapToLine(note.actual_y) != null) ? snapToLine(note.actual_y)[1] : note.name;
 			
 			stroke(WHITE);
 			ellipse(note.x,note.y,7,5);

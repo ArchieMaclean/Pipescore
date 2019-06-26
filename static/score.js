@@ -17,7 +17,7 @@ class Score {
 		trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
 		note_tail = loadImage('/images/noteTail.png');          // 72 x 155
 		blue_note_tail = loadImage('/images/blueNoteTail.png');
-		this.stave = new Stave(2);
+		this.stave = [new Stave(1), new Stave(2)];
 		this.demo_note = new DemoNote();
 		this.pdf = createPDF();
 		this.pdf.beginRecord();
@@ -32,11 +32,13 @@ class Score {
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
 		this.grace_note_selected = null;
+
+		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 	}
 	draw() {
 		background(255);
 		this.update_note_mode();
-		this.stave.draw();
+		this.stave.forEach(stave => stave.draw());
 		this.update_demo_note();
 		this.drawNotes();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
@@ -55,25 +57,29 @@ class Score {
 	}
 	update_demo_note() {
 		if (this.mode === 'create') {
-			this.demo_note.update(this.stave,this.menu_mode);
+			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
 			this.demo_note.draw();
+		}
+	}
+	snapNoteToLine(y) {
+		for (const stave of this.stave) {
+			if (stave.snapToLine(y) != null) {
+				return stave.snapToLine(y);
+			}
 		}
 	}
 	changeSelectedNoteNames() {
 		this.selectedNotes.forEach(note => {
 			note.type = this.note_mode;
 			if (['semibreve','minim','crotchet'].indexOf(this.note_mode) != -1) {
-				if (note.connected_after != null) note.connected_after.connected_before = null;
-				if (note.connected_before != null) note.connected_before.connected_after = null;
-				note.connected_after = null;
-				note.connected_before = null;
+				note.unConnect();
 			}
 		});
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();
 		for (const note of this.notes) {
-			note.draw(this.stave);
+			note.draw(this.snapNoteToLine);
 		}
 	}
 	equaliseNoteStemHeights() {
@@ -151,12 +157,12 @@ class Score {
 					if (selected_note == null) {
 						const x = mouseX;
 						if ((x > 0) && (x < width)) {
-							const snapped = this.stave.snapToLine(mouseY);
+							const snapped = this.snapNoteToLine(mouseY);
 							if (snapped != null) {
 								const y = snapped[0];
 								let note = snapped[1];
 							
-								note = new Note(this.stave, mouseX,mouseY,this.note_mode);
+								note = new Note(this.snapNoteToLine, mouseX,mouseY,this.note_mode);
 								this.notes.push(note);
 							}
 						}
@@ -170,7 +176,7 @@ class Score {
 							break;
 						}
 					}
-					if (note_clicked != null) note_clicked.addGracenote(this.stave,mouseX,mouseY);
+					if (note_clicked != null) note_clicked.addGracenote(this.snapNoteToLine,mouseX,mouseY);
 				}
 			} else if (this.mode === 'select') {
 				this.mouse_original_x_y = [mouseX,mouseY];
@@ -193,7 +199,7 @@ class Score {
 	}
 	mouseReleased() {
 		for (const note of this.selectedNotes) {
-			note.resetActualY(this.stave);	// so that when dragging again, note starts at right place
+			note.resetActualY();	// so that when dragging again, note starts at right place
 		}
 		this.mouse_dragged = false;
 		this.box_select = false;
