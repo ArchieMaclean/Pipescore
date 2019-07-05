@@ -234,7 +234,7 @@ class Score {
 					note.unConnect();
 				});
 			}
-		} else if (keyCode === 68) { //d
+		} else if (keyCode === 68) { // d - dot
 			if (this.mode ==='select') {
 				this.dotSelectedNotes();
 			}
@@ -252,7 +252,8 @@ class Score {
 					this.grace_note_selected.dragGracenote(...this.mouse_dragged_displacement);
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
-					if (this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notes,this.grace_note_selected,this.snapNoteToLine)) this.grace_note_selected = this.notes[0];
+					const out_of_boundary = this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notes,this.grace_note_selected,this.snapNoteToLine);
+					if (out_of_boundary != false) this.grace_note_selected = out_of_boundary;
 				} else if (this.selectedNotes.length>0) {
 					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];

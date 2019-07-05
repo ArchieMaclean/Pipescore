@@ -78,25 +78,26 @@ class Gracenote {
 	checkIfNotesOutwithBoundary(notes, parent_note, snapToLine) {
 		// unfinished
 		const notes_to_move = [];
+		let done = false;
 		for (const prevNote of notes) {
-			if (JSON.stringify(parent_note) != JSON.stringify(prevNote)) {
-				this.notes.forEach(note => {
-					if (note.x < (prevNote.x-prevNote.width)) {
-						notes_to_move.push([prevNote,note]);
-					}
-				});
-			}
+			this.notes.forEach(note => {
+				if (note.x < (prevNote.x-prevNote.width)) {
+					if (JSON.stringify(prevNote) != JSON.stringify(parent_note))	notes_to_move.push([prevNote,note]);
+					else done = true;
+				}
+			});
+			if (done) break;
 		};
 		if (notes_to_move.length === 0) return false;
-		
+
 		notes_to_move.forEach(note_and_gracenote => {
 			const note = note_and_gracenote[0];
 			const gracenote = note_and_gracenote[1]; 
 			
 			note.gracenote.addNote(snapToLine,gracenote.x,gracenote.y);
 			note.gracenote.checkIfSelected();
-			this.notes.splice(this.notes.indexOf(note),1);
+			this.notes.splice(this.notes.indexOf(gracenote),1);
 		});
-		return true;
+		return notes_to_move[0][0];
 	}
 }
