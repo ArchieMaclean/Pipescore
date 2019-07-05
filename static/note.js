@@ -130,5 +130,6 @@ class Note {
 		if (this.connected_before != null) this.connected_before.connected_after = null;
 		this.connected_after = null;
 		this.connected_before = null;
+		this.stem_height = 50;
 	}
 }

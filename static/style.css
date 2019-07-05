@@ -41,7 +41,7 @@ nav {
 #menu-titles li.viewing {
 	background: lightblue;
 	padding: .5em 1.5em;
-}	
+}
 
 .menu {
 	margin: .5em 0em;
@@ -69,7 +69,7 @@ nav {
 }
 
 #title-and-mode {
-    padding: 1.5em;
+	padding: 1.5em;
 }
 #mode-div {
 	float: right;

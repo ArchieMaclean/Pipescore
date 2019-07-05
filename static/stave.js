@@ -5,7 +5,7 @@ class Stave {
     draw() {
         stroke(0);
         strokeWeight(2);
-        image(trebleClef,MARGIN-5,STAVEWIDTH,50,64);
+        image(trebleClef,MARGIN-5,this.offset,50,64);
         for (var linenum=0;linenum<5;linenum++) {
             const y = linenum*STAVELINEWIDTH+this.offset;
             line(MARGIN,y,width-MARGIN,y);

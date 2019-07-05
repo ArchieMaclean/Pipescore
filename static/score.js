@@ -231,14 +231,7 @@ class Score {
 		} else if (keyCode === 85) { // u - ungroup
 			if (this.mode === 'select') {
 				this.selectedNotes.forEach(note=>{
-					if ((note.connected_before != null) && (note.connected_before.selected)) {
-						note.connected_before.connected_after = null;
-						note.connected_before = null;
-					}
-					if ((note.connected_after != null) && (note.connected_after.selected)) {
-						note.connected_after.connected_before = null;
-						note.connected_after = null;
-					}
+					note.unConnect();
 				});
 			}
 		} else if (keyCode === 68) { //d
@@ -259,13 +252,14 @@ class Score {
 					this.grace_note_selected.dragGracenote(...this.mouse_dragged_displacement);
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
+					if (this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notes,this.grace_note_selected,this.snapNoteToLine)) this.grace_note_selected = this.notes[0];
 				} else if (this.selectedNotes.length>0) {
 					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 					for (const note of this.selectedNotes) {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
-						note.gracenote.notes.forEach(n=> {
+						note.gracenote.notes.forEach(n => {
 							n.x += this.mouse_dragged_displacement[0];
 						});
 					}
