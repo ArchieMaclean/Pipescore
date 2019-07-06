@@ -13,6 +13,7 @@ class Score {
 		this.cnv = createCanvas(210*5,297*5);
 		this.cnv.parent('page')
 		background(255);
+		strokeCap(SQUARE);
 		this.cnv.mousePressed(mousePress);
 		trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
 		note_tail = loadImage('/images/noteTail.png');          // 72 x 155
@@ -168,7 +169,7 @@ class Score {
 						}
 					}
 				} else if (this.menu_mode === 'gracenote') {
-					const notes = this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
+					const notes = this.sortedNotes;
 					let note_clicked;
 					for (const note of notes) {
 						if (note.x > mouseX) {
@@ -213,6 +214,9 @@ class Score {
 		}
 		return selected;
 	}
+	get sortedNotes() {
+		return this.notes.sort((a,b) => (a.y % STAVEWIDTH === b.y % STAVEWIDTH) ? ((a.x > b.x) ? 1 : -1) : (a.y % STAVEWIDTH > b.y % STAVEWIDTH) ? 1 : -1);
+	}
 	keyPressed() {
 		if (keyCode === ESCAPE) {
 			if (this.mode === 'create') {
@@ -252,6 +256,7 @@ class Score {
 					this.grace_note_selected.dragGracenote(...this.mouse_dragged_displacement);
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
+					this.notes = this.sortedNotes;
 					const out_of_boundary = this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notes,this.grace_note_selected,this.snapNoteToLine);
 					if (out_of_boundary != false) this.grace_note_selected = out_of_boundary;
 				} else if (this.selectedNotes.length>0) {

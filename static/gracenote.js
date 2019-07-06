@@ -56,6 +56,7 @@ class Gracenote {
 	checkIfSelected() {
 		for (const n of this.notes) {
 			if (((n.x-CLICK_MARGIN) < mouseX) && ((n.x+CLICK_MARGIN) > mouseX) && ((n.y-CLICK_MARGIN) < mouseY) && ((n.y+CLICK_MARGIN)>mouseY)) {
+				this.deselect();
 				n.selected = true;
 				return true;
 			}
@@ -76,28 +77,34 @@ class Gracenote {
 		});
 	}
 	checkIfNotesOutwithBoundary(notes, parent_note, snapToLine) {
-		// unfinished
-		const notes_to_move = [];
-		let done = false;
-		for (const prevNote of notes) {
+		let note_to_move_to;
+		const prevNote = notes[notes.indexOf(parent_note)-1];
+		if (prevNote != null) {
 			this.notes.forEach(note => {
-				if (note.x < (prevNote.x-prevNote.width)) {
-					if (JSON.stringify(prevNote) != JSON.stringify(parent_note))	notes_to_move.push([prevNote,note]);
-					else done = true;
+				if (note.x < prevNote.x) {
+					note_to_move_to = [prevNote,note];
+					console.log('hoi');
 				}
 			});
-			if (done) break;
-		};
-		if (notes_to_move.length === 0) return false;
+		}
+		if (note_to_move_to == null) {
+			const afterNote = notes[notes.indexOf(parent_note)+1];
+			if (afterNote != null) {
+				for (const note of this.notes) {
+					if (note.x >= parent_note.x) {
+						note_to_move_to = [afterNote,note];
+					}
+				}
+			}
+		}
 
-		notes_to_move.forEach(note_and_gracenote => {
-			const note = note_and_gracenote[0];
-			const gracenote = note_and_gracenote[1]; 
-			
-			note.gracenote.addNote(snapToLine,gracenote.x,gracenote.y);
-			note.gracenote.checkIfSelected();
-			this.notes.splice(this.notes.indexOf(gracenote),1);
-		});
-		return notes_to_move[0][0];
+		if (note_to_move_to == null) return false;
+		const note = note_to_move_to[0];
+		const gracenote = note_to_move_to[1]; 
+		
+		note.gracenote.addNote(snapToLine,gracenote.x,gracenote.y);
+		note.gracenote.checkIfSelected();
+		this.notes.splice(this.notes.indexOf(gracenote),1);
+		return note_to_move_to[0];
 	}
 }

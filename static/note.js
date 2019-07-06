@@ -61,7 +61,7 @@ class Note {
 				y++;
 			}
 		} else {
-			strokeWeight(3);
+			strokeWeight(4);
 			for (const note of [this.connected_before,this.connected_after]) {
 				y = 0;
 				if (note == null) continue;
