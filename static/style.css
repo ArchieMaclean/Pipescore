@@ -1,94 +1,105 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
-
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
 body {
-    font-family: Montserrat;
-    background: #e2ddff;
-    margin: 0;
+  font-family: Montserrat;
+  background: #e2ddff;
+  margin: 0;
 }
 
 header {
-    background: #26a5ff;
-    padding: 0em;
-    position: sticky;
-    top: 0;
-	display: grid;
-	grid-template-rows:1fr;
-	grid-template-columns: 1fr 5fr;
-	margin: 0;
+  background: #26a5ff;
+  padding: 0em;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -ms-grid-columns: 1fr 5fr;
+      grid-template-columns: 1fr 5fr;
+  margin: 0;
 }
 
 nav {
-	margin: 0;
-	padding: 1em .5em 0em;
-	user-select: none;
+  margin: 0;
+  padding: 1em .5em 0em;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 #menu-titles {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #menu-titles li {
-	display: inline;
-	list-style-type: none;
-	padding: .5em 1em;
-	margin: 0;
-	background: rgba(173,216,230,0.5); /* lightblue but with opacity */
-	cursor: pointer;
-	border-radius: .5em .5em 0 0;
+  display: inline;
+  list-style-type: none;
+  padding: .5em 1em;
+  margin: 0;
+  background: rgba(173, 216, 230, 0.5);
+  /* lightblue but with opacity */
+  cursor: pointer;
+  border-radius: .5em .5em 0 0;
 }
 
 #menu-titles li.viewing {
-	background: lightblue;
-	padding: .5em 1.5em;
+  background: lightblue;
+  padding: .5em 1.5em;
 }
 
 .menu {
-	margin: .5em 0em;
-	padding: .5em 1em 1em;
-	height: 4em;
-	border-radius: 0 .5em .5em .5em;
+  margin: .5em 0em;
+  padding: .5em 1em 1em;
+  height: 4em;
+  border-radius: 0 .5em .5em .5em;
 }
 
 .menu.viewing {
-	grid-column: 2;
-	background: lightblue;
+  -ms-grid-column: 2;
+  grid-column: 2;
+  background: lightblue;
 }
 
 .menu:not(.viewing) {
-	display: none;
-	background: lightblue;
+  display: none;
+  background: lightblue;
 }
 
 #page {
-	display: block;
-	margin: 1em;
-	margin-right: auto;
-	margin-left: auto;
-	width: 1050px; /*  need to find better way */
+  display: block;
+  margin: 1em;
+  margin-right: auto;
+  margin-left: auto;
+  width: 1050px;
+  /*  need to find better way */
 }
 
 #title-and-mode {
-	padding: 1.5em;
+  padding: 1.5em;
 }
+
 #mode-div {
-	float: right;
+  float: right;
 }
 
 input[type="radio"] {
-	display: none;
+  display: none;
 }
 
-input[type="radio"]+label {
-	padding: .5em .5em;
-	cursor: pointer;
+input[type="radio"] + label {
+  padding: .5em .5em;
+  cursor: pointer;
 }
 
-input[type="radio"]:checked+label {
-	background: rgba(38,165,255,.5);
-	border-radius: 0.6em;
+input[type="radio"]:checked + label {
+  background: rgba(38, 165, 255, 0.5);
+  border-radius: 0.6em;
 }
 
 #dot-notes-button {
-	margin: .5em 0em;
+  margin: .5em 0em;
 }
+/*# sourceMappingURL=style.css.map */

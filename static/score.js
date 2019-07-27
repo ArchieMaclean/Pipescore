@@ -92,7 +92,7 @@ class Score {
 		});
 	}
 	getNoteGroupChains() {
-		const notes = this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
+		const notes = this.sortedNotes;
 		const chains = [];
 		for (const note of notes) {
 			if (note.connected_after && !note.connected_before) {
@@ -171,7 +171,7 @@ class Score {
 				} else if (this.menu_mode === 'gracenote') {
 					const notes = this.sortedNotes;
 					let note_clicked;
-					for (const note of notes) {
+					for (const note of this.sortedNotes) {
 						if (note.x > mouseX) {
 							note_clicked = note;
 							break;
@@ -207,7 +207,7 @@ class Score {
 	}
 	get selectedNotes() {
 		var selected = [];
-		for (const note of this.notes) {
+		for (const note of this.sortedNotes) {
 			if (note.selected) {
 				selected.push(note);
 			}
@@ -216,6 +216,16 @@ class Score {
 	}
 	get sortedNotes() {
 		return this.notes.sort((a,b) => (a.y % STAVEWIDTH === b.y % STAVEWIDTH) ? ((a.x > b.x) ? 1 : -1) : (a.y % STAVEWIDTH > b.y % STAVEWIDTH) ? 1 : -1);
+	}
+	get notesGroupedByStave() {
+		const notes = [];
+		this.stave.forEach(_ => notes.push(new Array()));
+		this.sortedNotes.forEach(note => {
+			console.log(note.y); console.log(STAVEWIDTH); console.log(Math.floor(note.y / STAVEWIDTH));
+			
+			notes[Math.floor(note.y / STAVEWIDTH)].push(note);
+		});
+		return notes;
 	}
 	keyPressed() {
 		if (keyCode === ESCAPE) {
@@ -226,7 +236,7 @@ class Score {
 			}
 		} else if (keyCode === 71) {	// g - group
 			if (this.mode === "select") {
-				const selected_notes = this.selectedNotes.sort((a,b) => (a.x > b.x) ? 1 : -1);
+				const selected_notes = this.selectedNotes;
 				for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
 					selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 					selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
@@ -257,7 +267,7 @@ class Score {
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
 					this.notes = this.sortedNotes;
-					const out_of_boundary = this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notes,this.grace_note_selected,this.snapNoteToLine);
+					const out_of_boundary = this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notesGroupedByStave,this.grace_note_selected,this.snapNoteToLine);
 					if (out_of_boundary != false) this.grace_note_selected = out_of_boundary;
 				} else if (this.selectedNotes.length>0) {
 					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
@@ -273,16 +283,16 @@ class Score {
 					this.mouse_dragged_displacement = [0,0];
 					
 					// grouped notes
-					const selected_notes = this.selectedNotes.sort((a,b) => (a.x > b.x) ? 1 : -1);
+					const selected_notes = this.selectedNotes;
 					selected_notes.forEach(note=>{
 						if ((note.connected_before != null) && (note.x < note.connected_before.x)) {
 							const first_note = note.connected_before.connected_before;
 							note.connected_before.connected_before = note;
 							note.connected_before.connected_after = note.connected_after;
-							if (note.connected_after!=null) note.connected_after.connected_before = note.connected_before;
+							if (note.connected_after != null) note.connected_after.connected_before = note.connected_before;
 							note.connected_after = note.connected_before
 							note.connected_before = first_note;
-							if (first_note!=null) first_note.connected_after = note;
+							if (first_note != null) first_note.connected_after = note;
 						} else if ((note.connected_after != null) && (note.x > note.connected_after.x)) {
 							const final_note = note.connected_after.connected_after;
 							note.connected_after.connected_after = note;
