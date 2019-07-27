@@ -49,9 +49,13 @@ class Score {
 		this.changeSelectedNoteNames();
 	}
 	updateNoteMode() {
-		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
 		this.mode = $('#mode').val();
+		const old_menu_mode = this.menu_mode;
 		this.menu_mode = document.querySelector('#menu-titles .viewing').id.replace('-title','');
+		if (old_menu_mode != this.menu_mode) {
+			this.deselectAllNotes();
+			this.deselectAllGracenotes();
+		}
 		if (this.mode != 'select') {
 			this.deselectAllNotes();
 		}
@@ -129,15 +133,24 @@ class Score {
 	}
 	getSelectedNote() {
 		for (const note of this.notes) {
-			if (note.checkIfSelected(mouseX,mouseY)) {
-				return note;
-			}
+			if (note.checkIfSelected(mouseX,mouseY)) return note;
+		}
+	}
+	getSelectedGracenote() {
+		for (const note of this.gracenotes) {
+			if (note.checkIfSelected()) return note
 		}
 	}
 	deselectAllNotes() {
-		for (const note of this.selectedNotes) {
+		this.selectedNotes.forEach(note => {
 			note.deselect();
-		}
+		});
+		this.box_select = false;
+	}
+	deselectAllGracenotes() {
+		this.gracenotes.forEach(note => {
+			note.deselect();
+		});
 		this.box_select = false;
 	}
 	deleteSelectedNotes() {
@@ -180,10 +193,14 @@ class Score {
 				this.mouse_last_x_y = [mouseX,mouseY];
 				this.mouse_dragged_displacement = [0,0];
 				const selected_note = this.getSelectedNote();
+				const selected_gracenote = this.getSelectedGracenote();
 				if (selected_note != null) {
-					selected_note.selected=true;
+					selected_note.selected = true;
+				} else if (selected_gracenote != null) {
+					selected_gracenote.selected = true;
 				} else {
 					this.deselectAllNotes();
+					this.deselectAllGracenotes();
 					this.box_select = true;
 				}
 			}
@@ -199,8 +216,17 @@ class Score {
 		this.box_select = false;
 	}
 	get selectedNotes() {
-		var selected = [];
+		const selected = [];
 		for (const note of this.sortedNotes) {
+			if (note.selected) {
+				selected.push(note);
+			}
+		}
+		return selected;
+	}
+	get selectedGracenotes() {
+		const selected = [];
+		for (const note of this.gracenotes) {
 			if (note.selected) {
 				selected.push(note);
 			}
@@ -254,13 +280,16 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				else if (this.selectedNotes.length>0) {
+				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0)) {
 					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
-					for (const note of this.selectedNotes) {
+					this.selectedNotes.forEach(note => {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
-					}
+					});
+					this.selectedGracenotes.forEach(note => {
+						note.drag(this.mouse_dragged_displacement[0],this.mouse_dragged_displacement[1]);
+					});
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
 					

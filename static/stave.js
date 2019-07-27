@@ -32,7 +32,7 @@ class Stave {
                 }
             }
         }
-        if (y <= stave_y+STAVEWIDTH/3)    return [stave_y, 'g'];
+        if (y <= stave_y+STAVEWIDTH/3)  return [stave_y, 'g'];
         return null;
     }
 }

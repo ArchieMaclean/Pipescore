@@ -3,6 +3,7 @@ class Gracenote {
 		this.stem_height = 20;
 		this.x = x;
 		this.y = y;
+		this.actual_y = this.y;
 		this.name = name;
 		this.selected = false;
 	}
@@ -10,8 +11,9 @@ class Gracenote {
 		strokeWeight(0);
 		const stem_y = this.y - this.stem_height;
 		this.selected ? fill(SELECTED_COLOUR) : fill(BLACK);
-		this.y = (snapToLine(this.actual_y) != null) ? snapToLine(this.actual_y)[0] : this.y;
-		this.name = (snapToLine(this.actual_y) != null) ? snapToLine(this.actual_y)[1] : this.name;
+		const snapped = snapToLine(this.actual_y);
+		this.y = (snapped != null) ? snapped[0] : this.y;
+		this.name = (snapped != null) ? snapped[1] : this.name;
 		
 		stroke(WHITE);
 		ellipse(this.x,this.y,7,5);
@@ -32,11 +34,14 @@ class Gracenote {
 		}
 		return false;
 	}
-	dragSelected(dx,dy) {
+	drag(dx,dy) {
 		this.x += dx;
-		this.y += dy;
+		this.actual_y += dy;
 	}
 	deselect() {
 		this.selected = false;
+	}
+	resetActualY() {
+		this.actual_y = this.y;
 	}
 }
