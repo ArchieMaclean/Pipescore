@@ -12,13 +12,11 @@ class Note {
 		this.connected_before = null;
 		this.connected_after = null;
 		this.dotted = false;
-		this.gracenote = new Gracenote();
     }
 
     draw(snapToLine) {
 		this.drawHead(snapToLine);
 		this.drawTail();
-		this.gracenote.draw(snapToLine);		
     }
 	drawHead(snapToLine) {
 		const snapped = snapToLine(this.actual_y);
@@ -108,22 +106,11 @@ class Note {
 			default: return 0;
 		}
 	}
-	addGracenote(snapToLine,x,y) {
-		this.gracenote.addNote(snapToLine,x,y);
-	}
 	resetActualY() {
 		this.actual_y = this.y;
-		this.gracenote.actual_y = this.gracenote.y;
-	}
-	getSelectedGracenote() {
-		return this.gracenote.checkIfSelected();
-	}
-	dragGracenote(dx,dy) {
-		this.gracenote.dragSelected(dx,dy);
 	}
 	deselect() {
 		this.selected = false;
-		this.gracenote.deselect();
 	}
 	unConnect() {
 		if (this.connected_after != null) this.connected_after.connected_before = null;

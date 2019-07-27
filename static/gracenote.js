@@ -76,34 +76,4 @@ class Gracenote {
 			note.selected = false;
 		});
 	}
-	checkIfNotesOutwithBoundary(notes, parent_note, snapToLine) {	// note = sortedNotes
-		let note_to_move_to;
-		const prevNote = notes[parent_note.y % STAVEWIDTH][notes.indexOf(parent_note)-1];
-		if (prevNote != null) {
-			this.notes[parent_note.y % STAVEWIDTH].forEach(note => {
-				if (note.x < prevNote.x) {
-					note_to_move_to = [prevNote,note];
-				}
-			});
-		}
-		if (note_to_move_to == null) {
-			const afterNote = notes[parent_note.y % STAVEWIDTH][notes.indexOf(parent_note)+1];
-			if (afterNote != null) {
-				for (const note of this.notes) {
-					if (note.x >= parent_note.x) {
-						note_to_move_to = [afterNote,note];
-					}
-				}
-			}
-		}
-
-		if (note_to_move_to == null) return false;
-		const note = note_to_move_to[0];
-		const gracenote = note_to_move_to[1]; 
-		
-		note.gracenote.addNote(snapToLine,gracenote.x,gracenote.y);
-		note.gracenote.checkIfSelected();
-		this.notes.splice(this.notes.indexOf(gracenote),1);
-		return note_to_move_to[0];
-	}
 }

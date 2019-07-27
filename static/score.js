@@ -32,7 +32,6 @@ class Score {
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
-		this.grace_note_selected = null;
 
 		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 	}
@@ -131,18 +130,10 @@ class Score {
 			}
 		}
 	}
-	getSelectedGracenote() {
-		for (const note of this.notes) {
-			if (note.getSelectedGracenote()) {
-				return note;
-			}
-		}
-	}
 	deselectAllNotes() {
-		for (const note of this.notes) {	// needs to be this.notes to deal with gracenotes
+		for (const note of this.selectedNotes) {
 			note.deselect();
 		}
-		this.grace_note_selected = null;
 		this.box_select = false;
 	}
 	deleteSelectedNotes() {
@@ -168,27 +159,14 @@ class Score {
 							}
 						}
 					}
-				} else if (this.menu_mode === 'gracenote') {
-					const notes = this.sortedNotes;
-					let note_clicked;
-					for (const note of this.sortedNotes) {
-						if (note.x > mouseX) {
-							note_clicked = note;
-							break;
-						}
-					}
-					if (note_clicked != null) note_clicked.addGracenote(this.snapNoteToLine,mouseX,mouseY);
 				}
 			} else if (this.mode === 'select') {
 				this.mouse_original_x_y = [mouseX,mouseY];
 				this.mouse_last_x_y = [mouseX,mouseY];
 				this.mouse_dragged_displacement = [0,0];
 				const selected_note = this.getSelectedNote();
-				const grace_note = this.getSelectedGracenote();
 				if (selected_note != null) {
 					selected_note.selected=true;
-				} else if (grace_note != null) {
-					this.grace_note_selected = grace_note;
 				} else {
 					this.deselectAllNotes();
 					this.box_select = true;
@@ -260,24 +238,12 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				else if (this.grace_note_selected != null) {
-					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
-					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
-					this.grace_note_selected.dragGracenote(...this.mouse_dragged_displacement);
-					this.mouse_last_x_y = [mouseX,mouseY];
-					this.mouse_dragged_displacement = [0,0];
-					this.notes = this.sortedNotes;
-					const out_of_boundary = this.grace_note_selected.gracenote.checkIfNotesOutwithBoundary(this.notesGroupedByStave,this.grace_note_selected,this.snapNoteToLine);
-					if (out_of_boundary != false) this.grace_note_selected = out_of_boundary;
-				} else if (this.selectedNotes.length>0) {
+				else if (this.selectedNotes.length>0) {
 					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 					for (const note of this.selectedNotes) {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
-						note.gracenote.notes.forEach(n => {
-							n.x += this.mouse_dragged_displacement[0];
-						});
 					}
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
