@@ -8,8 +8,7 @@ class Gracenote {
 	}
 	draw(snapToLine) {
 		strokeWeight(0);
-		this.notes = this.notes.sort((a,b) => (a.x > b.x)? 1 : -1);
-		const stem_y = this.y + this.stem_height;
+		const stem_y = this.y - this.stem_height;
 		this.selected ? fill(SELECTED_COLOUR) : fill(BLACK);
 		this.y = (snapToLine(this.actual_y) != null) ? snapToLine(this.actual_y)[0] : this.y;
 		this.name = (snapToLine(this.actual_y) != null) ? snapToLine(this.actual_y)[1] : this.name;
@@ -22,6 +21,9 @@ class Gracenote {
 		if (this.name === 'A') {
 			line(this.x-4.5,this.y,this.x+4.5,this.y);
 		}
+		line(this.x+3.5,stem_y,this.x+7,stem_y+5);
+		line(this.x+3.5,stem_y+4,this.x+7,stem_y+9);
+		line(this.x+3.5,stem_y+8,this.x+7,stem_y+13);
 	}
 	checkIfSelected() {
 		if (((this.x-CLICK_MARGIN) < mouseX) && ((this.x+CLICK_MARGIN) > mouseX) && ((this.y-CLICK_MARGIN) < mouseY) && ((this.y+CLICK_MARGIN)>mouseY)) {

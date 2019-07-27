@@ -79,9 +79,12 @@ class Score {
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();
-		for (const note of this.notes) {
+		this.notes.forEach(note => {
 			note.draw(this.snapNoteToLine);
-		}
+		});
+		this.gracenotes.forEach(note => {
+			note.draw(this.snapNoteToLine);
+		});
 	}
 	equaliseNoteStemHeights() {
 		this.getNoteGroupChains().forEach(chain=>{
@@ -158,7 +161,7 @@ class Score {
 							}
 						}
 					}
-				} else if (this.menu === 'gracenote') {
+				} else if (this.menu_mode === 'gracenote') {
 					const selected_note = this.getSelectedNote();
 					if (selected_note == null) {
 						const x = mouseX;
