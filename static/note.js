@@ -1,10 +1,10 @@
 class Note {
-    constructor(snapToLine, x,actual_y,type) {
+    constructor(x,actual_y,name,type) {
         this.x = x;
-        this.y = snapToLine(actual_y)[0];
+        this.y = actual_y;
 		this.actual_y = this.y;	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
-        this.name = snapToLine(actual_y)[1];
+        this.name = name;
         this.width = 15;
         this.height = 10;
 		this.stem_height = 50;

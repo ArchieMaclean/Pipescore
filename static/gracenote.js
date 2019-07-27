@@ -1,14 +1,10 @@
 class Gracenote {
-	constructor(x,y,snapToLine) {
+	constructor(x,y,name) {
 		this.stem_height = 20;
 		this.x = x;
 		this.y = y;
+		this.name = name;
 		this.selected = false;
-		this.snapped = snapToLine(this.y);
-		if (this.snapped) {
-			this.y = this.snapped[0];
-			this.name = this.snapped[1];
-		}
 	}
 	draw(snapToLine) {
 		strokeWeight(0);

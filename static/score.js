@@ -153,10 +153,21 @@ class Score {
 							const snapped = this.snapNoteToLine(mouseY);
 							if (snapped != null) {
 								const y = snapped[0];
-								let note = snapped[1];
-							
-								note = new Note(this.snapNoteToLine, mouseX,mouseY,this.note_mode);
-								this.notes.push(note);
+								const note_name = snapped[1];
+								this.notes.push(new Note(x,y,note_name,this.note_mode));
+							}
+						}
+					}
+				} else if (this.menu === 'gracenote') {
+					const selected_note = this.getSelectedNote();
+					if (selected_note == null) {
+						const x = mouseX;
+						if ((x > 0) && (x < width)) {
+							const snapped = this.snapNoteToLine(mouseY);
+							if (snapped != null) {
+								const y = snapped[0];
+								const note_name = snapped[1];
+								this.gracenotes.push(new Gracenote(x,y,note_name));
 							}
 						}
 					}
