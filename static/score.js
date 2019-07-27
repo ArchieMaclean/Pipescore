@@ -29,6 +29,7 @@ class Score {
 		this.note_mode = 'crotchet';
 		this.menu_mode = 'note';
 		this.notes = [];
+		this.gracenotes = [];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
@@ -37,9 +38,9 @@ class Score {
 	}
 	draw() {
 		background(255);
-		this.update_note_mode();
+		this.updateNoteMode();
 		this.stave.forEach(stave => stave.draw());
-		this.update_demo_note();
+		this.updateDemoNote();
 		this.drawNotes();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
@@ -47,7 +48,7 @@ class Score {
 		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
 		this.changeSelectedNoteNames();
 	}
-	update_note_mode() {
+	updateNoteMode() {
 		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
 		this.mode = $('#mode').val();
 		this.menu_mode = document.querySelector('#menu-titles .viewing').id.replace('-title','');
@@ -55,7 +56,7 @@ class Score {
 			this.deselectAllNotes();
 		}
 	}
-	update_demo_note() {
+	updateDemoNote() {
 		if (this.mode === 'create') {
 			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
 			this.demo_note.draw();
@@ -193,7 +194,8 @@ class Score {
 		return selected;
 	}
 	get sortedNotes() {
-		return this.notes.sort((a,b) => (a.y % STAVEWIDTH === b.y % STAVEWIDTH) ? ((a.x > b.x) ? 1 : -1) : (a.y % STAVEWIDTH > b.y % STAVEWIDTH) ? 1 : -1);
+		//return this.notes.sort((a,b) => ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH === (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? ((a.x > b.x) ? 1 : -1) : ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH > (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? 1 : -1);
+		return this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
 	}
 	get notesGroupedByStave() {
 		const notes = [];
@@ -250,7 +252,7 @@ class Score {
 					
 					// grouped notes
 					const selected_notes = this.selectedNotes;
-					selected_notes.forEach(note=>{
+					selected_notes.forEach(note => {
 						if ((note.connected_before != null) && (note.x < note.connected_before.x)) {
 							const first_note = note.connected_before.connected_before;
 							note.connected_before.connected_before = note;
