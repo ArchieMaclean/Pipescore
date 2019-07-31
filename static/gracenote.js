@@ -8,16 +8,17 @@ class Gracenote {
 		this.selected = false;
 	}
 	draw(snapToLine) {
-		strokeWeight(0);
-		const stem_y = this.y - this.stem_height;
-		this.selected ? fill(SELECTED_COLOUR) : fill(BLACK);
 		const snapped = snapToLine(this.actual_y);
 		this.y = (snapped != null) ? snapped[0] : this.y;
 		this.name = (snapped != null) ? snapped[1] : this.name;
 		
+		strokeWeight(0);
+		const stem_y = this.y - this.stem_height;
+		this.selected ? fill(SELECTED_COLOUR) : fill(BLACK);
+		
 		stroke(WHITE);
 		ellipse(this.x,this.y,7,5);
-		stroke(BLACK);
+		this.selected ? stroke(SELECTED_COLOUR) : stroke(BLACK);
 		strokeWeight(1.5);
 		line(this.x+3.5,this.y,this.x+3.5,stem_y);
 		if (this.name === 'A') {

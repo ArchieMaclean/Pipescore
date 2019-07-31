@@ -26,36 +26,45 @@ html(lang="en")
 			p Your screen's resolution is too low for this app - you need a bigger monitor. PipeScore is not yet supported for mobile devices or tablets.
 			p We thank you for your patience.
 		header
-			div#title-and-mode
-				h1 PipeScore
-				div#mode-div
-					label(for="mode") Mode: 
-					select#mode
-						option(value="create") Create
-						option(value="select") Select
 			nav
 				ul#menu-titles
+					li#title PipeScore
 					li#note-title.menu-title.viewing Note
 					li#gracenote-title.menu-title Gracenote
 					li#text-title.menu-title Text
 					li#layout-title.menu-title Layout
 					li#file-title.menu-title File
 				div#note.menu.viewing
-					form#note_mode
-						input(type="radio" name="note" value="semibreve" id="semibreve")
-						label(for="semibreve") Semibreve
-						input(type="radio" name="note" value="minim" id="minim")
-						label(for="minim") Minim
-						input(type="radio" name="note" value="crotchet" id="crotchet" checked)
-						label(for="crotchet") Crotchet
-						input(type="radio" name="note" value="quaver" id="quaver")
-						label(for="quaver") Quaver
-						input(type="radio" name="note" value="semiquaver" id="semiquaver")
-						label(for="semiquaver") Semiquaver
-						input(type="radio" name="note" value="demisemiquaver" id="demisemiquaver")
-						label(for="demisemiquaver") Demisemiquaver
-					br
-					button(id="dot-notes-button") Dot Selected
+					section#note-type
+						h1.title Note type
+						ul#note-ul
+							li
+								input(type="radio" name="note" value="semibreve" id="semibreve")
+								label(for="semibreve") Semibreve
+							li
+								input(type="radio" name="note" value="minim" id="minim")
+								label(for="minim") Minim
+							li
+								input(type="radio" name="note" value="crotchet" id="crotchet" checked)
+								label(for="crotchet") Crotchet
+							li
+								input(type="radio" name="note" value="quaver" id="quaver")
+								label(for="quaver") Quaver
+							li
+								input(type="radio" name="note" value="semiquaver" id="semiquaver")
+								label(for="semiquaver") Semiquaver
+							li
+								input(type="radio" name="note" value="demisemiquaver" id="demisemiquaver")
+								label(for="demisemiquaver") Demisemiquaver
+					section#apply-to-selected
+						h1.title Apply to Selected
+						button(id="dot-notes-button") Dot
+						button(id="group-notes-button") Group
+					section#mode-section
+						h1.title Mode
+						select#mode
+							option(value="create") Create
+							option(value="select") Select
 				div#gracenote.menu
 					form#gracenote_mode
 						input(type="radio" name="gracenote-mode" value="normal" id="normal" checked)

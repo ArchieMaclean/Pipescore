@@ -15,16 +15,15 @@ class Note {
     }
 
     draw(snapToLine) {
-		this.drawHead(snapToLine);
-		this.drawTail();
-    }
-	drawHead(snapToLine) {
 		const snapped = snapToLine(this.actual_y);
 		if (snapped != null) {
 			this.y = snapped[0];
 			this.name = snapped[1];
 		}
-        
+		this.drawHead();
+		this.drawTail();
+    }
+	drawHead() {
 		stroke(this.selected ? SELECTED_COLOUR : 0);
 		strokeWeight(((this.type === 'semibreve') || (this.type === 'minim')) ? 2 : 0);
 		this.selected ? fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : SELECTED_COLOUR) : fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : 0);

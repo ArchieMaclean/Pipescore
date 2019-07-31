@@ -24,6 +24,7 @@ class Score {
 		this.pdf.beginRecord();
 		
 		document.getElementById('dot-notes-button').addEventListener('click',() => this.dotSelectedNotes());
+		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());	
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -45,7 +46,7 @@ class Score {
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	noteModeChanged() {
-		this.note_mode = $('input[name=note]:checked', '#note_mode').val();
+		this.note_mode = $('input[name=note]:checked').val();
 		this.changeSelectedNoteNames();
 	}
 	updateNoteMode() {
@@ -127,9 +128,15 @@ class Score {
 		const right = Math.max(x,mouseX);
 		const top = Math.min(y,mouseY);
 		const bottom = Math.max(y,mouseY);
-		this.notes.forEach(note => {
-			if ((note.x > left) && (note.x < right) && (note.actual_y > top) && (note.actual_y < bottom)) note.selected=true;
-		});
+		if (this.menu_mode === 'note') {
+			this.notes.forEach(note => {
+				if ((note.x > left) && (note.x < right) && (note.actual_y > top) && (note.actual_y < bottom)) note.selected=true;
+			});
+		} else if (this.menu_mode === 'gracenote') {
+			this.gracenotes.forEach(note => {
+				if ((note.x > left) && (note.x < right) && (note.actual_y > top) && (note.actual_y < bottom)) note.selected=true;
+			});
+		}
 	}
 	getSelectedNote() {
 		for (const note of this.notes) {
@@ -256,11 +263,7 @@ class Score {
 			}
 		} else if (keyCode === 71) {	// g - group
 			if (this.mode === "select") {
-				const selected_notes = this.selectedNotes;
-				for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
-					selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
-					selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
-				}
+				this.groupSelectedNotes();
 			}
 		} else if (keyCode === 85) { // u - ungroup
 			if (this.mode === 'select') {
@@ -281,8 +284,11 @@ class Score {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
 				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0)) {
-					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
-					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
+					this.mouse_dragged_displacement = [0,0]
+					if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
+						this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
+						this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
+					}
 					this.selectedNotes.forEach(note => {
 						note.x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
@@ -323,5 +329,12 @@ class Score {
 	}
 	dotSelectedNotes() {
 		this.selectedNotes.forEach(n => n.dotted =! n.dotted);
+	}
+	groupSelectedNotes() {
+		const selected_notes = this.selectedNotes;
+		for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
+			selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
+			selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
+		}
 	}
 }

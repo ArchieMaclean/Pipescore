@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap");
 body {
   font-family: Montserrat;
-  background: #e2ddff;
+  background: #E2E2E2;
   margin: 0;
 }
 
@@ -16,13 +16,11 @@ noscript {
 }
 
 header {
-  background: #26a5ff;
+  background: #BDE4FF;
   padding: 0em;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  display: -ms-grid;
-  display: grid;
   -ms-grid-rows: 1fr;
       grid-template-rows: 1fr;
   -ms-grid-columns: 1fr 5fr;
@@ -30,52 +28,109 @@ header {
   margin: 0;
 }
 
-nav {
+header nav {
   margin: 0;
-  padding: 1em .5em 0em;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
 
-#menu-titles {
+header nav ul#menu-titles {
   padding: 0;
   margin: 0;
+  width: 60%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-#menu-titles li {
-  display: inline;
+header nav ul#menu-titles li {
   list-style-type: none;
-  padding: .5em 1em;
-  margin: 0;
-  background: rgba(173, 216, 230, 0.5);
-  /* lightblue but with opacity */
+  text-align: center;
+  font-weight: 600;
+  padding: .5em;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+header nav ul#menu-titles li#title {
+  font-weight: 700;
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+
+header nav ul#menu-titles li.menu-title {
   cursor: pointer;
-  border-radius: .5em .5em 0 0;
+  color: #747474;
 }
 
-#menu-titles li.viewing {
-  background: lightblue;
-  padding: .5em 1.5em;
+header nav ul#menu-titles li.viewing {
+  background: #26A5FF;
+  color: #fff;
 }
 
-.menu {
-  margin: .5em 0em;
-  padding: .5em 1em 1em;
-  height: 4em;
-  border-radius: 0 .5em .5em .5em;
-}
-
-.menu.viewing {
-  -ms-grid-column: 2;
-  grid-column: 2;
-  background: lightblue;
-}
-
-.menu:not(.viewing) {
+header nav .menu {
+  background: #26A5FF;
   display: none;
-  background: lightblue;
+  width: 100%;
+  height: 5rem;
+  color: #fff;
+}
+
+header nav .menu.viewing {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+header nav .menu > * {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+header nav .menu section {
+  padding: .5rem 2rem;
+}
+
+header nav .menu section h1 {
+  margin: 0 0 1rem;
+  padding: 0;
+  font-weight: normal;
+  font-size: 1rem;
+  border-bottom: 1px solid;
+}
+
+header nav .menu section ul#note-ul {
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+header nav .menu section ul#note-ul li {
+  list-style-type: none;
+  margin: 0 .2rem;
+  border-radius: 1rem;
+}
+
+header nav .menu section ul#note-ul li input[type="radio"] {
+  display: none;
+}
+
+header nav .menu section ul#note-ul li input[type="radio"] + label {
+  cursor: pointer;
+  padding: .2rem;
+  border-radius: .2rem;
+}
+
+header nav .menu section ul#note-ul li input[type="radio"]:checked + label {
+  background: #BDE4FF;
+  color: #000;
 }
 
 #page {
@@ -85,32 +140,6 @@ nav {
   margin-left: auto;
   width: 1050px;
   /*  need to find better way */
-}
-
-#title-and-mode {
-  padding: 1.5em;
-}
-
-#mode-div {
-  float: right;
-}
-
-input[type="radio"] {
-  display: none;
-}
-
-input[type="radio"] + label {
-  padding: .5em .5em;
-  cursor: pointer;
-}
-
-input[type="radio"]:checked + label {
-  background: rgba(38, 165, 255, 0.5);
-  border-radius: 0.6em;
-}
-
-#dot-notes-button {
-  margin: .5em 0em;
 }
 
 #too-small {
