@@ -53,7 +53,7 @@ class Note {
 		this.selected ? tail_image=blue_note_tail : tail_image=note_tail;
 
 		if (!(this.connected_before) && !(this.connected_after)) {
-			for (var tailnum=0;tailnum<num_of_tails;tailnum++) {
+			for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
 				image(tail_image,this.x-this.width/2-2,this.y+this.stem_height-20-10*y,10,25);
 				y++;
 			}
@@ -64,17 +64,17 @@ class Note {
 				if (note == null) continue;
 				const other_tail = note.num_of_tails;
 				if ((num_of_tails === other_tail) && (this.x > note.x)) {
-					for (var tailnum=0;tailnum<num_of_tails;tailnum++) {
+					for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
 						this.drawConnectingLine(note,y);
 						y++;
 					}
 				} else if (num_of_tails > other_tail) {
-					for (var tailnum=0;tailnum<other_tail;tailnum++) {
+					for (let tailnum=0;tailnum<other_tail;tailnum++) {
 						this.drawConnectingLine(note,y);
 						y++;
 					}
 					const distance = 10*((this.x > note.x) ? -1 : 1);
-					for (var tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
+					for (let tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
 						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2+distance,this.y+this.stem_height-10*y);
 						y++;
 					}

@@ -87,8 +87,8 @@ class Score {
 		this.notes.forEach(note => {
 			note.draw(this.snapNoteToLine);
 		});
-		this.gracenotes.forEach(note => {
-			note.draw(this.snapNoteToLine);
+		this.gracenoteGroups.forEach(group => {
+			group.forEach(note => note.draw(this.snapNoteToLine,group.slice()));
 		});
 	}
 	equaliseNoteStemHeights() {
@@ -201,9 +201,9 @@ class Score {
 				this.mouse_dragged_displacement = [0,0];
 				const selected_note = this.getSelectedNote();
 				const selected_gracenote = this.getSelectedGracenote();
-				if (selected_note != null) {
+				if ((this.menu_mode === 'note') && (selected_note != null)) {
 					selected_note.selected = true;
-				} else if (selected_gracenote != null) {
+				} else if ((this.menu_mode === 'gracenote') && (selected_gracenote != null)) {
 					selected_gracenote.selected = true;
 				} else {
 					this.deselectAllNotes();
@@ -248,11 +248,35 @@ class Score {
 		const notes = [];
 		this.stave.forEach(_ => notes.push(new Array()));
 		this.sortedNotes.forEach(note => {
-			console.log(note.y); console.log(STAVEWIDTH); console.log(Math.floor(note.y / STAVEWIDTH));
-			
 			notes[Math.floor(note.y / STAVEWIDTH)].push(note);
 		});
 		return notes;
+	}
+	get gracenoteGroups() {
+		const groups = new Array();
+
+		// can't do .fill() because of referencing arrays
+		for (let i = 0;i < (this.notes.length+1); i++) groups[i] = new Array();
+
+		const gracenotes = this.gracenotes.slice();
+		for (let note = 0; note<this.notes.length; note++) {
+			const gracenotes_to_add = [];
+			gracenotes.forEach(gracenote => {
+				if (gracenote.x < this.sortedNotes[note].x) {
+					if (note === 0) {
+						gracenotes_to_add.push(gracenote);
+					} else if (gracenote.x > this.sortedNotes[note-1].x) {
+						gracenotes_to_add.push(gracenote);
+					}
+				}
+			});
+			for (const n of gracenotes_to_add) {
+				groups[note].push(n);
+				gracenotes.splice(gracenotes.indexOf(n),1);
+			}
+		}
+		for (const gracenote of gracenotes) groups[groups.length-1].push(gracenote);
+		return groups;
 	}
 	keyPressed() {
 		if (keyCode === ESCAPE) {
@@ -332,7 +356,7 @@ class Score {
 	}
 	groupSelectedNotes() {
 		const selected_notes = this.selectedNotes;
-		for (var note_ind=1;note_ind<selected_notes.length;note_ind++) {
+		for (let note_ind=1;note_ind<selected_notes.length;note_ind++) {
 			selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 			selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 		}

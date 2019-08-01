@@ -6,7 +6,7 @@ class Stave {
         stroke(0);
         strokeWeight(2);
         image(trebleClef,MARGIN-5,this.offset,50,64);
-        for (var linenum=0;linenum<5;linenum++) {
+        for (let linenum=0;linenum<5;linenum++) {
             const y = linenum*STAVELINEWIDTH+this.offset;
             line(MARGIN,y,width-MARGIN,y);
         }
@@ -19,9 +19,10 @@ class Stave {
     }
     snapToLine(y) {
         if (y < 0) return null;
-        for (var linenum=0;linenum<4;linenum++) {
-            // var because scoping issues with return if const (end of method return)
-            var stave_y = linenum*STAVELINEWIDTH+this.offset;
+
+        let stave_y;
+        for (let linenum=0;linenum<4;linenum++) {
+            stave_y = linenum*STAVELINEWIDTH+this.offset;
             if (y <= stave_y) {
                 if (y <= (stave_y-STAVELINEWIDTH)) {
                     return [stave_y-STAVELINEWIDTH,'A']
