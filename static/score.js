@@ -50,13 +50,13 @@ class Score {
 		this.changeSelectedNoteNames();
 	}
 	updateNoteMode() {
-		this.mode = $('#mode').val();
 		const old_menu_mode = this.menu_mode;
 		this.menu_mode = document.querySelector('#menu-titles .viewing').id.replace('-title','');
 		if (old_menu_mode != this.menu_mode) {
 			this.deselectAllNotes();
 			this.deselectAllGracenotes();
 		}
+		this.mode = $(`#mode-${this.menu_mode}`).val();
 		if (this.mode != 'select') {
 			this.deselectAllNotes();
 		}
@@ -281,9 +281,9 @@ class Score {
 	keyPressed() {
 		if (keyCode === ESCAPE) {
 			if (this.mode === 'create') {
-				$('#mode').val('select');
+				$(`#mode-${this.menu_mode}`).val('select');
 			} else if (this.mode === 'select') {
-				$('#mode').val('create');
+				$(`#mode-${this.menu_mode}`).val('create');
 			}
 		} else if (keyCode === 71) {	// g - group
 			if (this.mode === "select") {
