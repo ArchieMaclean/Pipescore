@@ -10,18 +10,14 @@ let trebleClef,note_tail,blue_note_tail;	// images
 
 class Score {
 	constructor() {
-		this.cnv = createCanvas(210*5,297*5);
-		this.cnv.parent('page')
 		background(255);
 		strokeCap(SQUARE);
-		this.cnv.mousePressed(mousePress);
 		trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
 		note_tail = loadImage('/images/noteTail.png');          // 72 x 155
 		blue_note_tail = loadImage('/images/blueNoteTail.png');
 		this.stave = new Stave();
 		this.demo_note = new DemoNote();
-		this.pdf = createPDF();
-		this.pdf.beginRecord();
+		
 		
 		document.getElementById('dot-notes-button').addEventListener('click',() => this.dotSelectedNotes());
 		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());
@@ -128,11 +124,11 @@ class Score {
 		const bottom = Math.max(y,mouseY);
 		if (this.menu_mode === 'note') {
 			this.notes.forEach(note => {
-				if ((note.x > left) && (note.x < right) && (note.actual_y > top) && (note.actual_y < bottom)) note.selected=true;
+				if ((note.x > left) && (note.x < right) && (note.y > top) && (note.y < bottom)) note.selected=true;
 			});
 		} else if (this.menu_mode === 'gracenote') {
 			this.gracenotes.forEach(note => {
-				if ((note.x > left) && (note.x < right) && (note.actual_y > top) && (note.actual_y < bottom)) note.selected=true;
+				if ((note.x > left) && (note.x < right) && (note.y > top) && (note.y < bottom)) note.selected=true;
 			});
 		}
 	}
@@ -183,9 +179,9 @@ class Score {
 					if (selected_note == null) {
 						const x = mouseX;
 						if ((x > 0) && (x < width)) {
-							const {y,name} = this.snapNoteToLine(mouseY);
+							const {x,y,name} = this.snapNoteToLine(mouseX,mouseY);
 							if (y != null) {
-								this.gracenotes.push(new Gracenote(x,y,name));
+								this.gracenotes.push(new Gracenote(x,y,name,this.stave.getActualCoordFromCanvasCoord));
 							}
 						}
 					}
@@ -207,7 +203,7 @@ class Score {
 				}
 			}
 		} else if (mouseButton === CENTER) {
-			this.pdf.save();
+			pdf.save();
 		}
 	}
 	mouseReleased() {
@@ -236,8 +232,8 @@ class Score {
 		return selected;
 	}
 	get sortedNotes() {
-		//return this.notes.sort((a,b) => ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH === (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? ((a.x > b.x) ? 1 : -1) : ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH > (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? 1 : -1);
-		return this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
+		//return this.notes.sort((a,b) => ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH === (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? ((a.actual_x > b.actual_x) ? 1 : -1) : ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH > (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? 1 : -1);
+		return this.notes.sort((a,b) => (a.actual_x > b.actual_x) ? 1 : -1);
 	}
 	get gracenoteGroups() {
 		const groups = new Array();
@@ -249,10 +245,10 @@ class Score {
 		for (let note = 0; note<this.notes.length; note++) {
 			const gracenotes_to_add = [];
 			gracenotes.forEach(gracenote => {
-				if (gracenote.x < this.sortedNotes[note].x) {
+				if (gracenote.actual_x < this.sortedNotes[note].actual_x) {
 					if (note === 0) {
 						gracenotes_to_add.push(gracenote);
-					} else if (gracenote.x > this.sortedNotes[note-1].x) {
+					} else if (gracenote.actual_x > this.sortedNotes[note-1].actual_x) {
 						gracenotes_to_add.push(gracenote);
 					}
 				}
@@ -299,7 +295,7 @@ class Score {
 						this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 					}
 					this.selectedNotes.forEach(note => {
-						note.x += this.mouse_dragged_displacement[0];
+						note.actual_x += this.mouse_dragged_displacement[0];
 						note.actual_y += this.mouse_dragged_displacement[1];
 					});
 					this.selectedGracenotes.forEach(note => {
@@ -311,7 +307,7 @@ class Score {
 					// grouped notes
 					const selected_notes = this.selectedNotes;
 					selected_notes.forEach(note => {
-						if ((note.connected_before != null) && (note.x < note.connected_before.x)) {
+						if ((note.connected_before != null) && (note.actual_x < note.connected_before.actual_x)) {
 							const first_note = note.connected_before.connected_before;
 							note.connected_before.connected_before = note;
 							note.connected_before.connected_after = note.connected_after;
@@ -319,7 +315,7 @@ class Score {
 							note.connected_after = note.connected_before
 							note.connected_before = first_note;
 							if (first_note != null) first_note.connected_after = note;
-						} else if ((note.connected_after != null) && (note.x > note.connected_after.x)) {
+						} else if ((note.connected_after != null) && (note.actual_x > note.connected_after.actual_x)) {
 							const final_note = note.connected_after.connected_after;
 							note.connected_after.connected_after = note;
 							note.connected_after.connected_before = note.connected_before;

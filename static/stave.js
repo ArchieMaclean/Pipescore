@@ -58,7 +58,7 @@ class Stave {
     }
     getActualCoordFromCanvasCoord(x,y) {
         x += Math.floor(y/STAVEWIDTH)*width;
-        y = y%STAVEWIDTH-2*STAVEWIDTH+this.offset;
+        y = y%STAVEWIDTH+this.offset;
         return [x,y];
     }
     getCoordFromNoteName(name) {

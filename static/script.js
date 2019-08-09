@@ -1,6 +1,11 @@
 let score;
 
 function setup() {
+	const cnv = createCanvas(210*5,297*5);
+	cnv.parent('page');
+	cnv.mousePressed(mousePress);
+	const pdf = createPDF();
+	pdf.beginRecord();
 	score = new Score();
 }
 

@@ -1,15 +1,17 @@
 class Gracenote {
-	constructor(x,y,name) {
+	constructor(x,y,name,getActualCoords) {
 		this.stem_height = 20;
 		this.x = x;
 		this.y = y;
-		this.actual_y = this.y;
+		this.actual_x = getActualCoords(this.x,this.y)[0];
+		this.actual_y = getActualCoords(this.x,this.y)[1];
 		this.name = name;
 		this.selected = false;
 	}
 	draw(snapToLine,group) {
-		const {y,name} = snapToLine(this.actual_y);
-		this.y = (y != null) ? y : this.y;
+		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
+		this.y = (y != null) ? y-STAVEWIDTH : this.y;
+		this.x = (x != null) ? x : this.x;
 		this.name = (y != null) ? name : this.name;
 		
 		strokeWeight(0);
@@ -58,7 +60,7 @@ class Gracenote {
 		return false;
 	}
 	drag(dx,dy) {
-		this.x += dx;
+		this.actual_x += dx;
 		this.actual_y += dy;
 	}
 	deselect() {

@@ -1,9 +1,9 @@
 class Note {
-    constructor(x,actual_y,name,type,dotted,getActualXCoord) {
+    constructor(x,actual_y,name,type,dotted,getActualCoords) {
 		this.x = x;
         this.y = actual_y;
-		this.actual_x = getActualXCoord(this.x,this.y)[0];
-		this.actual_y = getActualXCoord(this.x,this.y)[1];	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
+		this.actual_x = getActualCoords(this.x,this.y)[0];	// this is the actual x value, along only the first stave. this.x holds the value that is visible on the canvas
+		this.actual_y = getActualCoords(this.x,this.y)[1];	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
         this.name = name;
         this.width = 15;
@@ -16,11 +16,10 @@ class Note {
     }
 
     draw(snapToLine) {
-		console.log(this.actual_x,this.actual_y)
 		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
 		if (y != null) {
 			this.x = x;
-			this.y = y;
+			this.y = y-STAVEWIDTH;	// Don't know why I have to minus STAVEWIDTH - it works fine with demo note :(
 			this.name = name;
 		}
 		this.drawHead();
