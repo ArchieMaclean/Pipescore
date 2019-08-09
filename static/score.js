@@ -18,7 +18,7 @@ class Score {
 		trebleClef = loadImage('/images/trebleClef.png');     // 375 x 640
 		note_tail = loadImage('/images/noteTail.png');          // 72 x 155
 		blue_note_tail = loadImage('/images/blueNoteTail.png');
-		this.stave = [new Stave(1), new Stave(2)];
+		this.stave = new Stave();
 		this.demo_note = new DemoNote();
 		this.pdf = createPDF();
 		this.pdf.beginRecord();
@@ -40,7 +40,7 @@ class Score {
 	draw() {
 		background(255);
 		this.updateNoteMode();
-		this.stave.forEach(stave => stave.draw());
+		this.stave.draw();
 		this.updateDemoNote();
 		this.drawNotes();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
@@ -63,16 +63,12 @@ class Score {
 	}
 	updateDemoNote() {
 		if (this.mode === 'create') {
-			this.demo_note.update(this.snapNoteToLine,this.menu_mode,this.stave[0].getCoordFromNoteName);
+			this.demo_note.update(this.snapNoteToLine,this.menu_mode,this.stave.getCoordFromNoteName);
 			this.demo_note.draw(this.menu_mode);
 		}
 	}
 	snapNoteToLine(y) {
-		for (const stave of this.stave) {
-			if (stave.snapToLine(y) != null) {
-				return stave.snapToLine(y);
-			}
-		}
+		return this.stave.snapToLine(y);
 	}
 	changeSelectedNoteNames() {
 		this.selectedNotes.forEach(note => {
@@ -173,11 +169,9 @@ class Score {
 					if (selected_note == null) {
 						const x = mouseX;
 						if ((x > 0) && (x < width)) {
-							const snapped = this.snapNoteToLine(mouseY);
-							if (snapped != null) {
-								const y = snapped[0];
-								const note_name = snapped[1];
-								this.notes.push(new Note(x,y,note_name,this.note_mode));
+							const {y,name} = this.snapNoteToLine(mouseY);
+							if (y != null) {
+								this.notes.push(new Note(x,y,name,this.note_mode));
 							}
 						}
 					}
@@ -186,11 +180,9 @@ class Score {
 					if (selected_note == null) {
 						const x = mouseX;
 						if ((x > 0) && (x < width)) {
-							const snapped = this.snapNoteToLine(mouseY);
-							if (snapped != null) {
-								const y = snapped[0];
-								const note_name = snapped[1];
-								this.gracenotes.push(new Gracenote(x,y,note_name));
+							const {y,name} = this.snapNoteToLine(mouseY);
+							if (y != null) {
+								this.gracenotes.push(new Gracenote(x,y,name));
 							}
 						}
 					}
@@ -243,14 +235,6 @@ class Score {
 	get sortedNotes() {
 		//return this.notes.sort((a,b) => ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH === (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? ((a.x > b.x) ? 1 : -1) : ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH > (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? 1 : -1);
 		return this.notes.sort((a,b) => (a.x > b.x) ? 1 : -1);
-	}
-	get notesGroupedByStave() {
-		const notes = [];
-		this.stave.forEach(_ => notes.push(new Array()));
-		this.sortedNotes.forEach(note => {
-			notes[Math.floor(note.y / STAVEWIDTH)].push(note);
-		});
-		return notes;
 	}
 	get gracenoteGroups() {
 		const groups = new Array();

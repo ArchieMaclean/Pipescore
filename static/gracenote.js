@@ -8,9 +8,9 @@ class Gracenote {
 		this.selected = false;
 	}
 	draw(snapToLine,group) {
-		const snapped = snapToLine(this.actual_y);
-		this.y = (snapped != null) ? snapped[0] : this.y;
-		this.name = (snapped != null) ? snapped[1] : this.name;
+		const {y,name} = snapToLine(this.actual_y);
+		this.y = (y != null) ? y : this.y;
+		this.name = (y != null) ? name : this.name;
 		
 		strokeWeight(0);
 		this.selected ? fill(SELECTED_COLOUR) : fill(BLACK);

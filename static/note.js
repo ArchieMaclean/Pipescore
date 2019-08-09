@@ -15,10 +15,10 @@ class Note {
     }
 
     draw(snapToLine) {
-		const snapped = snapToLine(this.actual_y);
-		if (snapped != null) {
-			this.y = snapped[0];
-			this.name = snapped[1];
+		const {y,name} = snapToLine(this.actual_y);
+		if (y != null) {
+			this.y = y;
+			this.name = name;
 		}
 		this.drawHead();
 		this.drawTail();

@@ -1,6 +1,6 @@
 class Stave {
-    constructor(offset) {
-        this.offset = offset*STAVEWIDTH;
+    constructor() {
+        this.offset = STAVEWIDTH;
         this.getCoordFromNoteName = this.getCoordFromNoteName.bind(this);
     }
     draw() {
@@ -18,24 +18,35 @@ class Stave {
         if (inbetween) thenote += 1;
         return notes[thenote];
     }
-    snapToLine(y) {
-        if (y < 0) return null;
+    snapToLine(y,x) {
+        if (y < 0) return {x:null,y:null,name:null};
+
+        const position = {x:null,y:null,name:null};
 
         let stave_y;
         for (let linenum=0;linenum<4;linenum++) {
             stave_y = linenum*STAVELINEWIDTH+this.offset;
             if (y <= stave_y) {
                 if (y <= (stave_y-STAVELINEWIDTH)) {
-                    return [stave_y-STAVELINEWIDTH,'A']
+                    position.y = stave_y-STAVELINEWIDTH;
+                    position.name = 'A';
+                    break;
                 } else if (y <= (stave_y-STAVELINEWIDTH/2)) {
-                    return [stave_y-STAVELINEWIDTH/2,this.getNoteFromLine(linenum, true)]
+                    position.y = stave_y-STAVELINEWIDTH/2;
+                    position.name = this.getNoteFromLine(linenum, true);
+                    break;
                 } else {
-                    return [stave_y,this.getNoteFromLine(linenum)]
+                    position.y = stave_y;
+                    position.name = this.getNoteFromLine(linenum);
+                    break;
                 }
             }
         }
-        if (y <= stave_y+STAVEWIDTH/3)  return [stave_y, 'g'];
-        return null;
+        if ((position.y == null) && (y <= stave_y+STAVEWIDTH/3)) {
+            position.y = stave_y;
+            position.name = 'g';
+        }
+        return position;
     }
     getCoordFromNoteName(name) {
         switch(name) {
