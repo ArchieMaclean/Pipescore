@@ -1,8 +1,9 @@
 class Note {
-    constructor(x,actual_y,name,type,dotted) {
-        this.x = x;
+    constructor(x,actual_y,name,type,dotted,getActualXCoord) {
+		this.x = x;
         this.y = actual_y;
-		this.actual_y = this.y;	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
+		this.actual_x = getActualXCoord(this.x,this.y)[0];
+		this.actual_y = getActualXCoord(this.x,this.y)[1];	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
         this.name = name;
         this.width = 15;
@@ -15,8 +16,10 @@ class Note {
     }
 
     draw(snapToLine) {
-		const {y,name} = snapToLine(this.actual_y);
+		console.log(this.actual_x,this.actual_y)
+		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
 		if (y != null) {
+			this.x = x;
 			this.y = y;
 			this.name = name;
 		}

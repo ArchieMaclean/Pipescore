@@ -69,8 +69,8 @@ class Score {
 			this.demo_note.draw(this.menu_mode);
 		}
 	}
-	snapNoteToLine(y) {
-		return this.stave.snapToLine(y);
+	snapNoteToLine(x,y) {
+		return this.stave.getSnappedCoordFromCanvasCoord(x,y);
 	}
 	changeSelectedNoteNames() {
 		this.selectedNotes.forEach(note => {
@@ -171,10 +171,10 @@ class Score {
 					if (selected_note == null) {
 						const x = mouseX;
 						if ((x > 0) && (x < width)) {
-							const {y,name} = this.snapNoteToLine(mouseY);
+							const {x,y,name} = this.snapNoteToLine(mouseX,mouseY);
 							const dotted = document.getElementById('dot-notes-button').checked
 							if (y != null) {
-								this.notes.push(new Note(x,y,name,this.note_mode,dotted));
+								this.notes.push(new Note(x,y,name,this.note_mode,dotted,this.stave.getActualCoordFromCanvasCoord));
 							}
 						}
 					}

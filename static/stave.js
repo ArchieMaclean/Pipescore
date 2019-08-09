@@ -2,14 +2,18 @@ class Stave {
     constructor() {
         this.offset = STAVEWIDTH;
         this.getCoordFromNoteName = this.getCoordFromNoteName.bind(this);
+        this.num_staves = 3;
+        this.getActualCoordFromCanvasCoord = this.getActualCoordFromCanvasCoord.bind(this);
     }
     draw() {
         stroke(0);
         strokeWeight(2);
-        image(trebleClef,MARGIN-5,this.offset,50,64);
-        for (let linenum=0;linenum<5;linenum++) {
-            const y = linenum*STAVELINEWIDTH+this.offset;
-            line(MARGIN,y,width-MARGIN,y);
+        for (let stavenum=0;stavenum<this.num_staves;stavenum++) {
+            image(trebleClef,MARGIN-5,this.offset+stavenum*STAVEWIDTH,50,64);
+            for (let linenum=0;linenum<5;linenum++) {
+                const y = stavenum*STAVEWIDTH+linenum*STAVELINEWIDTH+this.offset;
+                line(MARGIN,y,width-MARGIN,y);
+            }
         }
     }
     getNoteFromLine(line, inbetween=false) {
@@ -18,35 +22,44 @@ class Stave {
         if (inbetween) thenote += 1;
         return notes[thenote];
     }
-    snapToLine(y,x) {
-        if (y < 0) return {x:null,y:null,name:null};
-
+    getSnappedCoordFromCanvasCoord(x,y) {
         const position = {x:null,y:null,name:null};
-
+        if (y < 0) return position;
         let stave_y;
-        for (let linenum=0;linenum<4;linenum++) {
-            stave_y = linenum*STAVELINEWIDTH+this.offset;
-            if (y <= stave_y) {
-                if (y <= (stave_y-STAVELINEWIDTH)) {
-                    position.y = stave_y-STAVELINEWIDTH;
-                    position.name = 'A';
-                    break;
-                } else if (y <= (stave_y-STAVELINEWIDTH/2)) {
-                    position.y = stave_y-STAVELINEWIDTH/2;
-                    position.name = this.getNoteFromLine(linenum, true);
-                    break;
-                } else {
-                    position.y = stave_y;
-                    position.name = this.getNoteFromLine(linenum);
-                    break;
+        stavebreak:
+        for (let stavenum=0;stavenum<this.num_staves;stavenum++) {
+            for (let linenum=0;linenum<4;linenum++) {
+                stave_y = stavenum*STAVEWIDTH+linenum*STAVELINEWIDTH+this.offset;
+                if (y <= stave_y) {
+                    if (y <= (stave_y-STAVELINEWIDTH)) {
+                        position.y = stave_y-STAVELINEWIDTH;
+                        position.name = 'A';
+                        break stavebreak;
+                    } else if (y <= (stave_y-STAVELINEWIDTH/2)) {
+                        position.y = stave_y-STAVELINEWIDTH/2;
+                        position.name = this.getNoteFromLine(linenum, true);
+                        break stavebreak;
+                    } else {
+                        position.y = stave_y;
+                        position.name = this.getNoteFromLine(linenum);
+                        break stavebreak;
+                    }
                 }
             }
+            if ((y <= stave_y+STAVEWIDTH/3)) {
+                position.y = stave_y;
+                position.name = 'g';
+                break stavebreak;
+            }
         }
-        if ((position.y == null) && (y <= stave_y+STAVEWIDTH/3)) {
-            position.y = stave_y;
-            position.name = 'g';
-        }
+        position.x = x%(width);
+        position.y += Math.floor(x/width)*STAVEWIDTH;
         return position;
+    }
+    getActualCoordFromCanvasCoord(x,y) {
+        x += Math.floor(y/STAVEWIDTH)*width;
+        y = y%STAVEWIDTH-2*STAVEWIDTH+this.offset;
+        return [x,y];
     }
     getCoordFromNoteName(name) {
         switch(name) {

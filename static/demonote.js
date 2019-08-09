@@ -40,8 +40,12 @@ class DemoNote {
 			this.height = 5;
 		}
 		this.x = mouseX;
-		const {y,name} = snapToLine(mouseY);
-		if (y != null) this.y = y;
+		const {x,y,name} = snapToLine(mouseX,mouseY);
+		if (y != null) {
+			this.y = y;
+			this.x = x;
+			this.note = name;
+		}
 
 		if (this.standard_gracenote != null) {
 			for (const note of this.standard_gracenote) {
