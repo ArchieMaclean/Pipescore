@@ -15,7 +15,7 @@ html(lang="en")
 		script(src="/gracenote.js")
 		script(src="/score.js")
 		script(src="/script.js")
-		script(src="/ui.js")
+		script(defer,src="/ui.js")
 		link(rel="stylesheet" type="text/css" href="/style.css")
 	body
 		noscript Please enable JavaScript in your browser to use this app.
@@ -71,14 +71,14 @@ html(lang="en")
 						input(type="radio" name="gracenote-mode" value="normal" id="normal" checked)
 						label(for="normal") Add Gracenote
 						input(type="radio" name="gracenote-mode" value="place" id="place")
-						label(for="place") Add Standard Embellishment
-						select#gracenote-type
-							option(value="d-throw") Throw on D
-							option(value="c-doubling") Doubling B
-							option(value="c-doubling") Doubling C
-							option(value="c-doubling") Doubling D
-							option(value="c-doubling") Doubling E
-							option(value="c-doubling") Doubling F
+						label(for="place") Add Standard Embellishment 
+							select#gracenote-type
+								option(value="d-throw") Throw on D
+								option(value="c-doubling") Doubling B
+								option(value="c-doubling") Doubling C
+								option(value="c-doubling") Doubling D
+								option(value="c-doubling") Doubling E
+								option(value="c-doubling") Doubling F
 					section.mode-section
 						h1.title Mode
 						select#mode-gracenote

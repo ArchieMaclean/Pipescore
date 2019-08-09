@@ -118,17 +118,17 @@ header nav .menu section ul#note-ul li {
   border-radius: 1rem;
 }
 
-header nav .menu section ul#note-ul li input[type="radio"] {
+header nav .menu section input[type="radio"] {
   display: none;
 }
 
-header nav .menu section ul#note-ul li input[type="radio"] + label {
+header nav .menu section input[type="radio"] + label {
   cursor: pointer;
   padding: .2rem;
   border-radius: .2rem;
 }
 
-header nav .menu section ul#note-ul li input[type="radio"]:checked + label {
+header nav .menu section input[type="radio"]:checked + label {
   background: #BDE4FF;
   color: #000;
 }

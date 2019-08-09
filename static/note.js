@@ -33,7 +33,7 @@ class Note {
 			fill(0); strokeWeight(0);
 			let y_dif;
 			(['A','f','d','b','g'].includes(this.name)) ? y_dif = -4 : y_dif = 3;
-			ellipse(this.x+this.width/2+2,this.y+y_dif,2.5,2.5);
+			ellipse(this.x+this.width/2+2,this.y+y_dif,4.5,4.5);
 		}
 
 		if (this.name === 'A') {

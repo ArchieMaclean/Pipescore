@@ -1,6 +1,7 @@
 class Stave {
     constructor(offset) {
         this.offset = offset*STAVEWIDTH;
+        this.getCoordFromNoteName = this.getCoordFromNoteName.bind(this);
     }
     draw() {
         stroke(0);
@@ -35,5 +36,28 @@ class Stave {
         }
         if (y <= stave_y+STAVEWIDTH/3)  return [stave_y, 'g'];
         return null;
+    }
+    getCoordFromNoteName(name) {
+        switch(name) {
+            case 'A':
+                return (this.offset-STAVELINEWIDTH);
+            case 'G':
+                return (this.offset-STAVELINEWIDTH/2);
+            case 'f':
+                return (this.offset);
+            case 'e':
+                return (this.offset+STAVELINEWIDTH/2);
+            case 'd':
+                return (this.offset+STAVELINEWIDTH);
+            case 'c':
+                return (this.offset+1.5*STAVELINEWIDTH);
+            case 'b':
+                return (this.offset+2*STAVELINEWIDTH);
+            case 'g':
+                return (this.offset+2.5*STAVELINEWIDTH);
+            default:
+                return (this.offset+3*STAVELINEWIDTH);
+        }
+
     }
 }

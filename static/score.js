@@ -63,8 +63,8 @@ class Score {
 	}
 	updateDemoNote() {
 		if (this.mode === 'create') {
-			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
-			this.demo_note.draw();
+			this.demo_note.update(this.snapNoteToLine,this.menu_mode,this.stave[0].getCoordFromNoteName);
+			this.demo_note.draw(this.menu_mode);
 		}
 	}
 	snapNoteToLine(y) {

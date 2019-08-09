@@ -20,7 +20,7 @@ class Gracenote {
 		this.selected ? stroke(SELECTED_COLOUR) : stroke(BLACK);
 		strokeWeight(1.5);
 		if (this.name === 'A') {
-			line(this.x-4.5,this.y,this.x+4.5,this.y);
+			line(this.x-5.5,this.y,this.x+5.5,this.y);
 		}
 
 		group.sort((a,b) => (a.x > b.x) ? 1: -1);

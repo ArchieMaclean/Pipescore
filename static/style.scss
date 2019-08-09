@@ -104,21 +104,22 @@ header {
 						margin: 0 .2rem;
 						border-radius: 1rem;
 
-						input[type="radio"] {
-							display: none;
-						}
 						
-						input[type="radio"]+label {
-							cursor: pointer;
-							padding: .2rem;
-							border-radius: .2rem;
-						}
-						
-						input[type="radio"]:checked+label {
-							background: theme('secondary');
-							color: #000;
-						}
 					}
+				}
+				input[type="radio"] {
+					display: none;
+				}
+				
+				input[type="radio"]+label {
+					cursor: pointer;
+					padding: .2rem;
+					border-radius: .2rem;
+				}
+				
+				input[type="radio"]:checked+label {
+					background: theme('secondary');
+					color: #000;
 				}
 			}
 		}
