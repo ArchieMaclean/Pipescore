@@ -1,5 +1,5 @@
 class Note {
-    constructor(x,actual_y,name,type) {
+    constructor(x,actual_y,name,type,dotted) {
         this.x = x;
         this.y = actual_y;
 		this.actual_y = this.y;	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
@@ -11,7 +11,7 @@ class Note {
 		this.selected = false;
 		this.connected_before = null;
 		this.connected_after = null;
-		this.dotted = false;
+		this.dotted = dotted;
     }
 
     draw(snapToLine) {

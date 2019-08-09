@@ -107,6 +107,11 @@ header {
 						
 					}
 				}
+				label#dot-notes-label {
+					padding: .2rem;
+					position: relative;
+					top: -.04rem;
+				}
 				input[type="radio"] {
 					display: none;
 				}

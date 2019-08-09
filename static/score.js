@@ -24,7 +24,9 @@ class Score {
 		this.pdf.beginRecord();
 		
 		document.getElementById('dot-notes-button').addEventListener('click',() => this.dotSelectedNotes());
-		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());	
+		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());
+		document.getElementById('ungroup-notes-button').addEventListener('click',_ => this.ungroupSelectedNotes());
+		document.getElementById('delete-notes-button').addEventListener('click',_ => this.deleteSelectedNotes());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -170,8 +172,9 @@ class Score {
 						const x = mouseX;
 						if ((x > 0) && (x < width)) {
 							const {y,name} = this.snapNoteToLine(mouseY);
+							const dotted = document.getElementById('dot-notes-button').checked
 							if (y != null) {
-								this.notes.push(new Note(x,y,name,this.note_mode));
+								this.notes.push(new Note(x,y,name,this.note_mode,dotted));
 							}
 						}
 					}
@@ -275,9 +278,7 @@ class Score {
 			}
 		} else if (keyCode === 85) { // u - ungroup
 			if (this.mode === 'select') {
-				this.selectedNotes.forEach(note=>{
-					note.unConnect();
-				});
+				this.ungroupSelectedNotes();
 			}
 		} else if (keyCode === 68) { // d - dot
 			if (this.mode ==='select') {
@@ -336,7 +337,8 @@ class Score {
 		this.mouse_dragged = true;
 	}
 	dotSelectedNotes() {
-		this.selectedNotes.forEach(n => n.dotted =! n.dotted);
+		const dotted = ! document.getElementById('dot-notes-button').checked;
+		this.selectedNotes.forEach(n => n.dotted =! dotted);
 	}
 	groupSelectedNotes() {
 		const selected_notes = this.selectedNotes;
@@ -344,5 +346,10 @@ class Score {
 			selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 			selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 		}
+	}
+	ungroupSelectedNotes() {
+		this.selectedNotes.forEach(note=>{
+			note.unConnect();
+		});
 	}
 }

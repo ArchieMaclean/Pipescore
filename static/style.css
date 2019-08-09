@@ -118,6 +118,12 @@ header nav .menu section ul#note-ul li {
   border-radius: 1rem;
 }
 
+header nav .menu section label#dot-notes-label {
+  padding: .2rem;
+  position: relative;
+  top: -.04rem;
+}
+
 header nav .menu section input[type="radio"] {
   display: none;
 }

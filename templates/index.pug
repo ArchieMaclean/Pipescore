@@ -56,10 +56,14 @@ html(lang="en")
 							li
 								input(type="radio" name="note" value="demisemiquaver" id="demisemiquaver")
 								label(for="demisemiquaver") Demisemiquaver
+							li
+								label(id="dot-notes-label" for="dot-notes") Dot
+								input(type="checkbox" value="dot-notes" name="dot-notes" id="dot-notes-button")
 					section#apply-to-selected
 						h1.title Apply to Selected
-						button(id="dot-notes-button") Dot
 						button(id="group-notes-button") Group
+						button(id="ungroup-notes-button") Ungroup
+						button(id="delete-notes-button") Delete
 					section.mode-section
 						h1.title Mode
 						select#mode-note
