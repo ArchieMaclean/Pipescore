@@ -208,7 +208,7 @@ class Score {
 	}
 	mouseReleased() {
 		for (const note of this.selectedNotes) {
-			note.resetActualY();	// so that when dragging again, note starts at right place
+			note.resetActualY(this.snapNoteToLine);	// so that when dragging again, note starts at right place
 		}
 		this.mouse_dragged = false;
 		this.box_select = false;

@@ -13,13 +13,14 @@ class Note {
 		this.connected_before = null;
 		this.connected_after = null;
 		this.dotted = dotted;
+		console.log(this.actual_x,this.actual_y,this.x,this.y);
     }
 
     draw(snapToLine) {
 		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
 		if (y != null) {
 			this.x = x;
-			this.y = y-STAVEWIDTH;	// Don't know why I have to minus STAVEWIDTH - it works fine with demo note :(
+			this.y = y;	// Don't know why I have to minus STAVEWIDTH - it works fine with demo note :(
 			this.name = name;
 		}
 		this.drawHead();
@@ -107,8 +108,8 @@ class Note {
 			default: return 0;
 		}
 	}
-	resetActualY() {
-		this.actual_y = this.y;
+	resetActualY(snapToLine) {
+		//this.actual_y = snapToLine(this.x,this.y);
 	}
 	deselect() {
 		this.selected = false;

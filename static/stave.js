@@ -57,7 +57,7 @@ class Stave {
         return position;
     }
     getActualCoordFromCanvasCoord(x,y) {
-        x += Math.floor(y/STAVEWIDTH)*width;
+        x += (Math.floor(y/STAVEWIDTH)-1)*width;
         y = y%STAVEWIDTH+this.offset;
         return [x,y];
     }
