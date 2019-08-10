@@ -232,7 +232,6 @@ class Score {
 		return selected;
 	}
 	get sortedNotes() {
-		//return this.notes.sort((a,b) => ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH === (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? ((a.actual_x > b.actual_x) ? 1 : -1) : ((a.y+2*STAVELINEWIDTH) % STAVEWIDTH > (b.y+2*STAVELINEWIDTH) % STAVEWIDTH) ? 1 : -1);
 		return this.notes.sort((a,b) => (a.actual_x > b.actual_x) ? 1 : -1);
 	}
 	get gracenoteGroups() {
@@ -295,8 +294,7 @@ class Score {
 						this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 					}
 					this.selectedNotes.forEach(note => {
-						note.actual_x += this.mouse_dragged_displacement[0];
-						note.actual_y += this.mouse_dragged_displacement[1];
+						note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord)
 					});
 					this.selectedGracenotes.forEach(note => {
 						note.drag(this.mouse_dragged_displacement[0],this.mouse_dragged_displacement[1]);

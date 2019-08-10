@@ -1,7 +1,7 @@
 class Note {
-    constructor(x,actual_y,name,type,dotted,getActualCoords) {
+    constructor(x,y,name,type,dotted,getActualCoords) {
 		this.x = x;
-        this.y = actual_y;
+        this.y = y;
 		this.actual_x = getActualCoords(this.x,this.y)[0];	// this is the actual x value, along only the first stave. this.x holds the value that is visible on the canvas
 		this.actual_y = getActualCoords(this.x,this.y)[1];	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
@@ -13,73 +13,68 @@ class Note {
 		this.connected_before = null;
 		this.connected_after = null;
 		this.dotted = dotted;
-		console.log(this.actual_x,this.actual_y,this.x,this.y);
     }
 
     draw(snapToLine) {
 		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
-		if (y != null) {
-			this.x = x;
-			this.y = y;	// Don't know why I have to minus STAVEWIDTH - it works fine with demo note :(
-			this.name = name;
-		}
-		this.drawHead();
-		this.drawTail();
+		this.name = name;
+		this.drawHead(x,y);
+		this.drawTail(x,y);
     }
-	drawHead() {
+	drawHead(x,y) {
 		stroke(this.selected ? SELECTED_COLOUR : 0);
 		strokeWeight(((this.type === 'semibreve') || (this.type === 'minim')) ? 2 : 0);
 		this.selected ? fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : SELECTED_COLOUR) : fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : 0);
-		ellipse(this.x,this.y,this.width,this.height);
+		ellipse(x,y,this.width,this.height);
 		
 		if (this.dotted) {
 			fill(0); strokeWeight(0);
 			let y_dif;
 			(['A','f','d','b','g'].includes(this.name)) ? y_dif = -4 : y_dif = 3;
-			ellipse(this.x+this.width/2+2,this.y+y_dif,4.5,4.5);
+			ellipse(x+this.width/2+2,y+y_dif,4.5,4.5);
 		}
 
 		if (this.name === 'A') {
 			strokeWeight(2);
-            line(this.x-11,this.y,this.x+11,this.y);
+            line(x-11,y,x+11,y);
         }
 	}
-	drawTail() {
+	drawTail(x,y) {
 		if (this.type === 'semibreve') strokeWeight(0);
 		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
-        line(this.x-(this.width/2),this.y,this.x-(this.width/2),this.y+this.stem_height);
+        line(x-(this.width/2),y,x-(this.width/2),y+this.stem_height);
 
 		stroke(0);
 		const num_of_tails = this.num_of_tails;
-		let y = 0;
+		let current_y = 0;
 		let tail_image;
 		this.selected ? tail_image=blue_note_tail : tail_image=note_tail;
 
 		if (!(this.connected_before) && !(this.connected_after)) {
 			for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
-				image(tail_image,this.x-this.width/2-2,this.y+this.stem_height-20-10*y,10,25);
-				y++;
+				image(tail_image,x-this.width/2-2,y+this.stem_height-20-10*current_y,10,25);
+				current_y++;
 			}
 		} else {
 			strokeWeight(4);
 			for (const note of [this.connected_before,this.connected_after]) {
-				y = 0;
+				current_y = 0;
 				if (note == null) continue;
 				const other_tail = note.num_of_tails;
-				if ((num_of_tails === other_tail) && (this.x > note.x)) {
+				if ((num_of_tails === other_tail) && (x > note.x)) {
 					for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
-						this.drawConnectingLine(note,y);
-						y++;
+						this.drawConnectingLine(note,current_y);
+						current_y++;
 					}
 				} else if (num_of_tails > other_tail) {
 					for (let tailnum=0;tailnum<other_tail;tailnum++) {
-						this.drawConnectingLine(note,y);
-						y++;
+						this.drawConnectingLine(note,current_y);
+						current_y++;
 					}
-					const distance = 10*((this.x > note.x) ? -1 : 1);
+					const distance = 10*((x > note.x) ? -1 : 1);
 					for (let tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
-						line(this.x-this.width/2,this.y+this.stem_height-10*y,this.x-this.width/2+distance,this.y+this.stem_height-10*y);
-						y++;
+						line(x-this.width/2,y+this.stem_height-10*current_y,x-this.width/2+distance,y+this.stem_height-10*current_y);
+						current_y++;
 					}
 				}	
 			}
@@ -109,7 +104,10 @@ class Note {
 		}
 	}
 	resetActualY(snapToLine) {
-		//this.actual_y = snapToLine(this.x,this.y);
+		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
+		this.x = x;
+		this.y = y;
+		this.name = name;
 	}
 	deselect() {
 		this.selected = false;
@@ -120,5 +118,11 @@ class Note {
 		this.connected_after = null;
 		this.connected_before = null;
 		this.stem_height = 50;
+	}
+	drag(dx,dy,getActualCoords) {
+		this.x += dx;
+		this.y += dy;
+		this.actual_x = getActualCoords(this.x,this.y)[0];
+		this.actual_y = getActualCoords(this.x,this.y)[1];
 	}
 }
