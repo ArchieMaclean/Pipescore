@@ -60,13 +60,11 @@ class Stave {
         if (!(['f','A','G'].includes(this.getSnappedCoordFromCanvasCoord(x,y).name))) {
             x += (Math.floor(y/STAVEWIDTH)-1)*width;
             y = y%STAVEWIDTH+this.offset;
-        } else {
-            if (Math.floor(y/STAVEWIDTH) != 0) {
-                x += (Math.floor(y/STAVEWIDTH)-1)*width;
-                y = y%STAVEWIDTH+this.offset;
-            }
+        // 2*STAVEWIDTH/3 because of high A mouse margin thing (see line 49)
+        } else if (Math.floor((y+2*STAVEWIDTH/3)/STAVEWIDTH) != 0) {
+            x += (Math.floor((y+2*STAVEWIDTH/3)/STAVEWIDTH)-1)*width;
+            y = y%STAVEWIDTH+this.offset-STAVEWIDTH;
         }
-        console.log(x,y)
         return [x,y];
     }
     getCoordFromNoteName(name) {
