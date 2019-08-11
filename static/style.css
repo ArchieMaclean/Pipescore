@@ -168,6 +168,27 @@ header nav .menu section select {
   /*  need to find better way */
 }
 
+#error {
+  display: none;
+  background: red;
+  margin: 0;
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  right: 0;
+  padding: .5rem;
+  border-radius: 1rem 0 0 0;
+  -webkit-transition: display 1s;
+  transition: display 1s;
+}
+
+#error p {
+  background: #ff6666;
+  margin: 0;
+  padding: 1rem;
+  border-radius: .5rem 0 0 0;
+}
+
 #too-small {
   display: none;
 }

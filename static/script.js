@@ -28,3 +28,9 @@ function keyPressed() {
 function mouseDragged() {
 	score.mouseDragged();
 }
+window.addEventListener('error', e => {
+	const error_div = document.querySelector('#error');
+	error_div.innerHTML = `<p>Uh-oh, we encountered the following error:<br>
+<code>${e.message}</code></p>`;
+	error_div.style.display = 'block';
+})
