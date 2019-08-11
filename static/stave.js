@@ -64,12 +64,10 @@ class Stave {
         // 2*STAVEWIDTH/3 because of high A mouse margin thing (see line 49)
         } else if (Math.floor((y+2*STAVEWIDTH/3)/STAVEWIDTH) != 0) {
             x += (Math.floor((y+2*STAVEWIDTH/3)/STAVEWIDTH)-1)*width;
-            let add_stavelinewidth = false;
-            if (snapped_coords.name === 'f' && snapped_coords.y === y) {
-                add_stavelinewidth = true;
-            }
             y = y%STAVEWIDTH+this.offset-STAVEWIDTH;
-            if (add_stavelinewidth) y+=STAVELINEWIDTH;
+
+            // Dealing with f
+            if (y === 0) y+= STAVEWIDTH;
         }
         return [x,y];
     }
