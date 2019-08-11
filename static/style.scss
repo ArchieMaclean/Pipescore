@@ -86,6 +86,7 @@ header {
 			}
 			section {
 				padding: .5rem 2rem;
+				font-size: .9rem;
 
 				h1 {
 					margin: 0 0 1rem;
@@ -103,14 +104,12 @@ header {
 						list-style-type: none;
 						margin: 0 .2rem;
 						border-radius: 1rem;
-
-						
 					}
 				}
 				label#dot-notes-label {
 					padding: .2rem;
 					position: relative;
-					top: -.04rem;
+					top: -.15rem;
 				}
 				input[type="radio"] {
 					display: none;
@@ -125,6 +124,22 @@ header {
 				input[type="radio"]:checked+label {
 					background: theme('secondary');
 					color: #000;
+				}
+				button {
+					font-family: inherit;
+					font-size: inherit;
+					background: theme('secondary');
+					border-radius: .2rem;
+					border: 1px solid darken(theme('secondary'),20%);
+					margin: 0 calc(.2rem-2px);
+					&:active {
+						color: white;
+						background: theme('primary');
+					}
+				}
+				select {
+					font-family: inherit;
+					font-size: inherit;
 				}
 			}
 		}

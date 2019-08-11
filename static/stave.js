@@ -71,7 +71,6 @@ class Stave {
             y = y%STAVEWIDTH+this.offset-STAVEWIDTH;
             if (add_stavelinewidth) y+=STAVELINEWIDTH;
         }
-        console.log(x,y);
         return [x,y];
     }
     getCoordFromNoteName(name) {

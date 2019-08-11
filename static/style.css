@@ -94,6 +94,7 @@ header nav .menu > * {
 
 header nav .menu section {
   padding: .5rem 2rem;
+  font-size: .9rem;
 }
 
 header nav .menu section h1 {
@@ -121,7 +122,7 @@ header nav .menu section ul#note-ul li {
 header nav .menu section label#dot-notes-label {
   padding: .2rem;
   position: relative;
-  top: -.04rem;
+  top: -.15rem;
 }
 
 header nav .menu section input[type="radio"] {
@@ -137,6 +138,25 @@ header nav .menu section input[type="radio"] + label {
 header nav .menu section input[type="radio"]:checked + label {
   background: #BDE4FF;
   color: #000;
+}
+
+header nav .menu section button {
+  font-family: inherit;
+  font-size: inherit;
+  background: #BDE4FF;
+  border-radius: .2rem;
+  border: 1px solid #57baff;
+  margin: 0 calc(.2rem-2px);
+}
+
+header nav .menu section button:active {
+  color: white;
+  background: #26A5FF;
+}
+
+header nav .menu section select {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 #page {
