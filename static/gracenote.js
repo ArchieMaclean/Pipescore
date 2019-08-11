@@ -59,9 +59,12 @@ class Gracenote {
 		}
 		return false;
 	}
-	drag(dx,dy) {
+	drag(dx,dy,getActualCoords) {
 		this.actual_x += dx;
 		this.actual_y += dy;
+		const actual_coords = getActualCoords(this.actual_x,this.actual_y);
+		this.actual_x = actual_coords[0];
+		this.actual_y = actual_coords[1];
 	}
 	deselect() {
 		this.selected = false;

@@ -281,6 +281,9 @@ class Score {
 			}
 		} else if (keyCode === 46) {	// delete
 			this.deleteSelectedNotes();
+		} else if (keyCode === 78) {	// n - switch to note menu
+			document.querySelectorAll('.menu-title').forEach(l => l.classList.remove('viewing'));
+			document.querySelector('#note-title').classList.add('viewing');
 		}
 	}
 	mouseDraggedUpdate() {
@@ -297,7 +300,7 @@ class Score {
 						note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord)
 					});
 					this.selectedGracenotes.forEach(note => {
-						note.drag(this.mouse_dragged_displacement[0],this.mouse_dragged_displacement[1]);
+						note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord);
 					});
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
