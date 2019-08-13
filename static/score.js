@@ -210,6 +210,7 @@ class Score {
 		for (const note of this.selectedNotes) {
 			note.resetActualY(this.snapNoteToLine);	// so that when dragging again, note starts at right place
 		}
+		for (const gracenote of this.gracenotes) gracenote.resetActualY(this.snapNoteToLine);
 		this.mouse_dragged = false;
 		this.box_select = false;
 	}
