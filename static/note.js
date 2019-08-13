@@ -113,8 +113,14 @@ class Note {
 		this.selected = false;
 	}
 	unConnect() {
-		if (this.connected_after != null) this.connected_after.connected_before = null;
-		if (this.connected_before != null) this.connected_before.connected_after = null;
+		if (this.connected_after != null) {
+			this.connected_after.connected_before = null;
+			this.connected_after.stem_height = 50;
+		}
+		if (this.connected_before != null) {
+			this.connected_before.connected_after = null;
+			this.connected_before.stem_height = 50;
+		}
 		this.connected_after = null;
 		this.connected_before = null;
 		this.stem_height = 50;

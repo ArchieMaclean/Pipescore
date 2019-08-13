@@ -10,11 +10,6 @@ class Gracenote {
 	}
 	draw(snapToLine,group) {
 		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
-		/*
-		this.y = (y != null) ? y : this.y;
-		this.x = (x != null) ? x : this.x;
-		this.name = (y != null) ? name : this.name;
-		*/
 		
 		strokeWeight(0);
 		this.selected ? fill(SELECTED_COLOUR) : fill(BLACK);

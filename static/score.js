@@ -54,15 +54,16 @@ class Score {
 			this.deselectAllNotes();
 			this.deselectAllGracenotes();
 		}
-		this.mode = document.querySelector(`#mode-${this.menu_mode}`).value;
+		const mode_in_menu = document.querySelector(`#mode-${this.menu_mode}`);
+		if (mode_in_menu != null) this.mode = mode_in_menu.value;
 		if (this.mode != 'select') {
 			this.deselectAllNotes();
 		}
 	}
 	updateDemoNote() {
 		if (this.mode === 'create') {
-			this.demo_note.update(this.snapNoteToLine,this.menu_mode,this.stave.getCoordFromNoteName);
-			this.demo_note.draw(this.menu_mode);
+			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
+			this.demo_note.draw(this.menu_mode,this.stave.getCoordFromNoteName);
 		}
 	}
 	snapNoteToLine(x,y) {
