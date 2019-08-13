@@ -44,7 +44,7 @@ class Score {
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	noteModeChanged() {
-		this.note_mode = $('input[name=note]:checked').val();
+		this.note_mode = document.querySelector('input[name=note]:checked').value;
 		this.changeSelectedNoteNames();
 	}
 	updateNoteMode() {
@@ -54,7 +54,7 @@ class Score {
 			this.deselectAllNotes();
 			this.deselectAllGracenotes();
 		}
-		this.mode = $(`#mode-${this.menu_mode}`).val();
+		this.mode = document.querySelector(`#mode-${this.menu_mode}`).value;
 		if (this.mode != 'select') {
 			this.deselectAllNotes();
 		}
@@ -264,9 +264,9 @@ class Score {
 	keyPressed() {
 		if (keyCode === ESCAPE) {
 			if (this.mode === 'create') {
-				$(`#mode-${this.menu_mode}`).val('select');
+				document.querySelector(`#mode-${this.menu_mode}`).value = 'select';
 			} else if (this.mode === 'select') {
-				$(`#mode-${this.menu_mode}`).val('create');
+				document.querySelector(`#mode-${this.menu_mode}`).value = 'create';
 			}
 		} else if (keyCode === 71) {	// g - group
 			if (this.mode === "select") {

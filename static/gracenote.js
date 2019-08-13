@@ -67,7 +67,6 @@ class Gracenote {
 		const actual_coords = getActualCoords(this.x,this.y);
 		this.actual_x = actual_coords[0];
 		this.actual_y = actual_coords[1];
-		console.log(this.actual_x,this.actual_y);
 	}
 	deselect() {
 		this.selected = false;
