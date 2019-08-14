@@ -87,7 +87,7 @@ class Stave {
                 return (this.offset+1.5*STAVELINEWIDTH);
             case 'b':
                 return (this.offset+2*STAVELINEWIDTH);
-            case 'g':
+            case 'a':
                 return (this.offset+2.5*STAVELINEWIDTH);
             default:
                 return (this.offset+3*STAVELINEWIDTH);
