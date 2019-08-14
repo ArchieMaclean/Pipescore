@@ -59,7 +59,7 @@ class DemoNote {
 	}
 	getStandardGracenote(grace) {
 		switch (grace) {
-			case 'd-throw': return ['g','d','c','d'];
+			case 'd-throw': return ['g','d','c'];
 			case 'b-doubling': return ['G','b','d'];
 			case 'c-doubling': return ['G','c','d'];
 			case 'd-doubling': return ['G','d','e'];

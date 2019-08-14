@@ -29,6 +29,7 @@ class Score {
 		this.menu_mode = 'note';
 		this.notes = [];
 		this.gracenotes = [];
+		this.barlines = [new Barline(300,STAVEWIDTH)];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
@@ -41,6 +42,7 @@ class Score {
 		this.stave.draw();
 		this.updateDemoNote();
 		this.drawNotes();
+		this.drawBarlines();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	noteModeChanged() {
@@ -76,6 +78,9 @@ class Score {
 				note.unConnect();
 			}
 		});
+	}
+	drawBarlines() {
+		this.barlines.forEach(barline => barline.draw());
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();
@@ -182,7 +187,15 @@ class Score {
 						if ((x > 0) && (x < width)) {
 							const {x,y,name} = this.snapNoteToLine(mouseX,mouseY);
 							if (y != null) {
-								this.gracenotes.push(new Gracenote(x,y,name,this.stave.getActualCoordFromCanvasCoord));
+								if (this.demo_note.standard_gracenote == null) {
+									this.gracenotes.push(new Gracenote(x,y,name,this.stave.getActualCoordFromCanvasCoord));
+								} else {
+									let x = this.demo_note.x;
+									this.demo_note.standard_gracenote.forEach(gracenote => {
+										this.gracenotes.push(new Gracenote(x,this.stave.getCoordFromNoteName(gracenote),gracenote,this.stave.getActualCoordFromCanvasCoord));
+										x += 10;
+									});
+								}
 							}
 						}
 					}
