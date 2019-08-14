@@ -30,7 +30,7 @@ class Score {
 		this.menu_mode = 'note';
 		this.notes = [];
 		this.gracenotes = [];
-		this.barlines = [new Barline(250,this.stave.offset,this.stave),new Barline(500,this.stave.offset,this.stave),new Barline(750,this.stave.offset,this.stave),new Barline(1000,this.stave.offset,this.stave)];
+		this.barlines = [new Barline(250,this.stave.offset,this.stave),new Barline(500,this.stave.offset,this.stave),new Barline(750,this.stave.offset,this.stave),new Barline(1019,this.stave.offset,this.stave)];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];

@@ -1,6 +1,7 @@
 class Barline {
     constructor(x,y,stave) {
         this.offset = stave.offset;
+        this.stave_width = width-2*MARGIN;
 
         this.actual_x = x;
         this.actual_y = y;
@@ -29,7 +30,9 @@ class Barline {
         return [x,y];
     }
     getCanvasCoord(x,y) {
-        const new_x = x%width;
+        let new_x = x%width;
+        if (new_x > (MARGIN+this.stave_width)) new_x = MARGIN+this.stave_width;
+        if (new_x < MARGIN) new_x = MARGIN;
         const new_y = Math.floor(x/width)*STAVEWIDTH+this.offset;
         return [new_x,new_y];
     }
