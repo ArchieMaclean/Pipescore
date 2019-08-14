@@ -10,7 +10,7 @@ class DemoNote {
 		this.standard_gracenote = null;
     }
 
-    draw(menu_mode,getCoordFromNoteName) {
+    draw(menu_mode,getCoordFromNoteName,getStavenum) {
 		strokeWeight(0);
 		fill(this.col);
 		stroke(this.col);
@@ -23,7 +23,7 @@ class DemoNote {
 		} else {
 			let x = this.x;
 			for (const note of this.standard_gracenote) {
-				ellipse(x,getCoordFromNoteName(note),this.width,this.height);
+				ellipse(x,getCoordFromNoteName(note,getStavenum(this.y)),this.width,this.height);
 				if (note === 'A') {
 					line(x-this.ledger,this.y,x+this.ledger,this.y);
 				}

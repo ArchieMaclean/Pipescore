@@ -4,6 +4,7 @@ class Stave {
         this.getCoordFromNoteName = this.getCoordFromNoteName.bind(this);
         this.num_staves = 3;
         this.getActualCoordFromCanvasCoord = this.getActualCoordFromCanvasCoord.bind(this);
+        this.getStavenum = this.getStavenum.bind(this);
     }
     draw() {
         stroke(0);
@@ -21,6 +22,10 @@ class Stave {
 		let thenote = (-2*line)+6;
         if (inbetween) thenote += 1;
         return notes[thenote];
+    }
+    getStavenum(y) {
+        y -= this.offset;
+        return (Math.floor(y/STAVEWIDTH) < 0) ? 0 : Math.floor(y/STAVEWIDTH);
     }
     getSnappedCoordFromCanvasCoord(x,y) {
         const position = {x:null,y:null,name:null};
@@ -71,26 +76,28 @@ class Stave {
         }
         return [x,y];
     }
-    getCoordFromNoteName(name) {
+    getCoordFromNoteName(name,stavenum) {
+        let y = this.offset;
+        if (stavenum != null) y += stavenum * STAVEWIDTH;
         switch(name) {
             case 'A':
-                return (this.offset-STAVELINEWIDTH);
+                return (y-STAVELINEWIDTH);
             case 'G':
-                return (this.offset-STAVELINEWIDTH/2);
+                return (y-STAVELINEWIDTH/2);
             case 'f':
-                return (this.offset);
+                return (y);
             case 'e':
-                return (this.offset+STAVELINEWIDTH/2);
+                return (y+STAVELINEWIDTH/2);
             case 'd':
-                return (this.offset+STAVELINEWIDTH);
+                return (y+STAVELINEWIDTH);
             case 'c':
-                return (this.offset+1.5*STAVELINEWIDTH);
+                return (y+1.5*STAVELINEWIDTH);
             case 'b':
-                return (this.offset+2*STAVELINEWIDTH);
+                return (y+2*STAVELINEWIDTH);
             case 'a':
-                return (this.offset+2.5*STAVELINEWIDTH);
+                return (y+2.5*STAVELINEWIDTH);
             default:
-                return (this.offset+3*STAVELINEWIDTH);
+                return (y+3*STAVELINEWIDTH);
         }
 
     }

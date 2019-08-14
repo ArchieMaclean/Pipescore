@@ -65,7 +65,7 @@ class Score {
 	updateDemoNote() {
 		if (this.mode === 'create') {
 			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
-			this.demo_note.draw(this.menu_mode,this.stave.getCoordFromNoteName);
+			this.demo_note.draw(this.menu_mode,this.stave.getCoordFromNoteName,this.stave.getStavenum);
 		}
 	}
 	snapNoteToLine(x,y) {
@@ -192,7 +192,7 @@ class Score {
 								} else {
 									let x = this.demo_note.x;
 									this.demo_note.standard_gracenote.forEach(gracenote => {
-										this.gracenotes.push(new Gracenote(x,this.stave.getCoordFromNoteName(gracenote),gracenote,this.stave.getActualCoordFromCanvasCoord));
+										this.gracenotes.push(new Gracenote(x,this.stave.getCoordFromNoteName(gracenote,this.stave.getStavenum(this.demo_note.y)),gracenote,this.stave.getActualCoordFromCanvasCoord));
 										x += 10;
 									});
 								}
