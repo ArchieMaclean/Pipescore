@@ -88,6 +88,13 @@ header {
 				padding: .5rem 2rem;
 				font-size: .9rem;
 
+				&.mode-section {
+					flex: 0 0 2rem;
+				}
+				&#apply-to-selected-gracenotes {
+					flex: .4;
+				}
+
 				h1 {
 					margin: 0 0 1rem;
 					padding: 0;

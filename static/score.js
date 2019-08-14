@@ -23,6 +23,7 @@ class Score {
 		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());
 		document.getElementById('ungroup-notes-button').addEventListener('click',_ => this.ungroupSelectedNotes());
 		document.getElementById('delete-notes-button').addEventListener('click',_ => this.deleteSelectedNotes());
+		document.getElementById('delete-gracenotes-button').addEventListener('click',_ => this.deleteSelectedNotes());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -163,6 +164,9 @@ class Score {
 	deleteSelectedNotes() {
 		this.selectedNotes.forEach(note => {
 			this.notes.splice(this.notes.indexOf(note),1)
+		});
+		this.selectedGracenotes.forEach(grace => {
+			this.gracenotes.splice(this.gracenotes.indexOf(grace),1);
 		});
 	}
 	mousePress() {
