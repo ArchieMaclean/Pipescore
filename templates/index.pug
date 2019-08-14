@@ -94,9 +94,16 @@ html(lang="en")
 							option(value="create") Create
 							option(value="select") Select
 				div#text.menu
-					p Text menu
+					h1.title Text menu
 				div#layout.menu
-					p Layout menu
+					section#bars
+						h1.title Bars
+						button#add-bar-before + Bar Before
+						button#add-bar-after + Bar After
+					section.mode-section
+						h1.title Mode
+						select#mode-layout
+							option(value="select") Select
 				div#file.menu
-					p File menu
+					h1.title File menu
 		div#page

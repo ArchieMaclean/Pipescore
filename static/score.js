@@ -30,7 +30,7 @@ class Score {
 		this.menu_mode = 'note';
 		this.notes = [];
 		this.gracenotes = [];
-		this.barlines = [new Barline(300,STAVEWIDTH)];
+		this.barlines = [new Barline(250,this.stave.offset,this.stave),new Barline(500,this.stave.offset,this.stave),new Barline(750,this.stave.offset,this.stave),new Barline(1000,this.stave.offset,this.stave)];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
@@ -146,7 +146,12 @@ class Score {
 	}
 	getSelectedGracenote() {
 		for (const note of this.gracenotes) {
-			if (note.checkIfSelected()) return note
+			if (note.checkIfSelected()) return note;
+		}
+	}
+	getSelectedBarline() {
+		for (const bl of this.barlines) {
+			if (bl.checkIfSelected(mouseX,mouseY)) return bl;
 		}
 	}
 	deselectAllNotes() {
@@ -158,6 +163,12 @@ class Score {
 	deselectAllGracenotes() {
 		this.gracenotes.forEach(note => {
 			note.deselect();
+		});
+		this.box_select = false;
+	}
+	deselectAllBarlines() {
+		this.barlines.forEach(bl => {
+			bl.deselect();
 		});
 		this.box_select = false;
 	}
@@ -210,13 +221,17 @@ class Score {
 				this.mouse_dragged_displacement = [0,0];
 				const selected_note = this.getSelectedNote();
 				const selected_gracenote = this.getSelectedGracenote();
+				const selected_barline = this.getSelectedBarline();
 				if ((this.menu_mode === 'note') && (selected_note != null)) {
 					selected_note.selected = true;
 				} else if ((this.menu_mode === 'gracenote') && (selected_gracenote != null)) {
 					selected_gracenote.selected = true;
+				} else if ((this.menu_mode === 'layout') && (selected_barline != null)) {
+					selected_barline.selected = true;
 				} else {
 					this.deselectAllNotes();
 					this.deselectAllGracenotes();
+					this.deselectAllBarlines();
 					this.box_select = true;
 				}
 			}
@@ -229,6 +244,7 @@ class Score {
 			note.resetActualY(this.snapNoteToLine);	// so that when dragging again, note starts at right place
 		}
 		for (const gracenote of this.gracenotes) gracenote.resetActualY(this.snapNoteToLine);
+		for (const bl of this.selectedBarlines) bl.reset();
 		this.mouse_dragged = false;
 		this.box_select = false;
 	}
@@ -246,6 +262,15 @@ class Score {
 		for (const note of this.gracenotes) {
 			if (note.selected) {
 				selected.push(note);
+			}
+		}
+		return selected;
+	}
+	get selectedBarlines() {
+		const selected = [];
+		for (const bl of this.barlines) {
+			if (bl.selected) {
+				selected.push(bl);
 			}
 		}
 		return selected;
@@ -281,10 +306,12 @@ class Score {
 	}
 	keyPressed() {
 		if (keyCode === ESCAPE) {
-			if (this.mode === 'create') {
-				document.querySelector(`#mode-${this.menu_mode}`).value = 'select';
-			} else if (this.mode === 'select') {
-				document.querySelector(`#mode-${this.menu_mode}`).value = 'create';
+			if (this.menu_mode != 'layout') {
+				if (this.mode === 'create') {
+					document.querySelector(`#mode-${this.menu_mode}`).value = 'select';
+				} else if (this.mode === 'select') {
+					document.querySelector(`#mode-${this.menu_mode}`).value = 'create';
+				}
 			}
 		} else if (keyCode === 71) {	// g - group
 			if (this.mode === "select") {
@@ -309,7 +336,7 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0)) {
+				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0) || (this.selectedBarlines.length > 0)) {
 					this.mouse_dragged_displacement = [0,0]
 					if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
 						this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
@@ -320,6 +347,9 @@ class Score {
 					});
 					this.selectedGracenotes.forEach(note => {
 						note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord);
+					});
+					this.selectedBarlines.forEach(bl => {
+						bl.drag(...this.mouse_dragged_displacement);
 					});
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
