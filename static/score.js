@@ -18,14 +18,15 @@ class Score {
 		this.stave = new Stave();
 		this.demo_note = new DemoNote();
 		
-		
-		document.getElementById('dot-notes-button').addEventListener('click',() => this.dotSelectedNotes());
+		// Using arrow functions means I don't have to this-bind
+		document.getElementById('dot-notes-button').addEventListener('click',_ => this.dotSelectedNotes());
 		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());
 		document.getElementById('ungroup-notes-button').addEventListener('click',_ => this.ungroupSelectedNotes());
 		document.getElementById('delete-notes-button').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('delete-gracenotes-button').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('add-bar-before').addEventListener('click',_ => this.addBarBefore());
 		document.getElementById('add-bar-after').addEventListener('click',_ => this.addBarAfter());
+		document.getElementById('delete-bar').addEventListener('click',_ => this.deleteSelectedNotes());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -180,6 +181,9 @@ class Score {
 		});
 		this.selectedGracenotes.forEach(grace => {
 			this.gracenotes.splice(this.gracenotes.indexOf(grace),1);
+		});
+		this.selectedBarlines.forEach(bl => {
+			this.barlines.splice(this.barlines.indexOf(bl),1);
 		});
 	}
 	addBarBefore() {
