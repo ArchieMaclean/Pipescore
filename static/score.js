@@ -24,6 +24,8 @@ class Score {
 		document.getElementById('ungroup-notes-button').addEventListener('click',_ => this.ungroupSelectedNotes());
 		document.getElementById('delete-notes-button').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('delete-gracenotes-button').addEventListener('click',_ => this.deleteSelectedNotes());
+		document.getElementById('add-bar-before').addEventListener('click',_ => this.addBarBefore());
+		document.getElementById('add-bar-after').addEventListener('click',_ => this.addBarAfter());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -180,6 +182,40 @@ class Score {
 			this.gracenotes.splice(this.gracenotes.indexOf(grace),1);
 		});
 	}
+	addBarBefore() {
+		const selected_bar = this.selectedBarlines[0];
+		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
+		const index = ordered_bars.indexOf(selected_bar);
+		if (index != 0) {
+			const other_bar = ordered_bars[index-1];
+			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
+			const x = actual_x%width;
+			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			this.barlines.push(new Barline(x,y,this.stave));
+		} else {
+			const actual_x = (selected_bar.actual_x)/2;
+			const x = actual_x%width;
+			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			this.barlines.push(new Barline(x,y,this.stave));
+		}
+	}
+	addBarAfter() {
+		const selected_bar = this.selectedBarlines[0];
+		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
+		const index = ordered_bars.indexOf(selected_bar);
+		if (index != ordered_bars.length-1) {
+			const other_bar = ordered_bars[index+1];
+			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
+			const x = actual_x%width;
+			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			this.barlines.push(new Barline(x,y,this.stave));
+		} else {
+			const actual_x = selected_bar.actual_x + 50;
+			const x = actual_x%width;
+			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			this.barlines.push(new Barline(x,y,this.stave));
+		}
+	}
 	mousePress() {
 		if (mouseButton === LEFT) {
 			if (this.mode === 'create') {
@@ -227,6 +263,7 @@ class Score {
 				} else if ((this.menu_mode === 'gracenote') && (selected_gracenote != null)) {
 					selected_gracenote.selected = true;
 				} else if ((this.menu_mode === 'layout') && (selected_barline != null)) {
+					this.deselectAllBarlines();
 					selected_barline.selected = true;
 				} else {
 					this.deselectAllNotes();

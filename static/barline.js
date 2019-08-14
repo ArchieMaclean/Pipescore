@@ -3,14 +3,16 @@ class Barline {
         this.offset = stave.offset;
         this.stave_width = width-2*MARGIN;
 
-        this.actual_x = x;
-        this.actual_y = y;
+        const actual_coords = this.getActualCoord(x,y);
+        this.actual_x = actual_coords[0];
+        this.actual_y = actual_coords[1];
 
         this.x = x;
         this.y = y;
         this.selected = false;
     }
     draw() {
+        // For some reason, gracenotes added with button have furry edges
         (this.selected) ? stroke(SELECTED_COLOUR) : stroke(0);
         strokeWeight(2);
         const [x,y] = this.getCanvasCoord(this.actual_x,this.actual_y);
@@ -44,13 +46,12 @@ class Barline {
         this.actual_y = actual_coords[1];
     }
     checkIfSelected(x,y) {
-        const margin = 5;
+        const margin = 10;
         if ((x > (this.x-margin)) && (x < (this.x+margin)) && (y > this.y) && (y < (this.y+4*STAVELINEWIDTH))) return true;
         return false;
     }
     reset() {
         this.x,this.y = this.getCanvasCoord(this.actual_x,this.actual_y);
-        console.log(this.x,this.y);
     }
     deselect() {
         this.selected = false;
