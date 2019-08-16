@@ -33,6 +33,7 @@ class Score {
 		this.menu_mode = 'note';
 		this.notes = [];
 		this.gracenotes = [];
+		this.texts = [new Text(100,100)];
 		this.barlines = [new Barline(250,this.stave.offset,this.stave),new Barline(500,this.stave.offset,this.stave),new Barline(750,this.stave.offset,this.stave),new Barline(1019,this.stave.offset,this.stave)];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
@@ -47,6 +48,7 @@ class Score {
 		this.updateDemoNote();
 		this.drawNotes();
 		this.drawBarlines();
+		this.drawText();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	noteModeChanged() {
@@ -85,6 +87,9 @@ class Score {
 	}
 	drawBarlines() {
 		this.barlines.forEach(barline => barline.draw());
+	}
+	drawText() {
+		this.texts.forEach(text => text.draw());
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();

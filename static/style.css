@@ -92,6 +92,12 @@ header nav .menu > * {
           flex: 1;
 }
 
+header nav .menu textarea {
+  resize: none;
+  padding: .2rem;
+  margin: .2rem;
+}
+
 header nav .menu section {
   padding: .5rem 2rem;
   font-size: .9rem;
@@ -135,6 +141,14 @@ header nav .menu section label#dot-notes-label {
   padding: .2rem;
   position: relative;
   top: -.15rem;
+}
+
+header nav .menu section label#font-size-label {
+  margin-left: .4rem;
+}
+
+header nav .menu section input[type="number"] {
+  width: 4rem;
 }
 
 header nav .menu section input[type="radio"] {

@@ -84,6 +84,11 @@ header {
 			& > * {
 				flex: 1;
 			}
+			textarea {
+				resize: none;
+				padding: .2rem;
+				margin: .2rem;
+			}
 			section {
 				padding: .5rem 2rem;
 				font-size: .9rem;
@@ -117,6 +122,12 @@ header {
 					padding: .2rem;
 					position: relative;
 					top: -.15rem;
+				}
+				label#font-size-label {
+					margin-left: .4rem;
+				}
+				input[type="number"] {
+					width: 4rem;
 				}
 				input[type="radio"] {
 					display: none;

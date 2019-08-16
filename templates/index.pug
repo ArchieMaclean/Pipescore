@@ -1,5 +1,6 @@
 doctype html
 html(lang="en")
+	// Pipescore is open source! Code is available at: https://bitbucket.org/TheDragonsApprentice/pipescore/src/master/
 	head
 		title PipeScore
 		link(rel="shortcut icon" href="/images/favicon.ico")
@@ -13,6 +14,7 @@ html(lang="en")
 		script(src="/note.js")
 		script(src="/gracenote.js")
 		script(src="/barline.js")
+		script(src="/text.js")
 		script(src="/score.js")
 		script(src="/script.js")
 		script(defer,src="/ui.js")
@@ -94,7 +96,18 @@ html(lang="en")
 							option(value="create") Create
 							option(value="select") Select
 				div#text.menu
-					h1.title Text menu
+					section#text-section
+						h1.title Apply to Selected
+						button#add-text Delete
+						label#font-size-label
+							span Font size:
+							input#font-size(type="number", value="16")
+					textarea#textarea(placeholder="Textbox text here...")
+					section.mode-section
+						h1.title Mode
+						select#mode-gracenote
+							option(value="create") Create
+							option(value="select") Select
 				div#layout.menu
 					section#bars
 						h1.title Bars
