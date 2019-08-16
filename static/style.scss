@@ -123,7 +123,7 @@ header {
 					position: relative;
 					top: -.15rem;
 				}
-				label#font-size-label {
+				label#font-size-label, label#font-label {
 					margin-left: .4rem;
 				}
 				input[type="number"] {
@@ -158,6 +158,9 @@ header {
 				select {
 					font-family: inherit;
 					font-size: inherit;
+				}
+				a {
+					color:inherit;
 				}
 			}
 		}

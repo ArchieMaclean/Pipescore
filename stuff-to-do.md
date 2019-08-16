@@ -8,3 +8,5 @@
 * Time signatures
 * Copy/Paste
 * Playback
+
+* Add link to tutorial on text menu > font link
