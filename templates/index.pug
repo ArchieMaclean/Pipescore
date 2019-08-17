@@ -96,20 +96,18 @@ html(lang="en")
 							option(value="create") Create
 							option(value="select") Select
 				div#text.menu
-					section#text-section
+					section#apply-to-text
 						h1.title Apply to Selected
 						button#add-text Delete
+					section#font-properties
+						h1.title Font Properties
 						label#font-size-label
 							span Font size:
 							input#font-size(type="number", value="16")
-						label#font-label
-							a(href="#",title="Font from fonts.google.com") Font: 
-							input#font-family(type="text", placeholder='URL from fonts.google.com', value="https://fonts.googleapis.com/css?family=Roboto&display=swap")
 					textarea#textarea(placeholder="Textbox text here...")
 					section.mode-section
 						h1.title Mode
-						select#mode-gracenote
-							option(value="create") Create
+						select#mode-text
 							option(value="select") Select
 				div#layout.menu
 					section#bars

@@ -143,7 +143,7 @@ header nav .menu section label#dot-notes-label {
   top: -.15rem;
 }
 
-header nav .menu section label#font-size-label, header nav .menu section label#font-label {
+header nav .menu section label#font-size-label {
   margin-left: .4rem;
 }
 
@@ -181,6 +181,11 @@ header nav .menu section button:active {
 }
 
 header nav .menu section select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+header nav .menu section textarea {
   font-family: inherit;
   font-size: inherit;
 }

@@ -69,7 +69,7 @@ class Score {
 		}
 	}
 	updateDemoNote() {
-		if (this.mode === 'create') {
+		if (this.mode === 'create' && this.menu_mode === 'note' || this.menu_mode === 'gracenote') {
 			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
 			this.demo_note.draw(this.menu_mode,this.stave.getCoordFromNoteName,this.stave.getStavenum);
 		}
@@ -162,6 +162,11 @@ class Score {
 			if (bl.checkIfSelected(mouseX,mouseY)) return bl;
 		}
 	}
+	getSelectedText() {
+		for (const text of this.texts) {
+			if (text.checkIfSelected(mouseX,mouseY)) return text;
+		}
+	}
 	deselectAllNotes() {
 		this.selectedNotes.forEach(note => {
 			note.deselect();
@@ -195,7 +200,8 @@ class Score {
 		const selected_bar = this.selectedBarlines[0];
 		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
 		const index = ordered_bars.indexOf(selected_bar);
-		if (index != 0) {
+		if (index === -1) return;
+		else if (index != 0) {
 			const other_bar = ordered_bars[index-1];
 			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
 			const x = actual_x%width;
@@ -267,6 +273,7 @@ class Score {
 				const selected_note = this.getSelectedNote();
 				const selected_gracenote = this.getSelectedGracenote();
 				const selected_barline = this.getSelectedBarline();
+				const selected_text = this.getSelectedText();
 				if ((this.menu_mode === 'note') && (selected_note != null)) {
 					selected_note.selected = true;
 				} else if ((this.menu_mode === 'gracenote') && (selected_gracenote != null)) {
@@ -274,6 +281,8 @@ class Score {
 				} else if ((this.menu_mode === 'layout') && (selected_barline != null)) {
 					this.deselectAllBarlines();
 					selected_barline.selected = true;
+				} else if ((this.menu_mode === 'text') && (selected_text != null)) {
+					selected_text.selected = true;
 				} else {
 					this.deselectAllNotes();
 					this.deselectAllGracenotes();
@@ -318,6 +327,13 @@ class Score {
 			if (bl.selected) {
 				selected.push(bl);
 			}
+		}
+		return selected;
+	}
+	get selectedTexts() {
+		const selected = [];
+		for (const t of this.texts) {
+			if (t.selected) selected.push(t);
 		}
 		return selected;
 	}
@@ -382,7 +398,7 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0) || (this.selectedBarlines.length > 0)) {
+				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0) || (this.selectedBarlines.length > 0) || (this.selectedTexts.length > 0)) {
 					this.mouse_dragged_displacement = [0,0]
 					if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
 						this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
@@ -396,6 +412,9 @@ class Score {
 					});
 					this.selectedBarlines.forEach(bl => {
 						bl.drag(...this.mouse_dragged_displacement);
+					});
+					this.selectedTexts.forEach(t => {
+						t.drag(...this.mouse_dragged_displacement);
 					});
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
