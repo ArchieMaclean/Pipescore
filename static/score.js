@@ -71,7 +71,7 @@ class Score {
 		}
 	}
 	updateDemoNote() {
-		if (this.mode === 'create' && this.menu_mode === 'note' || this.menu_mode === 'gracenote') {
+		if (this.mode === 'create' && (this.menu_mode === 'note' || this.menu_mode === 'gracenote')) {
 			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
 			this.demo_note.draw(this.menu_mode,this.stave.getCoordFromNoteName,this.stave.getStavenum);
 		}
