@@ -27,6 +27,7 @@ class Score {
 		document.getElementById('add-bar-before').addEventListener('click',_ => this.addBarBefore());
 		document.getElementById('add-bar-after').addEventListener('click',_ => this.addBarAfter());
 		document.getElementById('delete-bar').addEventListener('click',_ => this.deleteSelectedNotes());
+		document.getElementById('delete-text').addEventListener('click',_ => this.deleteSelectedNotes());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -42,6 +43,7 @@ class Score {
 		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 	}
 	draw() {
+		document.getElementById('programmable-styles').innerHTML = '';
 		background(255);
 		this.updateNoteMode();
 		this.stave.draw();
@@ -90,6 +92,11 @@ class Score {
 	}
 	drawText() {
 		this.texts.forEach(text => text.draw());
+		this.texts.forEach(text => {
+			if (text.text.length === 0 && text.selected === false) {
+				this.texts.splice(this.texts.indexOf(text),1);	// Will miss if more than one text, but can always get it next time func is called
+			}
+		})
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();
@@ -172,6 +179,7 @@ class Score {
 			note.deselect();
 		});
 		this.box_select = false;
+		this.texts.forEach(text => text.selected = false);
 	}
 	deselectAllGracenotes() {
 		this.gracenotes.forEach(note => {
@@ -185,6 +193,9 @@ class Score {
 		});
 		this.box_select = false;
 	}
+	deselectAllText() {
+		this.texts.forEach(t => t.selected = false);
+	}
 	deleteSelectedNotes() {
 		this.selectedNotes.forEach(note => {
 			this.notes.splice(this.notes.indexOf(note),1)
@@ -194,6 +205,9 @@ class Score {
 		});
 		this.selectedBarlines.forEach(bl => {
 			this.barlines.splice(this.barlines.indexOf(bl),1);
+		});
+		this.selectedTexts.forEach(text => {
+			this.texts.splice(this.texts.indexOf(text),1);
 		});
 	}
 	addBarBefore() {
@@ -282,11 +296,12 @@ class Score {
 					this.deselectAllBarlines();
 					selected_barline.selected = true;
 				} else if ((this.menu_mode === 'text') && (selected_text != null)) {
-					selected_text.selected = true;
+					selected_text.select();
 				} else {
 					this.deselectAllNotes();
 					this.deselectAllGracenotes();
 					this.deselectAllBarlines();
+					this.deselectAllText();
 					this.box_select = true;
 				}
 			}
@@ -375,23 +390,23 @@ class Score {
 					document.querySelector(`#mode-${this.menu_mode}`).value = 'create';
 				}
 			}
-		} else if (keyCode === 71) {	// g - group
-			if (this.mode === "select") {
-				this.groupSelectedNotes();
+		} else {
+			if (keyCode === 71) {	// g - group
+				if (this.mode === "select") {
+					this.groupSelectedNotes();
+				}
+			} else if (keyCode === 85) { // u - ungroup
+				if (this.mode === 'select') {
+					this.ungroupSelectedNotes();
+				}
+			} else if (keyCode === 68) { // d - dot
+				document.getElementById('dot-notes-button').checked = !document.getElementById('dot-notes-button').checked;
+				if (this.mode ==='select') {
+					this.dotSelectedNotes();
+				}
+			} else if (keyCode === 46) {	// delete
+				this.deleteSelectedNotes();
 			}
-		} else if (keyCode === 85) { // u - ungroup
-			if (this.mode === 'select') {
-				this.ungroupSelectedNotes();
-			}
-		} else if (keyCode === 68) { // d - dot
-			if (this.mode ==='select') {
-				this.dotSelectedNotes();
-			}
-		} else if (keyCode === 46) {	// delete
-			this.deleteSelectedNotes();
-		} else if (keyCode === 78) {	// n - switch to note menu
-			document.querySelectorAll('.menu-title').forEach(l => l.classList.remove('viewing'));
-			document.querySelector('#note-title').classList.add('viewing');
 		}
 	}
 	mouseDraggedUpdate() {
@@ -448,8 +463,8 @@ class Score {
 		this.mouse_dragged = true;
 	}
 	dotSelectedNotes() {
-		const dotted = ! document.getElementById('dot-notes-button').checked;
-		this.selectedNotes.forEach(n => n.dotted =! dotted);
+		const dotted = !document.getElementById('dot-notes-button').checked;
+		this.selectedNotes.forEach(n => n.dotted = !dotted);
 	}
 	groupSelectedNotes() {
 		const selected_notes = this.selectedNotes;
