@@ -88,6 +88,11 @@ header {
 				resize: none;
 				padding: .2rem;
 				margin: .2rem;
+				font-family: inherit;
+				font-size: inherit;
+				&:disabled {
+					cursor: not-allowed;
+				}
 			}
 			section {
 				padding: .5rem 2rem;
@@ -159,10 +164,6 @@ header {
 					font-family: inherit;
 					font-size: inherit;
 				}
-				textarea {
-					font-family: inherit;
-					font-size: inherit;
-				}
 				a {
 					color:inherit;
 				}
@@ -207,7 +208,7 @@ header {
 #too-small {
 	display: none;
 }
-
+/*
 @media only screen and (max-width: 1050px) {
 	body * {
 		display: none;
@@ -224,14 +225,11 @@ header {
 			text-align: center;
 		}
 	}
-}
+}*/
 
-@supports (display: grid) {
-	#grid-unsupported {
-		display: none;
-	}
+#grid-unsupported {
+	display: none;
 }
-
 @supports not (display: grid) {
 	#grid-unsupported {
 		display: block;

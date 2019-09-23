@@ -28,13 +28,14 @@ class Score {
 		document.getElementById('add-bar-after').addEventListener('click',_ => this.addBarAfter());
 		document.getElementById('delete-bar').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('delete-text').addEventListener('click',_ => this.deleteSelectedNotes());
+		document.getElementById('add-text').addEventListener('click',_ => this.addText());
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
 		this.menu_mode = 'note';
 		this.notes = [];
 		this.gracenotes = [];
-		this.texts = [new Text(100,100)];
+		this.texts = [new Text(width/2-100,50)];
 		this.barlines = [new Barline(250,this.stave.offset,this.stave),new Barline(500,this.stave.offset,this.stave),new Barline(750,this.stave.offset,this.stave),new Barline(1019,this.stave.offset,this.stave)];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
@@ -194,7 +195,7 @@ class Score {
 		this.box_select = false;
 	}
 	deselectAllText() {
-		this.texts.forEach(t => t.selected = false);
+		this.texts.forEach(t => t.deselect());
 	}
 	deleteSelectedNotes() {
 		this.selectedNotes.forEach(note => {
@@ -209,6 +210,9 @@ class Score {
 		this.selectedTexts.forEach(text => {
 			this.texts.splice(this.texts.indexOf(text),1);
 		});
+	}
+	addText() {
+		this.texts.push(new Text(25+Math.random()*(width-50),Math.random()*25+25))
 	}
 	addBarBefore() {
 		const selected_bar = this.selectedBarlines[0];

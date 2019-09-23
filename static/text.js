@@ -2,25 +2,26 @@ class Text {
     constructor(x,y) {
         this.x = x;
         this.y = y;
-        this.text = "Title";
+        this.text = "-no text-";
         this.font_size = 16;
         this.width = 200;
-        this.height = 16;
+        this.height = 20;
         this.selected = false;
     }
     draw() {
         this.update();
         textAlign(CENTER,TOP);
-        textSize(this.font_size);
         strokeWeight(0);
         fill(this.selected ? SELECTED_COLOUR : 0);
+        textSize(this.font_size);
         text(this.text,this.x,this.y,this.width,this.height);
-        if (this.selected && this.checkIfSelected(mouseX,mouseY)) {
-            document.getElementById('programmable-styles').innerHTML += '* {cursor:grab}'
+        if (this.selected) {
             fill(0,0,0,0);
             stroke(SELECTED_COLOUR);
             strokeWeight(3);
             rect(this.x-5,this.y-5,this.width+10,this.height+10);
+            if (this.checkIfSelected(mouseX,mouseY)) document.getElementById('programmable-styles').innerHTML += '* {cursor:grab}';
+
         }
     }
     checkIfSelected(x,y) {
@@ -29,11 +30,25 @@ class Text {
     update() {
         if (this.selected) {
             this.text = document.querySelector('#textarea').value;
+            this.font_size = parseInt(document.querySelector('#font-size').value);
         }
     }
     select() {
         this.selected = true;
-        document.querySelector('#textarea').value = this.text;
+        const textarea = document.querySelector('#textarea');
+        textarea.value = this.text;
+        textarea.disabled = false;
+        textarea.placeholder = 'Textbox text here...';
+    }
+    deselect() {
+        this.selected = false;
+        if (this.text === '') {
+            this.text = '-no text-';
+        }
+        const textarea = document.querySelector('#textarea');
+        textarea.value = '';
+        textarea.disabled = true;
+        textarea.placeholder = 'Select a textbox...';
     }
     drag(dx,dy) {
         this.x += dx;
