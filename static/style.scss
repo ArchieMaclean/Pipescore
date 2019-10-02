@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap');
+
+$minimum-width: 1050px;
+
+
+$color-theme: (
+	primary: #26A5FF,
+	secondary: #BDE4FF,
+	background: #E2E2E2,
+);
+
+@function theme($color-name) {
+	@return map-get($map: $color-theme, $key: $color-name)
+}
+
+body {
+    font-family: Montserrat;
+    background: theme('background');
+    margin: 0;
+}
+
+noscript {
+	display: block;
+	margin: .5rem auto;
+	background: white;
+	padding: 1rem;
+	width: 50%;
+	border-radius: .4rem;
+	text-align: center;
+}
+
+header {
+    background: theme('secondary');
+    padding: 0em;
+    position: sticky;
+    top: 0;
+	grid-template-rows:1fr;
+	grid-template-columns: 1fr 5fr;
+	margin: 0;
+
+	nav {
+		margin: 0;
+		user-select: none;
+
+		ul#menu-titles {
+			padding: 0;
+			margin: 0;
+			width: 60%;
+			display: flex;
+
+			li {
+				list-style-type: none;
+				text-align: center;
+				font-weight: 600;
+				padding: .5em;
+				flex: 1;
+
+				&#title {
+					font-weight: 700;
+					flex: 2;
+				}
+
+				&.menu-title {
+					cursor: pointer;
+					color: #747474;
+				}
+				&.viewing {
+					background: theme('primary');
+					color: #fff;
+				}
+			}
+		}
+		.menu {
+			background: theme('primary');
+			display: none;
+			width: 100%;
+			height: 5rem;
+			color: #fff;
+
+			&.viewing {
+				display: flex;
+			}
+
+			& > * {
+				flex: 1;
+			}
+			textarea {
+				resize: none;
+				padding: .2rem;
+				margin: .2rem;
+				font-family: inherit;
+				font-size: inherit;
+				&:disabled {
+					cursor: not-allowed;
+				}
+			}
+			section {
+				padding: .5rem 2rem;
+				font-size: .9rem;
+
+				&.mode-section {
+					flex: 0 0 2rem;
+				}
+				&#apply-to-selected-gracenotes {
+					flex: .4;
+				}
+
+				h1 {
+					margin: 0 0 1rem;
+					padding: 0;
+					font-weight: normal;
+					font-size: 1rem;
+					border-bottom: 1px solid;
+				}
+				ul#note-ul {
+					padding: 0;
+					margin: 0;
+					display: flex;
+
+					li {
+						list-style-type: none;
+						margin: 0 .2rem;
+						border-radius: 1rem;
+					}
+				}
+				label#dot-notes-label {
+					padding: .2rem;
+					position: relative;
+					top: -.15rem;
+				}
+				label#font-size-label {
+					margin-left: .4rem;
+				}
+				input[type="number"] {
+					width: 4rem;
+				}
+				input[type="radio"] {
+					display: none;
+				}
+				
+				input[type="radio"]+label {
+					cursor: pointer;
+					padding: .2rem;
+					border-radius: .2rem;
+				}
+				
+				input[type="radio"]:checked+label {
+					background: theme('secondary');
+					color: #000;
+				}
+				button {
+					font-family: inherit;
+					font-size: inherit;
+					background: theme('secondary');
+					border-radius: .2rem;
+					border: 1px solid darken(theme('secondary'),20%);
+					margin: 0 calc(.2rem-2px);
+					&:active {
+						color: white;
+						background: theme('primary');
+					}
+				}
+				select {
+					font-family: inherit;
+					font-size: inherit;
+				}
+				a {
+					color:inherit;
+				}
+			}
+		}
+
+	}
+}
+
+
+
+#page {
+	display: block;
+	margin: 1em;
+	margin-right: auto;
+	margin-left: auto;
+	width: 1050px; /*  need to find better way */
+}
+
+
+
+#error {
+	display: none;
+	background: red;
+	margin: 0;
+	position: fixed;
+	z-index: 1;
+	bottom: 0;
+	right: 0;
+	padding: .5rem;
+	border-radius: 1rem 0 0 0;
+	transition: display 1s;
+
+	p {
+		background: lighten(red,20%);
+		margin: 0;
+		padding: 1rem;
+		border-radius: .5rem 0 0 0;
+	}
+}
+
+#too-small {
+	display: none;
+}
+/*
+@media only screen and (max-width: 1050px) {
+	body * {
+		display: none;
+	}
+	#too-small {
+		display: block;
+		width: 100%;
+		height: 100%;
+
+		* {
+			display: block;
+			margin: 1rem auto;
+			padding: 0 .5rem;
+			text-align: center;
+		}
+	}
+}*/
+
+#grid-unsupported {
+	display: none;
+}
+@supports not (display: grid) {
+	#grid-unsupported {
+		display: block;
+		width: 100%;
+		height: 100%;
+
+		* {
+			display: block;
+			margin: 1rem auto;
+			padding: 0 .5rem;
+			text-align: center;
+		}
+	}
+}
