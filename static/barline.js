@@ -12,9 +12,10 @@ class Barline {
         this.selected = false;
     }
     draw() {
-        // For some reason, gracenotes added with button have furry edges
+        // For some reason, barlines added with button have furry edges
         (this.selected) ? stroke(SELECTED_COLOUR) : stroke(0);
         strokeWeight(2);
+        fill(0);
         const [x,y] = this.getCanvasCoord(this.actual_x,this.actual_y);
         if (!this.selected) {
             this.x = x;

@@ -215,6 +215,7 @@ class Score {
 		this.texts.push(new Text(25+Math.random()*(width-50),Math.random()*25+25))
 	}
 	addBarBefore() {
+		if (this.selectedBarlines.length === 0) return;
 		const selected_bar = this.selectedBarlines[0];
 		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
 		const index = ordered_bars.indexOf(selected_bar);
@@ -233,6 +234,7 @@ class Score {
 		}
 	}
 	addBarAfter() {
+		if (this.selectedBarlines.length === 0) return;
 		const selected_bar = this.selectedBarlines[0];
 		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
 		const index = ordered_bars.indexOf(selected_bar);

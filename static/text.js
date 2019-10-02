@@ -7,6 +7,7 @@ class Text {
         this.width = 200;
         this.height = 20;
         this.selected = false;
+        this.resizing = false;
     }
     draw() {
         this.update();
@@ -25,12 +26,15 @@ class Text {
         }
     }
     checkIfSelected(x,y) {
-        return ((x > this.x) && (x < (this.x+this.width)) && (y > this.y) && (y < (this.y+this.height)));
+        if ((x > this.x) && (x < (this.x+this.width)) && (y > this.y) && (y < (this.y+this.height))) {
+            return true;
+        }
     }
     update() {
         if (this.selected) {
             this.text = document.querySelector('#textarea').value;
             this.font_size = parseInt(document.querySelector('#font-size').value);
+            if (mouseX > (this.x+this.width-CLICK_MARGIN) && mouseX < (this.x+this.width+CLICK_MARGIN) && mouseY > (this.y+this.height-CLICK_MARGIN) && mouseY < (this.y+this.height+CLICK_MARGIN)) console.log('resizing');
         }
     }
     select() {
@@ -51,7 +55,11 @@ class Text {
         textarea.placeholder = 'Select a textbox...';
     }
     drag(dx,dy) {
-        this.x += dx;
-        this.y += dy;
+        if (this.resizing) {
+            
+        } else {
+            this.x += dx;
+            this.y += dy;
+        }
     }
 }
