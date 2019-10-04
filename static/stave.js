@@ -99,6 +99,11 @@ class Stave {
             default:
                 return (y+3*STAVELINEWIDTH);
         }
-
+    }
+    addStave() {
+        ++this.num_staves;
+    }
+    removeStave() {
+        --this.num_staves;
     }
 }

@@ -29,6 +29,9 @@ class Score {
 		document.getElementById('delete-bar').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('delete-text').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('add-text').addEventListener('click',_ => this.addText());
+		document.getElementById('add-stave').addEventListener('click',_ => this.stave.addStave());
+		document.getElementById('remove-stave').addEventListener('click',_ => this.stave.removeStave());
+
 
 		this.mode = 'create';
 		this.note_mode = 'crotchet';
@@ -36,7 +39,9 @@ class Score {
 		this.notes = [];
 		this.gracenotes = [];
 		this.texts = [new Text(width/2-100,50)];
-		this.barlines = [new Barline(250,this.stave.offset,this.stave),new Barline(500,this.stave.offset,this.stave),new Barline(750,this.stave.offset,this.stave),new Barline(1019,this.stave.offset,this.stave)];
+		// Add barlines to top line
+		// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
+		this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
