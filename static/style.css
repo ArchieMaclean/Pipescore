@@ -121,6 +121,12 @@ header nav .menu section#apply-to-selected-gracenotes {
           flex: .4;
 }
 
+header nav .menu section#font-properties {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+
 header nav .menu section h1 {
   margin: 0 0 1rem;
   padding: 0;

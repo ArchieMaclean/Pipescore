@@ -101,10 +101,16 @@ html(lang="en")
 						button#add-text Add
 						button#delete-text Delete
 					section#font-properties
-						h1.title Font Properties
+						h1.title Properties
 						label#font-size-label
 							span Font size:
 							input#font-size(type="number", value="16")
+						label
+							span Box width:
+							input#textbox-width(type="number", value="0")
+						label
+							span Box height:
+							input#textbox-height(type="number", value="0")
 					textarea#textarea(placeholder="Select a textbox...",disabled)
 					section.mode-section
 						h1.title Mode

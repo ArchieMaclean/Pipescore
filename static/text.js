@@ -7,7 +7,6 @@ class Text {
         this.width = 200;
         this.height = 20;
         this.selected = false;
-        this.resizing = false;
     }
     draw() {
         this.update();
@@ -21,6 +20,7 @@ class Text {
             stroke(SELECTED_COLOUR);
             strokeWeight(3);
             rect(this.x-5,this.y-5,this.width+10,this.height+10);
+            console.log(this.width,this.height);
             if (this.checkIfSelected(mouseX,mouseY)) document.getElementById('programmable-styles').innerHTML += '* {cursor:grab}';
 
         }
@@ -34,7 +34,8 @@ class Text {
         if (this.selected) {
             this.text = document.querySelector('#textarea').value;
             this.font_size = parseInt(document.querySelector('#font-size').value);
-            if (mouseX > (this.x+this.width-CLICK_MARGIN) && mouseX < (this.x+this.width+CLICK_MARGIN) && mouseY > (this.y+this.height-CLICK_MARGIN) && mouseY < (this.y+this.height+CLICK_MARGIN)) console.log('resizing');
+            this.width = parseInt(document.querySelector('#textbox-width').value);
+            this.height = parseInt(document.querySelector('#textbox-height').value);
         }
     }
     select() {
@@ -43,6 +44,8 @@ class Text {
         textarea.value = this.text;
         textarea.disabled = false;
         textarea.placeholder = 'Textbox text here...';
+        document.querySelector('#textbox-width').value = this.width;
+        document.querySelector('#textbox-height').value = this.height;
     }
     deselect() {
         this.selected = false;
@@ -55,11 +58,7 @@ class Text {
         textarea.placeholder = 'Select a textbox...';
     }
     drag(dx,dy) {
-        if (this.resizing) {
-            
-        } else {
-            this.x += dx;
-            this.y += dy;
-        }
+        this.x += dx;
+        this.y += dy;
     }
 }
