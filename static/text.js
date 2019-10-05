@@ -20,8 +20,8 @@ class Text {
             stroke(SELECTED_COLOUR);
             strokeWeight(3);
             rect(this.x-5,this.y-5,this.width+10,this.height+10);
-            console.log(this.width,this.height);
             if (this.checkIfSelected(mouseX,mouseY)) document.getElementById('programmable-styles').innerHTML += '* {cursor:grab}';
+            document.querySelector('#textarea').focus();
 
         }
     }

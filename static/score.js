@@ -98,11 +98,6 @@ class Score {
 	}
 	drawText() {
 		this.texts.forEach(text => text.draw());
-		this.texts.forEach(text => {
-			if (text.text.length === 0 && text.selected === false) {
-				this.texts.splice(this.texts.indexOf(text),1);	// Will miss if more than one text, but can always get it next time func is called
-			}
-		})
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();

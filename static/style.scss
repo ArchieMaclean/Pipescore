@@ -48,6 +48,8 @@ header {
 			width: 60%;
 			display: flex;
 
+			
+
 			li {
 				list-style-type: none;
 				text-align: center;
@@ -58,6 +60,23 @@ header {
 				&#title {
 					font-weight: 700;
 					flex: 2;
+
+					div#pipescore-dropdown {
+						display: none;
+					}
+
+					&:hover > div#pipescore-dropdown {
+						display: block;
+						padding-top: 1rem;
+						margin: 0;
+						position: absolute;
+						background: theme('secondary');
+
+						ul {
+							margin: 0;
+							padding: 0;
+						}
+					}
 				}
 
 				&.menu-title {
@@ -70,6 +89,7 @@ header {
 				}
 			}
 		}
+
 		.menu {
 			background: theme('primary');
 			display: none;

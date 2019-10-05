@@ -62,6 +62,23 @@ header nav ul#menu-titles li#title {
           flex: 2;
 }
 
+header nav ul#menu-titles li#title div#pipescore-dropdown {
+  display: none;
+}
+
+header nav ul#menu-titles li#title:hover > div#pipescore-dropdown {
+  display: block;
+  padding-top: 1rem;
+  margin: 0;
+  position: absolute;
+  background: #BDE4FF;
+}
+
+header nav ul#menu-titles li#title:hover > div#pipescore-dropdown ul {
+  margin: 0;
+  padding: 0;
+}
+
 header nav ul#menu-titles li.menu-title {
   cursor: pointer;
   color: #747474;

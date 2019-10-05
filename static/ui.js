@@ -18,3 +18,5 @@ const note_modes = [...document.getElementsByName('note')];
 note_modes.forEach(note_mode => {
 	document.getElementById(note_mode.id).addEventListener('change',() => score.noteModeChanged());
 });
+
+document.getElementById('gracenote-type').addEventListener('click', _ => document.getElementById('place-gracenote').click());
