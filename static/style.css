@@ -72,6 +72,8 @@ header nav ul#menu-titles li#title:hover > div#pipescore-dropdown {
   margin: 0;
   position: absolute;
   background: #BDE4FF;
+  left: 0;
+  text-align: left;
 }
 
 header nav ul#menu-titles li#title:hover > div#pipescore-dropdown ul {
