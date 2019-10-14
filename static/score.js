@@ -175,6 +175,11 @@ class Score {
 			if (bl.checkIfSelected(mouseX,mouseY)) return bl;
 		}
 	}
+	getSelectedTimeSignature() {
+		for (const ts of this.time_sigs) {
+			if (ts.checkIfSelected(mouseX,mouseY)) return ts;
+		}
+	}
 	getSelectedText() {
 		for (const text of this.texts) {
 			if (text.checkIfSelected(mouseX,mouseY)) return text;
@@ -299,6 +304,7 @@ class Score {
 				const selected_gracenote = this.getSelectedGracenote();
 				const selected_barline = this.getSelectedBarline();
 				const selected_text = this.getSelectedText();
+				const selected_time_sig = this.getSelectedTimeSignature();
 				if ((this.menu_mode === 'note') && (selected_note != null)) {
 					selected_note.selected = true;
 				} else if ((this.menu_mode === 'gracenote') && (selected_gracenote != null)) {
@@ -306,6 +312,8 @@ class Score {
 				} else if ((this.menu_mode === 'layout') && (selected_barline != null)) {
 					this.deselectAllBarlines();
 					selected_barline.selected = true;
+				} else if ((this.menu_mode === 'layout') && (selected_time_sig != null)) {
+					selected_time_sig.selected = true;
 				} else if ((this.menu_mode === 'text') && (selected_text != null)) {
 					selected_text.select();
 				} else {
@@ -352,6 +360,15 @@ class Score {
 		for (const bl of this.barlines) {
 			if (bl.selected) {
 				selected.push(bl);
+			}
+		}
+		return selected;
+	}
+	get selectedTimeSignatures() {
+		const selected = [];
+		for (const ts of this.time_sigs) {
+			if (ts.selected) {
+				selected.push(ts);
 			}
 		}
 		return selected;
@@ -424,7 +441,8 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0) || (this.selectedBarlines.length > 0) || (this.selectedTexts.length > 0)) {
+				// Need to do something about this
+				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0) || (this.selectedBarlines.length > 0) || (this.selectedTexts.length > 0) || (this.selectedTimeSignatures.length > 0)) {
 					this.mouse_dragged_displacement = [0,0]
 					if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
 						this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
@@ -442,6 +460,9 @@ class Score {
 					this.selectedTexts.forEach(t => {
 						t.drag(...this.mouse_dragged_displacement);
 					});
+					this.selectedTimeSignatures.forEach(ts => {
+						ts.drag(...this.mouse_dragged_displacement);
+					})
 					this.mouse_last_x_y = [mouseX,mouseY];
 					this.mouse_dragged_displacement = [0,0];
 					

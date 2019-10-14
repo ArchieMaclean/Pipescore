@@ -10,6 +10,8 @@ class Barline {
         this.x = x;
         this.y = y;
         this.selected = false;
+
+        this.click_margin = 10;
     }
     draw() {
         // For some reason, barlines added with button have furry edges
@@ -47,7 +49,7 @@ class Barline {
         this.actual_y = actual_coords[1];
     }
     checkIfSelected(x,y) {
-        const margin = 10;
+        const margin = this.click_margin;
         if ((x > (this.x-margin)) && (x < (this.x+margin)) && (y > this.y) && (y < (this.y+4*STAVELINEWIDTH))) return true;
         return false;
     }

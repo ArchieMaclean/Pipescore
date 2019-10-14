@@ -3,6 +3,7 @@ class TimeSignature extends Barline {
         super(x,y,stave);
         this.numerator = 4;
         this.denominator = 4;
+        this.click_margin = 30;
     }
     draw() {
         const [x,y] = this.getCanvasCoord(this.actual_x,this.actual_y);
@@ -10,6 +11,7 @@ class TimeSignature extends Barline {
             this.x = x;
             this.y = y;
         }
+        (this.selected) ? fill(SELECTED_COLOUR) : fill(0);
         const num_text = `${this.numerator}`;
         const den_text = `${this.denominator}`;
         strokeWeight(0);
