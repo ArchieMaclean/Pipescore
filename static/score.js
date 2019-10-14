@@ -39,7 +39,7 @@ class Score {
 		this.notes = [];
 		this.gracenotes = [];
 		this.texts = [new Text(width/2-100,50)];
-		this.time_sigs = [new TimeSignature(100,this.stave.offset,this.stave)];
+		this.time_sigs = [new TimeSignature(70,this.stave.offset,this.stave)];
 		// Add barlines to top line
 		// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
 		this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
@@ -328,8 +328,6 @@ class Score {
 					this.box_select = true;
 				}
 			}
-		} else if (mouseButton === CENTER) {
-			pdf.save();
 		}
 	}
 	mouseReleased() {
@@ -353,27 +351,21 @@ class Score {
 	get selectedGracenotes() {
 		const selected = [];
 		for (const note of this.gracenotes) {
-			if (note.selected) {
-				selected.push(note);
-			}
+			if (note.selected) selected.push(note);
 		}
 		return selected;
 	}
 	get selectedBarlines() {
 		const selected = [];
 		for (const bl of this.barlines) {
-			if (bl.selected) {
-				selected.push(bl);
-			}
+			if (bl.selected) selected.push(bl);
 		}
 		return selected;
 	}
 	get selectedTimeSignatures() {
 		const selected = [];
 		for (const ts of this.time_sigs) {
-			if (ts.selected) {
-				selected.push(ts);
-			}
+			if (ts.selected) selected.push(ts);
 		}
 		return selected;
 	}
@@ -445,8 +437,7 @@ class Score {
 		if (this.mode=='select') {
 			if (mouseButton === LEFT) {
 				if (this.box_select) this.boxSelect();
-				// Need to do something about this
-				else if ((this.selectedNotes.length > 0) || (this.selectedGracenotes.length > 0) || (this.selectedBarlines.length > 0) || (this.selectedTexts.length > 0) || (this.selectedTimeSignatures.length > 0)) {
+				else {
 					this.mouse_dragged_displacement = [0,0]
 					if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
 						this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
