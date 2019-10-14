@@ -39,6 +39,7 @@ class Score {
 		this.notes = [];
 		this.gracenotes = [];
 		this.texts = [new Text(width/2-100,50)];
+		this.time_sigs = [new TimeSignature(100,this.stave.offset,this.stave)];
 		// Add barlines to top line
 		// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
 		this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
@@ -56,6 +57,7 @@ class Score {
 		this.updateDemoNote();
 		this.drawNotes();
 		this.drawBarlines();
+		this.drawTimeSignatures();
 		this.drawText();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
@@ -98,6 +100,9 @@ class Score {
 	}
 	drawText() {
 		this.texts.forEach(text => text.draw());
+	}
+	drawTimeSignatures() {
+		this.time_sigs.forEach(time_sig => time_sig.draw());
 	}
 	drawNotes() {
 		this.equaliseNoteStemHeights();
