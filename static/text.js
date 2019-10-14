@@ -4,9 +4,15 @@ class Text {
         this.y = y;
         this.text = "-no text-";
         this.font_size = 16;
-        this.width = 200;
-        this.height = 20;
         this.selected = false;
+    }
+    get width() {
+        const largest_width = this.text.split('\n').sort((a,b) => b.length-a.length)[0];
+        return textWidth(`${largest_width} `);
+    }
+    get height() {
+        const row_height = this.text.split('\n').length;
+        return row_height * (this.font_size+8);
     }
     draw() {
         this.update();
@@ -34,8 +40,6 @@ class Text {
         if (this.selected) {
             this.text = document.querySelector('#textarea').value;
             this.font_size = parseInt(document.querySelector('#font-size').value);
-            this.width = parseInt(document.querySelector('#textbox-width').value);
-            this.height = parseInt(document.querySelector('#textbox-height').value);
         }
     }
     select() {
@@ -44,8 +48,6 @@ class Text {
         textarea.value = this.text;
         textarea.disabled = false;
         textarea.placeholder = 'Textbox text here...';
-        document.querySelector('#textbox-width').value = this.width;
-        document.querySelector('#textbox-height').value = this.height;
     }
     deselect() {
         this.selected = false;
