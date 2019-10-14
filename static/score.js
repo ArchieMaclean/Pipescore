@@ -204,6 +204,9 @@ class Score {
 		});
 		this.box_select = false;
 	}
+	deselectAllTimeSignatures() {
+		this.time_sigs.forEach(ts => ts.deselect());
+	}
 	deselectAllText() {
 		this.texts.forEach(t => t.deselect());
 	}
@@ -321,6 +324,7 @@ class Score {
 					this.deselectAllGracenotes();
 					this.deselectAllBarlines();
 					this.deselectAllText();
+					this.deselectAllTimeSignatures();
 					this.box_select = true;
 				}
 			}
