@@ -407,7 +407,7 @@ class Score {
 	}
 	keyPressed() {
 		if (keyCode === ESCAPE) {
-			if (this.menu_mode != 'layout') {
+			if ((this.menu_mode != 'layout') && (this.menu_mode != 'text')) {
 				if (this.mode === 'create') {
 					document.querySelector(`#mode-${this.menu_mode}`).value = 'select';
 				} else if (this.mode === 'select') {
