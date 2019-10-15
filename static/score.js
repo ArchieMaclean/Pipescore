@@ -31,6 +31,7 @@ class Score {
 		document.getElementById('add-text').addEventListener('click',_ => this.addText());
 		document.getElementById('add-stave').addEventListener('click',_ => this.stave.addStave());
 		document.getElementById('remove-stave').addEventListener('click',_ => this.stave.removeStave());
+		document.getElementById('delete-time-sig').addEventListener('click',_ => this.deleteSelectedNotes());
 
 
 		this.mode = 'create';
@@ -223,6 +224,9 @@ class Score {
 		this.selectedTexts.forEach(text => {
 			this.texts.splice(this.texts.indexOf(text),1);
 		});
+		this.selectedTimeSignatures.forEach(ts => {
+			this.time_sigs.splice(this.time_sigs.indexOf(ts));
+		});
 	}
 	addText() {
 		this.texts.push(new Text(25+Math.random()*(width-50),Math.random()*25+25))
@@ -316,7 +320,7 @@ class Score {
 					this.deselectAllBarlines();
 					selected_barline.selected = true;
 				} else if ((this.menu_mode === 'layout') && (selected_time_sig != null)) {
-					selected_time_sig.selected = true;
+					selected_time_sig.select();
 				} else if ((this.menu_mode === 'text') && (selected_text != null)) {
 					selected_text.select();
 				} else {

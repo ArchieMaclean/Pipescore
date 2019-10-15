@@ -119,6 +119,7 @@ header {
 			section {
 				padding: .5rem 2rem;
 				font-size: .9rem;
+				vertical-align: top;
 
 				&.mode-section {
 					flex: 0 0 2rem;
@@ -147,6 +148,16 @@ header {
 						list-style-type: none;
 						margin: 0 .2rem;
 						border-radius: 1rem;
+					}
+				}
+				div#time-sig-value {
+					display: inline-block;
+					position: absolute;
+					margin-left: 2rem;
+					margin-top: -.75rem;
+					* {
+						display: list-item;
+						width: 2rem;
 					}
 				}
 				label#dot-notes-label {

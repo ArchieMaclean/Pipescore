@@ -119,7 +119,14 @@ html(lang="en")
 						h1.title Bars
 						button#add-bar-before + Bar Before
 						button#add-bar-after + Bar After
-						button#delete-bar Delete Barline
+						button#delete-bar - Delete
+					section#time-sig
+						h1.title Time Signatures
+						button#add-time-sig + Add
+						button#delete-time-sig - Delete
+						div#time-sig-value
+							input#timesig-num(type="number",value="4")
+							input#timesig-den(type="number",value="4")
 					section#stave
 						h1.title Stave
 						button#add-stave + Add Stave

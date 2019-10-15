@@ -126,6 +126,7 @@ header nav .menu textarea:disabled {
 header nav .menu section {
   padding: .5rem 2rem;
   font-size: .9rem;
+  vertical-align: top;
 }
 
 header nav .menu section.mode-section {
@@ -166,6 +167,18 @@ header nav .menu section ul#note-ul li {
   list-style-type: none;
   margin: 0 .2rem;
   border-radius: 1rem;
+}
+
+header nav .menu section div#time-sig-value {
+  display: inline-block;
+  position: absolute;
+  margin-left: 2rem;
+  margin-top: -.75rem;
+}
+
+header nav .menu section div#time-sig-value * {
+  display: list-item;
+  width: 2rem;
 }
 
 header nav .menu section label#dot-notes-label {
