@@ -1,4 +1,8 @@
-let score;
+let score, time_sig_font;
+
+function preload() {
+	time_sig_font = loadFont('fonts/AbrilFatface-Regular.ttf');
+}
 
 function setup() {
 	const cnv = createCanvas(210*4,297*4);

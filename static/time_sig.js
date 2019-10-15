@@ -17,9 +17,12 @@ class TimeSignature extends Barline {
         strokeWeight(0);
         textAlign(LEFT);
         textStyle(NORMAL);
-        textSize(35);
-        const shove = 2;
+        textSize(28);
+        textFont(time_sig_font);
+        const shove = 7;
         text(num_text,x,y-shove,100,100);
         text(den_text,x,y+26-shove,100,100);
+
+        textFont('Montserrat');
     }
 }
