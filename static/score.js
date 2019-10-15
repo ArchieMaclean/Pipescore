@@ -32,6 +32,7 @@ class Score {
 		document.getElementById('add-stave').addEventListener('click',_ => this.stave.addStave());
 		document.getElementById('remove-stave').addEventListener('click',_ => this.stave.removeStave());
 		document.getElementById('delete-time-sig').addEventListener('click',_ => this.deleteSelectedNotes());
+		document.getElementById('add-time-sig').addEventListener('click',_ => this.addTimeSignature());
 
 
 		this.mode = 'create';
@@ -40,7 +41,7 @@ class Score {
 		this.notes = [];
 		this.gracenotes = [];
 		this.texts = [new Text(width/2-100,50)];
-		this.time_sigs = [new TimeSignature(70,this.stave.offset,this.stave)];
+		this.time_sigs = [new TimeSignature(80,this.stave.offset,this.stave)];
 		// Add barlines to top line
 		// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
 		this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
@@ -225,7 +226,7 @@ class Score {
 			this.texts.splice(this.texts.indexOf(text),1);
 		});
 		this.selectedTimeSignatures.forEach(ts => {
-			this.time_sigs.splice(this.time_sigs.indexOf(ts));
+			this.time_sigs.splice(this.time_sigs.indexOf(ts),1);
 		});
 	}
 	addText() {
@@ -267,6 +268,9 @@ class Score {
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
 			this.barlines.push(new Barline(x,y,this.stave));
 		}
+	}
+	addTimeSignature() {
+		this.time_sigs.push(new TimeSignature(Math.random()*(width-2*MARGIN)+MARGIN,0,this.stave));
 	}
 	mousePress() {
 		if (mouseButton === LEFT) {
