@@ -1,9 +1,12 @@
 class TimeSignature extends Barline {
     constructor(x,y,stave) {
         super(x,y,stave);
-        this.numerator = 4;
-        this.denominator = 4;
+        this.getNumsFromUI();
         this.click_margin = 30;
+    }
+    getNumsFromUI() {
+        this.numerator = parseInt(document.querySelector('#timesig-num').value);
+        this.denominator = parseInt(document.querySelector('#timesig-den').value);
     }
     draw() {
         const [x,y] = this.getCanvasCoord(this.actual_x,this.actual_y);
@@ -11,8 +14,7 @@ class TimeSignature extends Barline {
             this.x = x;
             this.y = y;
         } else {
-            this.numerator = parseInt(document.querySelector('#timesig-num').value);
-            this.denominator = parseInt(document.querySelector('#timesig-den').value);
+            this.getNumsFromUI();
         }
         (this.selected) ? fill(SELECTED_COLOUR) : fill(0);
         const num_text = `${this.numerator}`;
