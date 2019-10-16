@@ -16,6 +16,7 @@
   "homepage": "https://bitbucket.org/TheDragonsApprentice/pipescore#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "firebase-tools": "^7.6.0",
     "nodemon": "^1.19.1",
     "pug": "^2.0.4"
   }
