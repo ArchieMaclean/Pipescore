@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "pipescore",
     "public": "public",
     "ignore": [
       "firebase.json",
