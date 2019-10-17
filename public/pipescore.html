@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Pipescore is open source! Code is available at: https://bitbucket.org/TheDragonsApprentice/pipescore/src/master/-->
+
+<head>
+    <title>PipeScore</title>
+    <link rel="shortcut icon" href="static/images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/7.2.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="/__/firebase/7.2.0/firebase-analytics.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+    <script src="static/p5.pdf.js"></script>
+    <script src="static/stave.js"></script>
+    <script src="static/demonote.js"></script>
+    <script src="static/note.js"></script>
+    <script src="static/gracenote.js"></script>
+    <script src="static/barline.js"></script>
+    <script src="static/text.js"></script>
+    <script src="static/time_sig.js"></script>
+    <script src="static/score.js"></script>
+    <script src="static/script.js"></script>
+    <script defer src="static/ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+
+<body><noscript>Please enable JavaScript in your browser to use this app.</noscript>
+    <div id="grid-unsupported">
+        <p>Your browser doesn't support the latest spec. Consider downloading a modern browser (e.g. Chrome, Firefox).</p>
+    </div>
+    <div id="too-small"><img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Grinmacing_Face_Emoji_grande.png?v=1480481035" alt="Uh oh." width="80px" height="80px">
+        <p>Your screen's resolution is too low for this app - you need a bigger monitor. PipeScore is not yet supported for mobile devices or tablets.</p>
+        <p>We thank you for your patience.</p>
+    </div>
+    <div id="error">
+        <p>An unexplained error occurred. Try reloading the page.</p>
+    </div>
+    <header>
+        <nav>
+            <ul id="menu-titles">
+                <li id="title">PipeScore
+                    <div id="pipescore-dropdown">
+                        <ul>
+                            <li>Download</li>
+                            <li>Export as PDF</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="menu-title viewing" id="note-title">Note</li>
+                <li class="menu-title" id="gracenote-title">Gracenote</li>
+                <li class="menu-title" id="text-title">Text</li>
+                <li class="menu-title" id="layout-title">Layout</li>
+            </ul>
+            <div class="menu viewing" id="note">
+                <section id="note-type">
+                    <h1 class="title">Note type</h1>
+                    <ul id="note-ul">
+                        <li><input type="radio" name="note" value="semibreve" id="semibreve"><label for="semibreve">Semibreve</label></li>
+                        <li><input type="radio" name="note" value="minim" id="minim"><label for="minim">Minim</label></li>
+                        <li><input type="radio" name="note" value="crotchet" id="crotchet" checked><label for="crotchet">Crotchet</label></li>
+                        <li><input type="radio" name="note" value="quaver" id="quaver"><label for="quaver">Quaver</label></li>
+                        <li><input type="radio" name="note" value="semiquaver" id="semiquaver"><label for="semiquaver">Semiquaver</label></li>
+                        <li><input type="radio" name="note" value="demisemiquaver" id="demisemiquaver"><label for="demisemiquaver">Demisemiquaver</label></li>
+                        <li><label id="dot-notes-label" for="dot-notes">Dot</label><input type="checkbox" value="dot-notes" name="dot-notes" id="dot-notes-button"></li>
+                    </ul>
+                </section>
+                <section id="apply-to-selected">
+                    <h1 class="title">Apply to Selected</h1><button id="group-notes-button">Group</button><button id="ungroup-notes-button">Ungroup</button><button id="delete-notes-button">Delete</button></section>
+                <section class="mode-section">
+                    <h1 class="title">Mode</h1><select id="mode-note"><option value="create">Create</option><option value="select">Select</option></select></section>
+            </div>
+            <div class="menu" id="gracenote">
+                <section id="gracenote-mode">
+                    <h1 class="title">Gracenote Mode</h1><input type="radio" name="gracenote-mode" value="normal" id="normal" checked><label for="normal">Add Gracenote</label><input type="radio" name="gracenote-mode" value="place" id="place-gracenote"><label for="place-gracenote">Add Standard Embellishment <select id="gracenote-type"><option value="d-throw">Throw on D</option><option value="b-doubling">Doubling B</option><option value="c-doubling">Doubling C</option><option value="d-doubling">Doubling D</option><option value="e-doubling">Doubling E</option><option value="f-doubling">Doubling F</option></select></label></section>
+                <section
+                    id="apply-to-selected-gracenotes">
+                    <h1 class="title">Apply to Selected</h1><button id="delete-gracenotes-button">Delete</button></section>
+                    <section class="mode-section">
+                        <h1 class="title">Mode</h1><select id="mode-gracenote"><option value="create">Create</option><option value="select">Select</option></select></section>
+            </div>
+            <div class="menu" id="text">
+                <section id="apply-to-text">
+                    <h1 class="title">Apply</h1><button id="add-text">Add</button><button id="delete-text">Delete</button></section>
+                <section id="font-properties">
+                    <h1 class="title">Properties</h1><label id="font-size-label"><span>Font size:</span><input id="font-size" type="number" value="16"></label></section><textarea id="textarea" placeholder="Select a textbox..." disabled></textarea>
+                <section class="mode-section">
+                    <h1 class="title">Mode</h1><select id="mode-text"><option value="select">Select</option></select></section>
+            </div>
+            <div class="menu" id="layout">
+                <section id="bars">
+                    <h1 class="title">Bars</h1><button id="add-bar-before">+ Bar Before</button><button id="add-bar-after">+ Bar After</button><button id="delete-bar">- Delete</button></section>
+                <section id="time-sig">
+                    <h1 class="title">Time Signatures</h1><button id="add-time-sig">+ Add</button><button id="delete-time-sig">- Delete</button>
+                    <div id="time-sig-value"><input id="timesig-num" type="number" value="4"><input id="timesig-den" type="number" value="4"></div>
+                </section>
+                <section id="stave">
+                    <h1 class="title">Stave</h1><button id="add-stave">+ Add Stave</button><button id="remove-stave">- Remove Last Stave</button></section>
+                <section class="mode-section">
+                    <h1 class="title">Mode</h1><select id="mode-layout"><option value="select">Select</option></select></section>
+            </div>
+        </nav>
+    </header>
+    <div id="page"></div>
+    <style id="programmable-styles"></style>
+</body>
+
+</html>
