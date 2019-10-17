@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+$minimum-width: 1050px;
+
+
+$color-theme: (
+	primary: #26A5FF,
+	secondary: #BDE4FF,
+	background: #E2E2E2,
+);
+
+@function theme($color-name) {
+	@return map-get($map: $color-theme, $key: $color-name)
+}
+
+html,body {
+    height: 100%;
+    background: theme(primary);
+}
+
+main {
+    background: white;
+    width: 60%;
+    height: 60%;
+    margin: auto;
+    margin-top: 15%;
+    display: flex;
+    font-family: 'Roboto';
+
+    div {
+        flex: 1;
+        text-align: center;
+
+        h1 {
+            color: theme(primary);
+            font-size: 3rem;
+            margin-top: 60%;
+        }
+
+        p {
+            color: darken(theme(background),35);
+        }
+
+        &#right {
+            display: flex;
+            flex-direction: column;
+            div {
+                flex: 1;
+
+                button {
+                    font-family: inherit;
+                    font-size: 1.5rem;
+                    border-radius: .5rem;
+                    padding: .5rem 1rem;
+                    border: 2px solid theme(primary);
+                    a {
+                        color: white;
+                        text-decoration: none;
+                    }
+                }
+
+                &#top {
+                    button {
+                        background: theme(primary);
+                        margin-top: 60%;
+                    }
+                }
+
+                &#bottom {
+                    button {
+                        background: white;
+                        a {
+                            color: theme(primary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 784px) {
+    main {
+        flex-direction: column;
+        #left {
+            h1 {
+                margin-top: 3rem;
+            }
+        }
+        #right {
+            margin-top: 0;
+            #top {
+                padding: 0;
+                button {
+                    margin-top: 3rem    !important;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 394px) {
+    main {
+        width: 98%;
+        height: 80%;
+    }
+}

@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+html, body {
+  height: 100%;
+  background: #26A5FF;
+}
+
+main {
+  background: white;
+  width: 60%;
+  height: 60%;
+  margin: auto;
+  margin-top: 15%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: 'Roboto';
+}
+
+main div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  text-align: center;
+}
+
+main div h1 {
+  color: #26A5FF;
+  font-size: 3rem;
+  margin-top: 60%;
+}
+
+main div p {
+  color: #898989;
+}
+
+main div#right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main div#right div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+main div#right div button {
+  font-family: inherit;
+  font-size: 1.5rem;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  border: 2px solid #26A5FF;
+}
+
+main div#right div button a {
+  color: white;
+  text-decoration: none;
+}
+
+main div#right div#top button {
+  background: #26A5FF;
+  margin-top: 60%;
+}
+
+main div#right div#bottom button {
+  background: white;
+}
+
+main div#right div#bottom button a {
+  color: #26A5FF;
+}
+
+@media only screen and (max-width: 784px) {
+  main {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  main #left h1 {
+    margin-top: 3rem;
+  }
+  main #right {
+    margin-top: 0;
+  }
+  main #right #top {
+    padding: 0;
+  }
+  main #right #top button {
+    margin-top: 3rem    !important;
+  }
+}
+
+@media only screen and (max-width: 394px) {
+  main {
+    width: 98%;
+    height: 80%;
+  }
+}
+/*# sourceMappingURL=index.css.map */
