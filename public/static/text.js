@@ -7,8 +7,9 @@ class Text {
         this.selected = false;
     }
     get width() {
-        const largest_width = this.text.split('\n').sort((a,b) => b.length-a.length)[0];
-        return textWidth(`${largest_width} `);
+        const width_array = this.text.split('\n').map(t => textWidth(t));
+        const largest = Math.max(...width_array);
+        return largest+5;
     }
     get height() {
         const row_height = this.text.split('\n').length;
@@ -51,7 +52,7 @@ class Text {
     }
     deselect() {
         this.selected = false;
-        if (this.text === '') {
+        if (/^(\n|\s|\t)*$/.test(this.text)) {
             this.text = '-no text-';
         }
         const textarea = document.querySelector('#textarea');

@@ -2,3 +2,4 @@
 package-lock.json
 .sass-cache
 .firebase
+firebase-debug.log
