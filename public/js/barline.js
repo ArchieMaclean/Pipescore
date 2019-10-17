@@ -44,11 +44,9 @@ class Barline {
         }
         line(x,y,x,y+4*STAVELINEWIDTH);
     }
-    snapToStave(y) {
-        return this.offset + Math.floor((y-this.offset)/STAVEWIDTH);
-    }
     getActualCoord(x,y) {
-        const stave_height = (Math.floor((y-this.offset)/STAVEWIDTH) < 0) ? 0 : Math.floor((y-this.offset)/STAVEWIDTH);
+        const height = Math.floor((y+STAVEWIDTH/2-this.offset)/STAVEWIDTH);
+        const stave_height = (height < 0) ? 0 : height;
         x += stave_height*width;
         y = 0;
         return [x,y];

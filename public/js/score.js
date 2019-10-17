@@ -233,7 +233,7 @@ class Score {
 	}
 	deleteSelectedNotes() {
 		this.selectedNotes.forEach(note => {
-			this.notes.splice(this.notes.indexOf(note),1)
+			this.notes.splice(this.notes.indexOf(note),1);
 		});
 		this.selectedGracenotes.forEach(grace => {
 			this.gracenotes.splice(this.gracenotes.indexOf(grace),1);
@@ -242,6 +242,7 @@ class Score {
 			this.barlines.splice(this.barlines.indexOf(bl),1);
 		});
 		this.selectedTexts.forEach(text => {
+			text.deselect();
 			this.texts.splice(this.texts.indexOf(text),1);
 		});
 		this.selectedTimeSignatures.forEach(ts => {
