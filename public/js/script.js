@@ -21,7 +21,7 @@
 let score, time_sig_font;
 
 function preload() {
-	time_sig_font = loadFont('static/fonts/AbrilFatface-Regular.ttf');
+	time_sig_font = loadFont('../res/fonts/AbrilFatface-Regular.ttf');
 }
 
 function setup() {

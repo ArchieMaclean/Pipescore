@@ -31,9 +31,9 @@ class Score {
 	constructor() {
 		background(255);
 		strokeCap(SQUARE);
-		trebleClef = loadImage('static/images/trebleClef.png');     // 375 x 640
-		note_tail = loadImage('static/images/noteTail.png');          // 72 x 155
-		blue_note_tail = loadImage('static/images/blueNoteTail.png');
+		trebleClef = loadImage('../res/images/trebleClef.png');     // 375 x 640
+		note_tail = loadImage('../res/images/noteTail.png');          // 72 x 155
+		blue_note_tail = loadImage('../res/images/blueNoteTail.png');
 		this.stave = new Stave();
 		this.demo_note = new DemoNote();
 		
