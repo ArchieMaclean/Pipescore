@@ -33,23 +33,14 @@ main div p {
   color: #898989;
 }
 
-main div#right {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+main div#right a {
+  text-decoration: none;
+  cursor: pointer;
 }
 
-main div#right div {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-main div#right div button {
+main div#right a button {
+  cursor: pointer;
+  color: white;
   display: block;
   margin: auto;
   font-family: inherit;
@@ -59,23 +50,15 @@ main div#right div button {
   border: 2px solid #26A5FF;
 }
 
-main div#right div button a {
-  color: white;
-  text-decoration: none;
-}
-
-main div#right div button#login {
+main div#right a#login button {
   background: #26A5FF;
   margin-top: 60%;
   margin-bottom: .2rem;
 }
 
-main div#right div button#goto {
-  background: white;
-}
-
-main div#right div button#goto a {
+main div#right a#goto button {
   color: #26A5FF;
+  background: white;
 }
 
 @media only screen and (max-width: 784px) {
@@ -92,7 +75,7 @@ main div#right div button#goto a {
     margin-top: 0;
     padding: 0;
   }
-  main #right button#login {
+  main #right a#login button {
     margin-top: 3rem    !important;
   }
 }

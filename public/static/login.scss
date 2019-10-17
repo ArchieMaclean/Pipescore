@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+$color-theme: (
+	primary: #26A5FF,
+	secondary: #BDE4FF,
+	background: #E2E2E2,
+);
+
+@function theme($color-name) {
+	@return map-get($map: $color-theme, $key: $color-name)
+}
+
+html,body {
+    background: theme(primary);
+    padding-top: 5rem;
+    font-family: 'Roboto';
+    a {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        text-decoration: none;
+        font-family: inherit;
+        color: white;
+        text-decoration: underline;
+        font-size: 1.2rem;
+    }
+    button {
+        cursor: pointer;
+        display: block;
+        margin: auto;
+        font-family: inherit;
+        font-size: 1.5rem;
+        border-radius: .5rem;
+        padding: .5rem 1rem;
+        border: 2px solid white;
+        background: theme(primary);
+        color: white;
+    }
+}

@@ -39,12 +39,12 @@ main {
         }
 
         &#right {
-            display: flex;
-            flex-direction: column;
-            div {
-                flex: 1;
-
+            a {
+                text-decoration: none;
+                cursor: pointer;
                 button {
+                    cursor: pointer;
+                    color: white;
                     display: block;
                     margin: auto;
                     font-family: inherit;
@@ -52,23 +52,21 @@ main {
                     border-radius: .5rem;
                     padding: .5rem 1rem;
                     border: 2px solid theme(primary);
-                    a {
-                        color: white;
-                        text-decoration: none;
-                    }
                 }
+            }
 
-                button#login {
+            a#login {
+                button {
                     background: theme(primary);
                     margin-top: 60%;
                     margin-bottom: .2rem;
                 }
+            }
 
-                button#goto {
+            a#goto {
+                button {
+                    color: theme(primary);
                     background: white;
-                    a {
-                        color: theme(primary);
-                    }
                 }
             }
         }
@@ -87,7 +85,7 @@ main {
         #right {
             margin-top: 0;
             padding: 0;
-            button#login {
+            a#login button {
                 margin-top: 3rem    !important;
             }
         }
