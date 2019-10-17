@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
-html, body {
+body {
   height: 100%;
   background: #26A5FF;
 }
@@ -7,9 +7,8 @@ html, body {
 main {
   background: white;
   width: 60%;
-  height: 60%;
   margin: auto;
-  margin-top: 15%;
+  margin-top: 20vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -21,6 +20,7 @@ main div {
       -ms-flex: 1;
           flex: 1;
   text-align: center;
+  margin-bottom: 15vh;
 }
 
 main div h1 {
@@ -67,6 +67,7 @@ main div#right a#goto button {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+    margin-top: 1rem;
   }
   main #left h1 {
     margin-top: 3rem;
@@ -83,7 +84,6 @@ main div#right a#goto button {
 @media only screen and (max-width: 394px) {
   main {
     width: 98%;
-    height: 80%;
   }
 }
 /*# sourceMappingURL=index.css.map */
