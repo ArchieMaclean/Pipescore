@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-$minimum-width: 1050px;
-
-
 $color-theme: (
 	primary: #26A5FF,
 	secondary: #BDE4FF,
@@ -48,6 +45,8 @@ main {
                 flex: 1;
 
                 button {
+                    display: block;
+                    margin: auto;
                     font-family: inherit;
                     font-size: 1.5rem;
                     border-radius: .5rem;
@@ -59,19 +58,16 @@ main {
                     }
                 }
 
-                &#top {
-                    button {
-                        background: theme(primary);
-                        margin-top: 60%;
-                    }
+                button#login {
+                    background: theme(primary);
+                    margin-top: 60%;
+                    margin-bottom: .2rem;
                 }
 
-                &#bottom {
-                    button {
-                        background: white;
-                        a {
-                            color: theme(primary);
-                        }
+                button#goto {
+                    background: white;
+                    a {
+                        color: theme(primary);
                     }
                 }
             }
@@ -90,11 +86,9 @@ main {
         }
         #right {
             margin-top: 0;
-            #top {
-                padding: 0;
-                button {
-                    margin-top: 3rem    !important;
-                }
+            padding: 0;
+            button#login {
+                margin-top: 3rem    !important;
             }
         }
     }

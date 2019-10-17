@@ -50,6 +50,8 @@ main div#right div {
 }
 
 main div#right div button {
+  display: block;
+  margin: auto;
   font-family: inherit;
   font-size: 1.5rem;
   border-radius: .5rem;
@@ -62,16 +64,17 @@ main div#right div button a {
   text-decoration: none;
 }
 
-main div#right div#top button {
+main div#right div button#login {
   background: #26A5FF;
   margin-top: 60%;
+  margin-bottom: .2rem;
 }
 
-main div#right div#bottom button {
+main div#right div button#goto {
   background: white;
 }
 
-main div#right div#bottom button a {
+main div#right div button#goto a {
   color: #26A5FF;
 }
 
@@ -87,11 +90,9 @@ main div#right div#bottom button a {
   }
   main #right {
     margin-top: 0;
-  }
-  main #right #top {
     padding: 0;
   }
-  main #right #top button {
+  main #right button#login {
     margin-top: 3rem    !important;
   }
 }

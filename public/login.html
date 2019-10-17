@@ -4,30 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PipeScore</title>
-    <link rel="stylesheet" href="static/index.css">
+    <title>Log in / Sign up</title>
+</head>
+<body>
+    <button id="login-google" onclick="loginGoogle()">Login with Google</button>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="/__/firebase/7.2.0/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="/__/firebase/7.2.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.2.0/firebase-auth.js"></script>
 
     <!-- Initialize Firebase -->
     <script src="/__/firebase/init.js"></script>
-</head>
-<body>
-    <main>
-        <div id="left">
-            <h1>PipeScore</h1>
-            <p>Free, online bagpipe music notation.</p>
-        </div>
-        <div id="right">
-            <div id="buttons">
-                <button id="login"><a href="/login">Sign up / Log in</a></button>
-                <button id="goto"><a href="/pipescore">Go to PipeScore</a></button>
-            </div>
-        </div>
-    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', _ => {
+            const app = firebase.app();
+        });
+        function loginGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider);
+        }
+    </script>
 </body>
 </html>
