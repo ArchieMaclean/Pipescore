@@ -51,7 +51,7 @@ class Barline {
         y = 0;
         return [x,y];
     }
-    getCanvasCoord(x,y) {
+    getCanvasCoord(x) {
         let new_x = x%width;
         if (new_x > (MARGIN+this.stave_width)) new_x = MARGIN+this.stave_width;
         if (new_x < MARGIN) new_x = MARGIN;
@@ -71,7 +71,7 @@ class Barline {
         return false;
     }
     reset() {
-        this.x,this.y = this.getCanvasCoord(this.actual_x,this.actual_y);
+        [this.x,this.y] = this.getCanvasCoord(this.actual_x);
     }
     deselect() {
         this.selected = false;

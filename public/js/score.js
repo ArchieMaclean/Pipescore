@@ -259,11 +259,13 @@ class Score {
 			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			if (isNaN(x) || isNaN(y)) console.log(`NAN!!! ${x} ${y}`);
 			this.barlines.push(new Barline(x,y,this.stave));
 		} else {
 			const actual_x = (selected_bar.actual_x)/2;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			if (isNaN(x) || isNaN(y)) console.log(`NAN!!! ${x} ${y}`);
 			this.barlines.push(new Barline(x,y,this.stave));
 		}
 	}
@@ -277,11 +279,13 @@ class Score {
 			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			if (isNaN(x) || isNaN(y)) console.log(`NAN!!! ${x} ${y}`);
 			this.barlines.push(new Barline(x,y,this.stave));
 		} else {
 			const actual_x = selected_bar.actual_x + 50;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
+			if (isNaN(x) || isNaN(y)) console.log(`NAN!!! ${x} ${y}`);
 			this.barlines.push(new Barline(x,y,this.stave));
 		}
 	}
@@ -550,6 +554,7 @@ class Score {
 		obj.gracenotes = obj_values.gracenotes.map(g => new Gracenote(g.x,g.y,g.name,obj.stave.getActualCoordFromCanvasCoord));
 		obj.texts = obj_values.texts.map(t => new Text(t.x,t.y,t.text));
 		obj.time_sigs = obj_values.time_sigs.map(ts => new TimeSignature(ts.x,ts.y,obj.stave))
+		console.log(`----`);
 		obj.barlines = obj_values.barlines.map(b => new Barline(b.x,b.y,obj.stave));
 
 		return obj;
