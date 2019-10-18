@@ -18,10 +18,15 @@
 */
 
 class Stave {
-    constructor() {
-        this.offset = STAVEWIDTH;
+    constructor(setup=true,json=null) {
+        if (setup) {
+            this.offset = STAVEWIDTH;
+            this.num_staves = 3;
+        } else {
+            this.offset = json.offset;
+            this.num_staves = json.num_staves;
+        }
         this.getCoordFromNoteName = this.getCoordFromNoteName.bind(this);
-        this.num_staves = 3;
         this.getActualCoordFromCanvasCoord = this.getActualCoordFromCanvasCoord.bind(this);
         this.getStavenum = this.getStavenum.bind(this);
     }

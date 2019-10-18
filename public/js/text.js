@@ -18,10 +18,10 @@
 */
 
 class Text {
-    constructor(x,y) {
+    constructor(x,y,text="-no text-") {
         this.x = x;
         this.y = y;
-        this.text = "-no text-";
+        this.text = text;
         this.font_size = 16;
         this.selected = false;
     }

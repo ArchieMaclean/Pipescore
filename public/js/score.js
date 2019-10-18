@@ -27,12 +27,9 @@ const WHITE = [0,0,0,0];
 
 
 class Score {
-	constructor() {
+	constructor(setup=true) {
 		background(255);
 		strokeCap(SQUARE);
-		this.stave = new Stave();
-		this.demo_note = new DemoNote();
-		
 		// Using arrow functions means I don't have to this-bind
 		document.getElementById('dot-notes-button').addEventListener('click',_ => this.dotSelectedNotes());
 		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());
@@ -49,22 +46,25 @@ class Score {
 		document.getElementById('delete-time-sig').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('add-time-sig').addEventListener('click',_ => this.addTimeSignature());
 
-
-		this.mode = 'create';
-		this.note_mode = 'crotchet';
-		this.menu_mode = 'note';
-		this.notes = [];
-		this.gracenotes = [];
-		this.texts = [new Text(width/2-100,50)];
-		this.time_sigs = [new TimeSignature(80,this.stave.offset,this.stave)];
-		// Add barlines to top line
-		// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
-		this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
+		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
+		this.mode = 'create';
+		this.note_mode = 'crotchet';
+		this.menu_mode = 'note';
 
-		this.snapNoteToLine = this.snapNoteToLine.bind(this);
+		if (setup) {
+			this.stave = new Stave();
+			this.demo_note = new DemoNote();
+			this.notes = [];
+			this.gracenotes = [];
+			this.texts = [new Text(width/2-100,50)];
+			this.time_sigs = [new TimeSignature(80,this.stave.offset,this.stave)];
+			// Add barlines to top line
+			// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
+			this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
+		}
 	}
 	draw() {
 		document.getElementById('programmable-styles').innerHTML = '';
@@ -528,5 +528,30 @@ class Score {
 		this.selectedNotes.forEach(note=>{
 			note.unConnect();
 		});
+	}
+	toJSON() {
+		return JSON.stringify({
+			stave: this.stave,
+			notes: this.notes,
+			gracenotes: this.gracenotes,
+			texts: this.texts,
+			time_sigs: this.time_sigs,
+			barlines: this.barlines
+		});
+	}
+	static fromJSON(json) {
+		const obj = new this(setup=false);
+		const obj_values = JSON.parse(json);
+		
+		// No loops :(
+		obj.stave = new Stave(setup=false,json=obj_values.stave);
+		obj.demo_note = new DemoNote();
+		obj.notes = obj_values.notes.map(note => new Note(note.x,note.y,note.name,note.type,note.dotted,obj.stave.getActualCoordFromCanvasCoord));
+		obj.gracenotes = obj_values.gracenotes.map(g => new Gracenote(g.x,g.y,g.name,obj.stave.getActualCoordFromCanvasCoord));
+		obj.texts = obj_values.texts.map(t => new Text(t.x,t.y,t.text));
+		obj.time_sigs = obj_values.time_sigs.map(ts => new TimeSignature(ts.x,ts.y,obj.stave))
+		obj.barlines = obj_values.barlines.map(b => new Barline(b.x,b.y,obj.stave));
+
+		return obj;
 	}
 }
