@@ -51,11 +51,7 @@ function mouseRelease() {
 }
 
 function keyPressed() {
-	if (keyCode === 83) {
-		score = Score.fromJSON(score.toJSON());
-	} else {
-		score.keyPressed();
-	}
+	score.keyPressed();
 }
 
 function mouseDragged() {
