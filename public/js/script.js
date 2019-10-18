@@ -19,9 +19,13 @@
 
 
 let score, time_sig_font;
+let trebleClef,note_tail,blue_note_tail;	// images
 
 function preload() {
 	time_sig_font = loadFont('../res/fonts/AbrilFatface-Regular.ttf');
+	trebleClef = loadImage('../res/images/trebleClef.png');     // 375 x 640
+	note_tail = loadImage('../res/images/noteTail.png');          // 72 x 155
+	blue_note_tail = loadImage('../res/images/blueNoteTail.png');
 }
 
 function setup() {

@@ -25,15 +25,11 @@ const CLICK_MARGIN = 5;
 const BLACK = 0;
 const WHITE = [0,0,0,0];
 
-let trebleClef,note_tail,blue_note_tail;	// images
 
 class Score {
 	constructor() {
 		background(255);
 		strokeCap(SQUARE);
-		trebleClef = loadImage('../res/images/trebleClef.png');     // 375 x 640
-		note_tail = loadImage('../res/images/noteTail.png');          // 72 x 155
-		blue_note_tail = loadImage('../res/images/blueNoteTail.png');
 		this.stave = new Stave();
 		this.demo_note = new DemoNote();
 		
