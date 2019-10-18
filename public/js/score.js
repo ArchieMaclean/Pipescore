@@ -530,18 +530,18 @@ class Score {
 		});
 	}
 	toJSON() {
-		return JSON.stringify({
+		return JSON.parse(JSON.stringify({
 			stave: this.stave,
 			notes: this.notes,
 			gracenotes: this.gracenotes,
 			texts: this.texts,
 			time_sigs: this.time_sigs,
 			barlines: this.barlines
-		});
+		}));
 	}
 	static fromJSON(json) {
 		const obj = new this(setup=false);
-		const obj_values = JSON.parse(json);
+		const obj_values = json;
 		
 		// No loops :(
 		obj.stave = new Stave(setup=false,json=obj_values.stave);

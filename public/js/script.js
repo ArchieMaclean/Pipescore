@@ -21,6 +21,9 @@
 let score, time_sig_font;
 let trebleClef,note_tail,blue_note_tail;	// images
 
+// remove if(false) to create a new databae object each time
+document.addEventListener('DOMContentLoaded', _ => {if (false) createNewDatabaseEntry({});});
+
 function preload() {
 	time_sig_font = loadFont('../res/fonts/AbrilFatface-Regular.ttf');
 	trebleClef = loadImage('../res/images/trebleClef.png');     // 375 x 640
@@ -50,8 +53,22 @@ function mouseRelease() {
 	score.mouseReleased();
 }
 
+function loadFromDB() {
+	retrieveFromDatabase()
+	.then(data => {
+		console.log(data);
+		score = Score.fromJSON(data);
+	});
+}
+
 function keyPressed() {
-	score.keyPressed();
+	if (keyCode === 83) {
+		saveToDatabase(score.toJSON())
+	} else if (keyCode === 82) {
+		loadFromDB();
+	} else {
+		score.keyPressed();
+	}
 }
 
 function mouseDragged() {
