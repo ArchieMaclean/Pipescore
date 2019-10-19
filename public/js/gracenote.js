@@ -74,12 +74,17 @@ class Gracenote {
 		}
 		return false;
 	}
-	drag(dx,dy,getActualCoords) {
+	drag(dx,dy,getActualCoords,snapToLine) {
+		const old_y = this.y, old_x = this.x;
 		this.x += dx;
 		this.y += dy;
-		const actual_coords = getActualCoords(this.x,this.y);
-		this.actual_x = actual_coords[0];
-		this.actual_y = actual_coords[1];
+		const {x,y} = snapToLine(this.x,this.y);
+		if (x == null || y == null) {
+			this.x = old_x; this.y = old_y;
+		} else {
+			this.actual_x = getActualCoords(this.x,this.y)[0];
+			this.actual_y = getActualCoords(this.x,this.y)[1];
+		}
 	}
 	deselect() {
 		this.selected = false;

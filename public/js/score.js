@@ -445,10 +445,10 @@ class Score {
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 				}
 				this.selectedNotes.forEach(note => {
-					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord)
+					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine);
 				});
 				this.selectedGracenotes.forEach(note => {
-					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord);
+					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine);
 				});
 				this.selectedBarlines.forEach(bl => {
 					bl.drag(...this.mouse_dragged_displacement);
