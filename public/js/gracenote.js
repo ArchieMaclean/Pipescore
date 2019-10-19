@@ -70,7 +70,6 @@ class Gracenote {
 	}
 	checkIfSelected() {
 		if (((this.x-CLICK_MARGIN) < mouseX) && ((this.x+CLICK_MARGIN) > mouseX) && ((this.y-CLICK_MARGIN) < mouseY) && ((this.y+CLICK_MARGIN)>mouseY)) {
-			this.selected = true;
 			return true;
 		}
 		return false;
