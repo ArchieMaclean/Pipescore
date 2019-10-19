@@ -30,7 +30,6 @@ retrieveFromDatabase = async _ => {
         db.collection('scores').doc(database_id).get()
         .then(data => {
             const score = data.data();
-            console.log(score);
             res(score);
         });
     });

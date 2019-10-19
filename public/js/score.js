@@ -530,9 +530,17 @@ class Score {
 		});
 	}
 	toJSON() {
+		let mapped_notes = this.notes.slice();
+		mapped_notes = mapped_notes.map(n => {
+			const { x,y,name,type,dotted,connected_after,connected_before } = n;
+			const note = { x,y,name,type,dotted,connected_after,connected_before };
+			if (note.connected_before) note.connected_before = this.notes.indexOf(note.connected_before);
+			if (note.connected_after) note.connected_after = this.notes.indexOf(note.connected_after);
+			return note;
+		});
 		return JSON.parse(JSON.stringify({
 			stave: this.stave,
-			notes: this.notes,
+			notes: mapped_notes,
 			gracenotes: this.gracenotes,
 			texts: this.texts,
 			time_sigs: this.time_sigs,
@@ -543,10 +551,17 @@ class Score {
 		const obj = new this(setup=false);
 		const obj_values = json;
 		
-		// No loops :(
 		obj.stave = new Stave(setup=false,json=obj_values.stave);
 		obj.demo_note = new DemoNote();
-		obj.notes = obj_values.notes.map(note => new Note(note.x,note.y,note.name,note.type,note.dotted,obj.stave.getActualCoordFromCanvasCoord));
+		obj.notes = obj_values.notes.map(note => {
+			return new Note(note.x,note.y,note.name,note.type,note.dotted,obj.stave.getActualCoordFromCanvasCoord);
+		});
+		for (let i=0;i<obj_values.notes.length;i++) {
+			const note = obj_values.notes[i];
+			if (note.connected_before != null) obj.notes[i].connected_before = obj.notes[note.connected_before];
+			if (note.connected_after != null) obj.notes[i].connected_after = obj.notes[note.connected_after];
+		}
+		console.log(obj.notes);
 		obj.gracenotes = obj_values.gracenotes.map(g => new Gracenote(g.x,g.y,g.name,obj.stave.getActualCoordFromCanvasCoord));
 		obj.texts = obj_values.texts.map(t => new Text(t.x,t.y,t.text));
 		obj.time_sigs = obj_values.time_sigs.map(ts => new TimeSignature(ts.x,ts.y,obj.stave))

@@ -56,7 +56,6 @@ function mouseRelease() {
 function loadFromDB() {
 	retrieveFromDatabase()
 	.then(data => {
-		console.log(data);
 		score = Score.fromJSON(data);
 	});
 }
