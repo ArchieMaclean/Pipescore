@@ -9,7 +9,37 @@
 </head>
 <body>
     <a href="/">Home</a>
-    <button id="login-google" onclick="loginGoogle()">Login with Google</button>
+    <main>
+        <h2 id="signup" onclick="toggleVisibility('section#signup')">Sign Up</h2>
+        <section id="signup">
+            <button id="signup-google" onclick="loginGoogle()">Sign up with Google Account</button>
+            <hr>
+            <h3>OR</h3>
+            <form action="#" id="signup-email">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email-signup">
+                <label for="pwd">Password:</label>
+                <input type="password" name="pwd" id="pwd-signup" onchange="passwordMatch()" onkeyup="passwordMatch()">
+                <label for="pwd">Password Again:</label>
+                <input type="password" name="pwd-again" id="pwd-again" onchange="passwordMatch()" onkeyup="passwordMatch()">
+                <p id="password-match">Passwords do not match!</p>
+                <input type="submit" value="Sign up">
+            </form>
+        </section>
+        <h2 id="login" onclick="toggleVisibility('section#login')">Log In</h2>
+        <section id="login">
+            <button id="login-google" onclick="loginGoogle()">Login with Google</button>
+            <hr>
+            <h3>OR</h3>
+            <form action="#" id="login-email">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email">
+                <label for="pwd">Password:</label>
+                <input type="password" name="pwd" id="pwd">
+                <input type="submit" value="Log in">
+            </form>
+        </section>
+    </main>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="/__/firebase/7.2.0/firebase-app.js"></script>
 
@@ -23,11 +53,29 @@
     <script>
         document.addEventListener('DOMContentLoaded', _ => {
             const app = firebase.app();
+
+            document.querySelectorAll("input[type='submit']").forEach(el => el.addEventListener('click', e => e.preventDefault()));
         });
         async function loginGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             await firebase.auth().signInWithPopup(provider);
             window.location = '/pipescore';
+        }
+        toggleVisibility = selector => {
+            const el = document.querySelector(selector);
+            if (el.style.display === 'none' || el.style.display === '') el.style.display = 'block';
+            else {
+                console.log(el.style.display);
+                el.style.display = 'none';
+            }
+        }
+        passwordMatch = _ => {
+            const form = document.querySelector('form#signup-email');
+            if (form[1].value == form[2].value) {
+                document.getElementById('password-match').style.display = 'none';
+            } else {
+                document.getElementById('password-match').style.display = 'block';
+            }
         }
     </script>
 </body>

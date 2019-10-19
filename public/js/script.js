@@ -60,11 +60,11 @@ function loadFromDB() {
 	});
 }
 
-function keyPressed() {
-	if (keyCode === 83) {
-		saveToDatabase(score.toJSON())
-	} else if (keyCode === 82) {
-		loadFromDB();
+function keyPressed(e) {
+	if (keyCode === 83 && keyIsDown(17)) {
+		console.log('save!');
+		e.preventDefault();
+		// saveToDatabase(score.toJSON())
 	} else {
 		score.keyPressed();
 	}

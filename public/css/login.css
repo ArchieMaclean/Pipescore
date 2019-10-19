@@ -1,8 +1,64 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 html, body {
   background: #26A5FF;
-  padding-top: 5rem;
   font-family: 'Roboto';
+}
+
+html main, body main {
+  background: white;
+  width: 90vw;
+  margin: auto;
+  height: 80vh;
+  margin-top: 10vh;
+  padding: 2rem;
+  overflow: auto;
+}
+
+html main h2, body main h2 {
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  padding: 2rem;
+  background: #26A5FF;
+  color: white;
+}
+
+html main section, body main section {
+  display: none;
+}
+
+html main section #password-match, body main section #password-match {
+  display: none;
+  background: indianred;
+  color: white;
+  padding: .2rem;
+  margin: .5rem;
+  margin-left: 10vw;
+}
+
+html main section h3, body main section h3 {
+  text-align: center;
+}
+
+html main section form *, body main section form * {
+  display: block;
+  font-size: 1.2rem;
+  font-family: inherit;
+  margin: .2rem;
+  margin-left: 10vw;
+}
+
+html main section form input[type="submit"], body main section form input[type="submit"] {
+  background: #26A5FF;
+  padding: .3rem .5rem;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: .2rem;
+  color: white;
+  margin-top: 1rem;
+  cursor: pointer;
 }
 
 html a, body a {
