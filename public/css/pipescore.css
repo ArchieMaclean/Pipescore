@@ -147,12 +147,6 @@ header nav .menu section {
   vertical-align: top;
 }
 
-header nav .menu section.mode-section {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 2rem;
-          flex: 0 0 2rem;
-}
-
 header nav .menu section#apply-to-selected-gracenotes {
   -webkit-box-flex: .4;
       -ms-flex: .4;

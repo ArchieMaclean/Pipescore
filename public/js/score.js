@@ -50,7 +50,6 @@ class Score {
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
 		this.mouse_original_x_y = [0,0];
-		this.mode = 'create';
 		this.note_mode = 'crotchet';
 		this.menu_mode = 'note';
 
@@ -88,11 +87,6 @@ class Score {
 		if (old_menu_mode != this.menu_mode) {
 			this.deselectAllNotes();
 			this.deselectAllGracenotes();
-		}
-		const mode_in_menu = document.querySelector(`#mode-${this.menu_mode}`);
-		if (mode_in_menu != null) this.mode = mode_in_menu.value;
-		if (this.mode != 'select') {
-			// this.deselectAllNotes();
 		}
 	}
 	updateDemoNote() {
@@ -430,25 +424,15 @@ class Score {
 		return groups;
 	}
 	keyPressed() {
-		if (keyCode === ESCAPE) {
-			if ((this.menu_mode != 'layout') && (this.menu_mode != 'text')) {
-				if (this.mode === 'create') {
-					document.querySelector(`#mode-${this.menu_mode}`).value = 'select';
-				} else if (this.mode === 'select') {
-					document.querySelector(`#mode-${this.menu_mode}`).value = 'create';
-				}
-			}
-		} else {
-			if (keyCode === 71) {	// g - group
-				this.groupSelectedNotes();
-			} else if (keyCode === 85) { // u - ungroup
-				this.ungroupSelectedNotes();
-			} else if (keyCode === 68) { // d - dot
-				document.getElementById('dot-notes-button').checked = !document.getElementById('dot-notes-button').checked;
-				this.dotSelectedNotes();
-			} else if (keyCode === 46) {	// delete
-				this.deleteSelectedNotes();
-			}
+		if (keyCode === 71) {	// g - group
+			this.groupSelectedNotes();
+		} else if (keyCode === 85) { // u - ungroup
+			this.ungroupSelectedNotes();
+		} else if (keyCode === 68) { // d - dot
+			document.getElementById('dot-notes-button').checked = !document.getElementById('dot-notes-button').checked;
+			this.dotSelectedNotes();
+		} else if (keyCode === 46) {	// delete
+			this.deleteSelectedNotes();
 		}
 	}
 	mouseDraggedUpdate() {
