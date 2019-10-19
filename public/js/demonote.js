@@ -53,13 +53,25 @@ class DemoNote {
 		}
     }
 
-    update(snapToLine,menu_mode) {
+    update(snapToLine,menu_mode,box_select,selected_note,selected_grace) {
+		if (box_select) {
+			this.is_valid = false;
+			return;
+		}
 		if (menu_mode === 'note') {
+			if (selected_note != null) {
+				this.is_valid = false;
+				return;
+			}
 			this.width = 15;
 			this.height = 10;
 			this.ledger = 11;
 			this.standard_gracenote = null;
 		} else if (menu_mode === 'gracenote') {
+			if (selected_grace != null) {
+				this.is_valid = false;
+				return;
+			}
 			this.width = 7;
 			this.height = 5;
 			this.ledger = 5.5;

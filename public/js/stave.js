@@ -86,6 +86,7 @@ class Stave {
         }
         position.x = x%(width);
         position.y += Math.floor(x/width)*STAVEWIDTH;
+        if (position.y === 0) return { x:null, y:null, name:null};
         return position;
     }
     getActualCoordFromCanvasCoord(x,y) {
