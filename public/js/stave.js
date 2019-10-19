@@ -60,6 +60,9 @@ class Stave {
             for (let linenum=0;linenum<4;linenum++) {
                 stave_y = stavenum*STAVEWIDTH+linenum*STAVELINEWIDTH+this.offset;
                 if (y <= stave_y) {
+                    if (y <= (stave_y-2*STAVELINEWIDTH)) {
+                        return { x:null, y:null, name:null};
+                    }
                     if (y <= (stave_y-STAVELINEWIDTH)) {
                         position.y = stave_y-STAVELINEWIDTH;
                         position.name = 'A';

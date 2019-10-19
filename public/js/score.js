@@ -92,11 +92,11 @@ class Score {
 		const mode_in_menu = document.querySelector(`#mode-${this.menu_mode}`);
 		if (mode_in_menu != null) this.mode = mode_in_menu.value;
 		if (this.mode != 'select') {
-			this.deselectAllNotes();
+			// this.deselectAllNotes();
 		}
 	}
 	updateDemoNote() {
-		if (this.mode === 'create' && (this.menu_mode === 'note' || this.menu_mode === 'gracenote')) {
+		if (this.menu_mode === 'note' || this.menu_mode === 'gracenote') {
 			this.demo_note.update(this.snapNoteToLine,this.menu_mode);
 			this.demo_note.draw(this.menu_mode,this.stave.getCoordFromNoteName,this.stave.getStavenum);
 		}
@@ -290,7 +290,7 @@ class Score {
 	}
 	mousePress() {
 		if (mouseButton === LEFT) {
-			if (this.mode === 'create') {
+			if (this.demo_note.is_valid) {
 				if (this.menu_mode === 'note') {
 					const selected_note = this.getSelectedNote();
 					if (selected_note == null) {
@@ -323,7 +323,7 @@ class Score {
 						}
 					}
 				}
-			} else if (this.mode === 'select') {
+			} else {
 				this.mouse_original_x_y = [mouseX,mouseY];
 				this.mouse_last_x_y = [mouseX,mouseY];
 				this.mouse_dragged_displacement = [0,0];
@@ -440,73 +440,65 @@ class Score {
 			}
 		} else {
 			if (keyCode === 71) {	// g - group
-				if (this.mode === "select") {
-					this.groupSelectedNotes();
-				}
+				this.groupSelectedNotes();
 			} else if (keyCode === 85) { // u - ungroup
-				if (this.mode === 'select') {
-					this.ungroupSelectedNotes();
-				}
+				this.ungroupSelectedNotes();
 			} else if (keyCode === 68) { // d - dot
 				document.getElementById('dot-notes-button').checked = !document.getElementById('dot-notes-button').checked;
-				if (this.mode ==='select') {
-					this.dotSelectedNotes();
-				}
+				this.dotSelectedNotes();
 			} else if (keyCode === 46) {	// delete
 				this.deleteSelectedNotes();
 			}
 		}
 	}
 	mouseDraggedUpdate() {
-		if (this.mode=='select') {
-			if (mouseButton === LEFT) {
-				if (this.box_select) this.boxSelect();
-				else {
-					this.mouse_dragged_displacement = [0,0]
-					if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
-						this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
-						this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
-					}
-					this.selectedNotes.forEach(note => {
-						note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord)
-					});
-					this.selectedGracenotes.forEach(note => {
-						note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord);
-					});
-					this.selectedBarlines.forEach(bl => {
-						bl.drag(...this.mouse_dragged_displacement);
-					});
-					this.selectedTexts.forEach(t => {
-						t.drag(...this.mouse_dragged_displacement);
-					});
-					this.selectedTimeSignatures.forEach(ts => {
-						ts.drag(...this.mouse_dragged_displacement);
-					})
-					this.mouse_last_x_y = [mouseX,mouseY];
-					this.mouse_dragged_displacement = [0,0];
-					
-					// grouped notes
-					const selected_notes = this.selectedNotes;
-					selected_notes.forEach(note => {
-						if ((note.connected_before != null) && (note.actual_x < note.connected_before.actual_x)) {
-							const first_note = note.connected_before.connected_before;
-							note.connected_before.connected_before = note;
-							note.connected_before.connected_after = note.connected_after;
-							if (note.connected_after != null) note.connected_after.connected_before = note.connected_before;
-							note.connected_after = note.connected_before
-							note.connected_before = first_note;
-							if (first_note != null) first_note.connected_after = note;
-						} else if ((note.connected_after != null) && (note.actual_x > note.connected_after.actual_x)) {
-							const final_note = note.connected_after.connected_after;
-							note.connected_after.connected_after = note;
-							note.connected_after.connected_before = note.connected_before;
-							if (note.connected_before != null) note.connected_before.connected_after = note.connected_after;
-							note.connected_before = note.connected_after;
-							note.connected_after = final_note;
-							if (final_note != null) final_note.connected_before = note;
-						}
-					});
+		if (mouseButton === LEFT) {
+			if (this.box_select) this.boxSelect();
+			else {
+				this.mouse_dragged_displacement = [0,0]
+				if (mouseX >= 0 && mouseY >= 0 && mouseX <= width && mouseY <= height) {
+					this.mouse_dragged_displacement[0] += mouseX-this.mouse_last_x_y[0];
+					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 				}
+				this.selectedNotes.forEach(note => {
+					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord)
+				});
+				this.selectedGracenotes.forEach(note => {
+					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord);
+				});
+				this.selectedBarlines.forEach(bl => {
+					bl.drag(...this.mouse_dragged_displacement);
+				});
+				this.selectedTexts.forEach(t => {
+					t.drag(...this.mouse_dragged_displacement);
+				});
+				this.selectedTimeSignatures.forEach(ts => {
+					ts.drag(...this.mouse_dragged_displacement);
+				})
+				this.mouse_last_x_y = [mouseX,mouseY];
+				this.mouse_dragged_displacement = [0,0];
+				
+				// grouped notes
+				const selected_notes = this.selectedNotes;
+				selected_notes.forEach(note => {
+					if ((note.connected_before != null) && (note.actual_x < note.connected_before.actual_x)) {
+						const first_note = note.connected_before.connected_before;
+						note.connected_before.connected_before = note;
+						note.connected_before.connected_after = note.connected_after;
+						if (note.connected_after != null) note.connected_after.connected_before = note.connected_before;
+						note.connected_after = note.connected_before
+						note.connected_before = first_note;
+						if (first_note != null) first_note.connected_after = note;
+					} else if ((note.connected_after != null) && (note.actual_x > note.connected_after.actual_x)) {
+						const final_note = note.connected_after.connected_after;
+						note.connected_after.connected_after = note;
+						note.connected_after.connected_before = note.connected_before;
+						if (note.connected_before != null) note.connected_before.connected_after = note.connected_after;
+						note.connected_before = note.connected_after;
+						note.connected_after = final_note;
+						if (final_note != null) final_note.connected_before = note;
+					}
+				});
 			}
 		}
 	}
@@ -561,7 +553,6 @@ class Score {
 			if (note.connected_before != null) obj.notes[i].connected_before = obj.notes[note.connected_before];
 			if (note.connected_after != null) obj.notes[i].connected_after = obj.notes[note.connected_after];
 		}
-		console.log(obj.notes);
 		obj.gracenotes = obj_values.gracenotes.map(g => new Gracenote(g.x,g.y,g.name,obj.stave.getActualCoordFromCanvasCoord));
 		obj.texts = obj_values.texts.map(t => new Text(t.x,t.y,t.text));
 		obj.time_sigs = obj_values.time_sigs.map(ts => new TimeSignature(ts.x,ts.y,obj.stave))

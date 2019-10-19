@@ -27,9 +27,11 @@ class DemoNote {
 		this.ledger = 11;
 		this.note = 'g';
 		this.standard_gracenote = null;
+		this.is_valid = false;
     }
 
     draw(menu_mode,getCoordFromNoteName,getStavenum) {
+		if (!this.is_valid) return;
 		strokeWeight(0);
 		fill(this.col);
 		stroke(this.col);
@@ -74,6 +76,9 @@ class DemoNote {
 			this.y = y;
 			this.x = x;
 			this.note = name;
+			this.is_valid = true;
+		} else {
+			this.is_valid = false;
 		}
 	}
 	getStandardGracenote(grace) {
