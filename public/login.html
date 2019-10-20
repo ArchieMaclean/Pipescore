@@ -40,6 +40,7 @@
             </form>
         </section>
     </main>
+    <div id="loading"><div id="inner"></div><div id="rotate"></div></div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="/__/firebase/7.2.0/firebase-app.js"></script>
 
@@ -52,6 +53,7 @@
     <script src="/__/firebase/init.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', _ => {
+            document.querySelector('#loading').style.display = 'none';
             const app = firebase.app();
 
             document.querySelectorAll("input[type='submit']").forEach(el => el.addEventListener('click', e => e.preventDefault()));
@@ -75,18 +77,26 @@
             }
         }
         signupEmail = _ => {
+            document.querySelector('#loading').style.display = 'block';
             const email = document.querySelector('form#signup-email')[0].value;
             const password = document.querySelector('form#signup-email')[1].value;
             firebase.auth().createUserWithEmailAndPassword(email,password)
             .then(_ => window.location='/pipescore')
-            .catch(e => alert('An error occurred.'));
+            .catch(e => {
+                alert('An error occurred.');
+                document.querySelector('#loading').style.display = 'none';
+            });
         }
         loginEmail = _ => {
+            document.querySelector('#loading').style.display = 'block';
             const email = document.querySelector('form#login-email')[0].value;
             const password = document.querySelector('form#login-email')[1].value;
             firebase.auth().signInWithEmailAndPassword(email,password)
             .then(_ => window.location='/pipescore')
-            .catch(e => alert('An error occurred.'));
+            .catch(e => {
+                alert('An error occurred.');
+                document.querySelector('#loading').style.display = 'none';
+            });
 
         }
     </script>
