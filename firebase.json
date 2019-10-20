@@ -8,6 +8,13 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "rewrites": [{
+      "source": "/score/**",
+      "destination": "/pipescore.html"
+    }, {
+      "source": "!/@**/**.(js|css|png|ttf|ico)",
+      "destination": "/"
+    } ],
     "headers": [
       {
         "source": "/**",

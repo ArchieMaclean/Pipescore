@@ -14,4 +14,20 @@ html nav, body nav {
 html main, body main {
   margin: 2rem;
 }
+
+html main h1, body main h1 {
+  font-size: 3rem;
+}
+
+html div.score, body div.score {
+  background: #BDE4FF;
+  padding: 3rem;
+  font-size: 1.5rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  margin: .2rem;
+}
 /*# sourceMappingURL=scores.css.map */

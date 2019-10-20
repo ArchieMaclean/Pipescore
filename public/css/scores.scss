@@ -22,5 +22,17 @@ html,body {
     }
     main {
         margin: 2rem;
+        h1 {
+            font-size: 3rem;
+        }
+    }
+
+    div.score {
+        background: theme(secondary);
+        padding: 3rem;
+        font-size: 1.5rem;
+        user-select: none;
+        cursor: pointer;
+        margin: .2rem;
     }
 }

@@ -17,16 +17,16 @@
     along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 
-
+// BUG when using rewrite - subscribe.ts?
 let score, time_sig_font;
 let trebleClef,note_tail,blue_note_tail;	// images
 let created_database = false;
 
 function preload() {
-	time_sig_font = loadFont('../res/fonts/AbrilFatface-Regular.ttf');
-	trebleClef = loadImage('../res/images/trebleClef.png');     // 375 x 640
-	note_tail = loadImage('../res/images/noteTail.png');          // 72 x 155
-	blue_note_tail = loadImage('../res/images/blueNoteTail.png');
+	time_sig_font = loadFont('/res/fonts/AbrilFatface-Regular.ttf');
+	trebleClef = loadImage('/res/images/trebleClef.png');     // 375 x 640
+	note_tail = loadImage('/res/images/noteTail.png');          // 72 x 155
+	blue_note_tail = loadImage('/res/images/blueNoteTail.png');
 }
 
 function setup() {
@@ -37,6 +37,7 @@ function setup() {
 	score = new Score();
 	cnv.mousePressed(mousePress);
 	mouseReleased = mouseRelease;
+	console.log(window.location.pathname);
 }
 
 function draw() {
