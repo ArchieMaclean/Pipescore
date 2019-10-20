@@ -21,8 +21,20 @@
     <nav></nav>
     <main>
         <h1>Your Scores</h1>
+        <div id="data"></div>
     </main>
     <script>
+        function updateDisplay(data) {
+            const element = document.querySelector('#data');
+            let text = ``;
+            data.forEach(score => {
+                text += `
+<div class="score">
+    <h3>${score.name}</h3>
+</div>`;
+            });
+            element.innerHTML = text;
+        }
         document.addEventListener('DOMContentLoaded', _ => {
             const app = firebase.app();
             const db = firebase.firestore();
@@ -30,8 +42,10 @@
                 const uid = user.uid;
                 if (uid) {
                     const scores = db.collection('scores').doc(uid).collection('scores').get()
-                    .then(scores => {
-                        scores.forEach(s => console.log(s.data().id));
+                    .then(data => {
+                        const scores = [];
+                        data.forEach(s => scores.push(s.data()));
+                        updateDisplay(scores);
                     });
                 }
             });

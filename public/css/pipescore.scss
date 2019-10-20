@@ -64,7 +64,7 @@ header {
 		ul#menu-titles {
 			padding: 0;
 			margin: 0;
-			width: 60%;
+			width: 80%;
 			display: flex;
 
 			
@@ -107,6 +107,9 @@ header {
 				&.viewing {
 					background: theme('primary');
 					color: #fff;
+				}
+				&#score-name {
+					flex: 5;
 				}
 			}
 		}

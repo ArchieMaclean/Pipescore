@@ -71,6 +71,8 @@ class Score {
 		let id = '';
 		for (let i=0;i<20;i++) id+=rand.charAt(Math.floor(Math.random()*rand.length));
 		this.id = id;
+		this.name = id;
+		document.querySelector('#score-name input').value = this.name;
 	}
 	draw() {
 		document.getElementById('programmable-styles').innerHTML = '';
@@ -78,11 +80,15 @@ class Score {
 		this.updateNoteMode();
 		this.stave.draw();
 		this.updateDemoNote();
+		this.updateName();
 		this.drawNotes();
 		this.drawBarlines();
 		this.drawTimeSignatures();
 		this.drawText();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
+	}
+	updateName() {
+		this.name = document.querySelector('#score-name input').value;
 	}
 	noteModeChanged() {
 		this.note_mode = document.querySelector('input[name=note]:checked').value;
@@ -522,6 +528,7 @@ class Score {
 			return note;
 		});
 		return JSON.parse(JSON.stringify({
+			name: this.name,
 			id: this.id,
 			stave: this.stave,
 			notes: mapped_notes,
@@ -535,6 +542,7 @@ class Score {
 		const obj = new this(setup=false);
 		const obj_values = json;
 		obj.id = obj_values.id;
+		obj.name = obj_values.name;
 		obj.stave = new Stave(setup=false,json=obj_values.stave);
 		obj.demo_note = new DemoNote();
 		obj.notes = obj_values.notes.map(note => {

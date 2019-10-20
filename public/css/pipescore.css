@@ -57,7 +57,7 @@ header nav {
 header nav ul#menu-titles {
   padding: 0;
   margin: 0;
-  width: 60%;
+  width: 80%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -107,6 +107,12 @@ header nav ul#menu-titles li.menu-title {
 header nav ul#menu-titles li.viewing {
   background: #26A5FF;
   color: #fff;
+}
+
+header nav ul#menu-titles li#score-name {
+  -webkit-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
 }
 
 header nav .menu {
