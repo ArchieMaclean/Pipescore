@@ -23,7 +23,7 @@
                 <label for="pwd">Password Again:</label>
                 <input type="password" name="pwd-again" id="pwd-again" onchange="passwordMatch()" onkeyup="passwordMatch()">
                 <p id="password-match">Passwords do not match!</p>
-                <input type="submit" value="Sign up">
+                <input type="submit" value="Sign up" onclick="signupEmail()">
             </form>
         </section>
         <h2 id="login" onclick="toggleVisibility('section#login')">Log In</h2>
@@ -36,7 +36,7 @@
                 <input type="email" name="email" id="email">
                 <label for="pwd">Password:</label>
                 <input type="password" name="pwd" id="pwd">
-                <input type="submit" value="Log in">
+                <input type="submit" value="Log in" onclick="loginEmail()">
             </form>
         </section>
     </main>
@@ -64,10 +64,7 @@
         toggleVisibility = selector => {
             const el = document.querySelector(selector);
             if (el.style.display === 'none' || el.style.display === '') el.style.display = 'block';
-            else {
-                console.log(el.style.display);
-                el.style.display = 'none';
-            }
+            else el.style.display = 'none';
         }
         passwordMatch = _ => {
             const form = document.querySelector('form#signup-email');
@@ -76,6 +73,21 @@
             } else {
                 document.getElementById('password-match').style.display = 'block';
             }
+        }
+        signupEmail = _ => {
+            const email = document.querySelector('form#signup-email')[0].value;
+            const password = document.querySelector('form#signup-email')[1].value;
+            firebase.auth().createUserWithEmailAndPassword(email,password)
+            .then(_ => window.location='/pipescore')
+            .catch(e => alert('An error occurred.'));
+        }
+        loginEmail = _ => {
+            const email = document.querySelector('form#login-email')[0].value;
+            const password = document.querySelector('form#login-email')[1].value;
+            firebase.auth().signInWithEmailAndPassword(email,password)
+            .then(_ => window.location='/pipescore')
+            .catch(e => alert('An error occurred.'));
+
         }
     </script>
 </body>
