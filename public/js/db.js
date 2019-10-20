@@ -14,11 +14,11 @@ createNewDatabaseEntry = (json=null) => {
         setTimeout(_ => createNewDatabaseEntry(json),500);
         return;
     }
-    const rand = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    let id = '';
-    for (let i=0;i<20;i++) id+=rand.charAt(Math.floor(Math.random()*rand.length));
-    database_id = id;
+    database_id = json.id;
     saveToDatabase(json);
+    db.collection('scores').doc(uid).set({
+        id: uid,
+    }, { merge:true });
 }
 
 openDatabaseEntry = (id) => {

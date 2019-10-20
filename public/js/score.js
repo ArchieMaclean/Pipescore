@@ -63,7 +63,14 @@ class Score {
 			// Add barlines to top line
 			// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
 			this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
+			this.createId();
 		}
+	}
+	createId() {
+		const rand = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		let id = '';
+		for (let i=0;i<20;i++) id+=rand.charAt(Math.floor(Math.random()*rand.length));
+		this.id = id;
 	}
 	draw() {
 		document.getElementById('programmable-styles').innerHTML = '';
@@ -515,6 +522,7 @@ class Score {
 			return note;
 		});
 		return JSON.parse(JSON.stringify({
+			id: this.id,
 			stave: this.stave,
 			notes: mapped_notes,
 			gracenotes: this.gracenotes,
@@ -526,7 +534,7 @@ class Score {
 	static fromJSON(json) {
 		const obj = new this(setup=false);
 		const obj_values = json;
-		
+		obj.id = obj_values.id;
 		obj.stave = new Stave(setup=false,json=obj_values.stave);
 		obj.demo_note = new DemoNote();
 		obj.notes = obj_values.notes.map(note => {

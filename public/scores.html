@@ -10,6 +10,7 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="/__/firebase/7.2.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.2.0/firebase-firestore.js"></script>
     <script src="/__/firebase/7.2.0/firebase-auth.js"></script>
 
     <!-- Initialize Firebase -->
@@ -24,6 +25,16 @@
     <script>
         document.addEventListener('DOMContentLoaded', _ => {
             const app = firebase.app();
+            const db = firebase.firestore();
+            firebase.auth().onAuthStateChanged(user => {
+                const uid = user.uid;
+                if (uid) {
+                    const scores = db.collection('scores').doc(uid).collection('scores').get()
+                    .then(scores => {
+                        scores.forEach(s => console.log(s.data().id));
+                    });
+                }
+            });
         });
     </script>
 </body>
