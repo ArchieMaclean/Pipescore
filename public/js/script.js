@@ -20,9 +20,7 @@
 
 let score, time_sig_font;
 let trebleClef,note_tail,blue_note_tail;	// images
-
-// remove if(false) to create a new databae object each time
-document.addEventListener('DOMContentLoaded', _ => {if (false) createNewDatabaseEntry({});});
+let created_database = false;
 
 function preload() {
 	time_sig_font = loadFont('../res/fonts/AbrilFatface-Regular.ttf');
@@ -62,9 +60,13 @@ function loadFromDB() {
 
 function keyPressed(e) {
 	if (keyCode === 83 && keyIsDown(17)) {
-		console.log('save!');
 		e.preventDefault();
-		// saveToDatabase(score.toJSON())
+		if (!created_database) {
+			createNewDatabaseEntry(score.toJSON());
+			created_database = true;
+		} else {
+			saveToDatabase(score.toJSON())
+		}
 	} else {
 		score.keyPressed();
 	}
