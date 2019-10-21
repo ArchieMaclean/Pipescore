@@ -100,15 +100,19 @@ function loadFromDB() {
 	});
 }
 
+function save() {
+	if (!created_database) {
+		createNewDatabaseEntry(score.toJSON());
+		created_database = true;
+	} else {
+		saveToDatabase(score.toJSON())
+	}
+}
+
 function keyPressed(e) {
 	if (keyCode === 83 && keyIsDown(17)) {
 		e.preventDefault();
-		if (!created_database) {
-			createNewDatabaseEntry(score.toJSON());
-			created_database = true;
-		} else {
-			saveToDatabase(score.toJSON())
-		}
+		save()
 	} else {
 		score.keyPressed();
 	}

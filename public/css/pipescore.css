@@ -57,7 +57,7 @@ header nav {
 header nav ul#menu-titles {
   padding: 0;
   margin: 0;
-  width: 80%;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -117,6 +117,23 @@ header nav ul#menu-titles li#score-name {
   -webkit-box-flex: 5;
       -ms-flex: 5;
           flex: 5;
+}
+
+header nav ul#menu-titles li#save {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+header nav ul#menu-titles li#save button {
+  cursor: pointer;
+  color: white;
+  font-family: inherit;
+  font-size: .8rem;
+  border-radius: .5rem;
+  padding: .1rem .5rem;
+  border: 2px solid #26A5FF;
+  background: #26A5FF;
 }
 
 header nav .menu {
@@ -388,6 +405,39 @@ header nav .menu section a {
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
+  }
+}
+
+#login-reminder {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
+
+#saved {
+  position: fixed;
+  top: 10rem;
+  right: 2rem;
+  -webkit-animation: fadeout 2s;
+          animation: fadeout 2s;
+  display: none;
+}
+
+@-webkit-keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 /*# sourceMappingURL=pipescore.css.map */

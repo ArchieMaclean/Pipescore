@@ -64,7 +64,7 @@ header {
 		ul#menu-titles {
 			padding: 0;
 			margin: 0;
-			width: 80%;
+			width: 100%;
 			display: flex;
 
 			
@@ -111,6 +111,19 @@ header {
 				}
 				&#score-name {
 					flex: 5;
+				}
+				&#save {
+					flex: 1;
+					button {
+						cursor: pointer;
+						color: white;
+						font-family: inherit;
+						font-size: .8rem;
+						border-radius: .5rem;
+						padding: .1rem .5rem;
+						border: 2px solid theme(primary);
+						background: theme(primary);
+					}
 				}
 			}
 		}
@@ -343,4 +356,27 @@ header {
     100% {
         transform: rotate(360deg);
     }
+}
+
+#login-reminder {
+	position: fixed;
+	bottom: 2rem;
+	right: 2rem;
+}
+
+#saved {
+	position: fixed;
+	top: 10rem;
+	right: 2rem;
+	animation: fadeout 2s;
+	display: none;
+}
+
+@keyframes fadeout {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }

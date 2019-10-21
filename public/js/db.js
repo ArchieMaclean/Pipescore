@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded',async _  => {
         if (user) {
             uid = user.uid;
             can_write_to_database = true;
+            document.getElementById('login-reminder').style.display = 'none';
         } else {
             uid = 'Not logged in';
         }
@@ -46,7 +47,8 @@ saveToDatabase = (json) => {
         return new Promise((res,rej) => {
             db.collection('scores').doc(uid).collection('scores').doc(database_id).set(json)
             .then(_ => {
-                console.log('Saved');
+                document.getElementById('saved').style.display = 'block';
+                setTimeout(_ => document.getElementById('saved').style.display = 'none',1999);
                 res();
             })
             .catch(err => {

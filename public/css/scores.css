@@ -42,6 +42,19 @@ html main h1, body main h1 {
   font-size: 3rem;
 }
 
+html main button, body main button {
+  cursor: pointer;
+  color: #26A5FF;
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  border: 2px solid #26A5FF;
+  background: #BDE4FF;
+  float: right;
+  margin-top: -4rem;
+}
+
 html main a button, body main a button {
   cursor: pointer;
   color: white;
@@ -52,7 +65,7 @@ html main a button, body main a button {
   border: 2px solid #26A5FF;
   background: #26A5FF;
   float: right;
-  margin-top: -5rem;
+  margin-top: -6rem;
   margin-right: .2rem;
 }
 

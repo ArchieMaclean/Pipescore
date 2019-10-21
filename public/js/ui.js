@@ -37,3 +37,5 @@ note_modes.forEach(note_mode => {
 });
 
 document.getElementById('gracenote-type').addEventListener('click', _ => document.getElementById('place-gracenote').click());
+
+document.querySelector('#save>button').addEventListener('click',save);
