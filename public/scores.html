@@ -24,13 +24,13 @@
         <div id="data"></div>
     </main>
     <script>
-        function updateDisplay(data) {
+        function updateDisplay(data,uid) {
             const element = document.querySelector('#data');
             let text = ``;
             data.forEach(score => {
                 text += `
 <div class="score">
-    <h3>${score.name}</h3>
+    <a href="/score/${uid}/${score.id}"><h3>${score.name}</h3></a>
 </div>`;
             });
             element.innerHTML = text;
@@ -45,7 +45,7 @@
                     .then(data => {
                         const scores = [];
                         data.forEach(s => scores.push(s.data()));
-                        updateDisplay(scores);
+                        updateDisplay(scores,uid);
                     });
                 }
             });

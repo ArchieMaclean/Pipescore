@@ -17,7 +17,7 @@
     along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 
-// BUG when using rewrite - subscribe.ts?
+
 let score, time_sig_font;
 let trebleClef,note_tail,blue_note_tail;	// images
 let created_database = false;
@@ -29,6 +29,33 @@ function preload() {
 	blue_note_tail = loadImage('/res/images/blueNoteTail.png');
 }
 
+function loadScore(score) {
+	// returns false if new score needed
+
+	let path = window.location.pathname;
+
+	if (path.endsWith('/')) path = path.slice(0,path.length-1);
+	if (!path.startsWith('/score/')) {
+		return false;
+	}
+	path = path.replace('/score/','');
+	path = path.split('/');
+	if (path.length !== 2) {
+		return false;
+	}
+	const author = path[0];
+	const score_id = path[1];
+
+	openDatabaseEntry(score_id);
+	return new Promise((res,rej) => {
+		retrieveFromDatabase(author)
+		.then(data => {
+			res(data);
+		})
+		.catch(e => rej(e));
+	});
+}
+
 function setup() {
 	const cnv = createCanvas(210*4,297*4);
 	cnv.parent('page');
@@ -37,7 +64,8 @@ function setup() {
 	score = new Score();
 	cnv.mousePressed(mousePress);
 	mouseReleased = mouseRelease;
-	console.log(window.location.pathname);
+	loadScore(score)
+	.then(s => score = Score.fromJSON(s));
 }
 
 function draw() {

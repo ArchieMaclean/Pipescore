@@ -35,9 +35,9 @@ saveToDatabase = (json) => {
     }
 }
 
-retrieveFromDatabase = async _ => {
+retrieveFromDatabase = async (id=uid) => {
     return new Promise((res,rej) => {
-        db.collection('scores').doc(uid).collection('scores').doc(database_id).get()
+        db.collection('scores').doc(id).collection('scores').doc(database_id).get()
         .then(data => {
             const score = data.data();
             res(score);

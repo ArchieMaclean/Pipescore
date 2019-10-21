@@ -3,6 +3,7 @@
     "site": "pipescore",
     "public": "public",
     "cleanUrls": true,
+    "trailingSlash": false,
     "ignore": [
       "firebase.json",
       "**/.*",
