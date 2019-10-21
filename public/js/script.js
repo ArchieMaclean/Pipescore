@@ -75,6 +75,8 @@ function setup() {
 		if (s === false) window.location = '/pipescore';
 		else if (s === true) return;
 		else score = Score.fromJSON(s)
+
+		document.getElementById('loading').style.display = 'none';
 	});
 }
 

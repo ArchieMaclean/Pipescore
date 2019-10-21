@@ -23,15 +23,16 @@
         <h1>Your Scores</h1>
         <div id="data"></div>
     </main>
+    <div id="loading"><div id="inner"></div><div id="rotate"></div></div>
     <script>
         function updateDisplay(data,uid) {
             const element = document.querySelector('#data');
             let text = ``;
             data.forEach(score => {
                 text += `
-<div class="score">
-    <a href="/score/${uid}/${score.id}"><h3>${score.name}</h3></a>
-</div>`;
+<a href="/score/${uid}/${score.id}"><div class="score">
+    <h3>${score.name}</h3>
+</div></a>`;
             });
             element.innerHTML = text;
         }
@@ -46,6 +47,7 @@
                         const scores = [];
                         data.forEach(s => scores.push(s.data()));
                         updateDisplay(scores,uid);
+                        document.getElementById('loading').style.display = 'none';
                     });
                 }
             });

@@ -543,6 +543,7 @@ class Score {
 		const obj_values = json;
 		obj.id = obj_values.id;
 		obj.name = obj_values.name;
+		document.querySelector('#score-name input').value = obj.name;
 		obj.stave = new Stave(setup=false,json=obj_values.stave);
 		obj.demo_note = new DemoNote();
 		obj.notes = obj_values.notes.map(note => {
