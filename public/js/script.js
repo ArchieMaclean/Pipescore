@@ -73,8 +73,10 @@ function setup() {
 	loadScore(score)
 	.then(s => {
 		if (s === false) window.location = '/pipescore';
-		else if (s !== true) score = Score.fromJSON(s)
-
+		else if (s !== true) {
+			score = Score.fromJSON(s);
+			created_database = true;
+		}
 		document.getElementById('loading').style.display = 'none';
 	});
 }

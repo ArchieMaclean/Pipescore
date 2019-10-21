@@ -19,7 +19,10 @@ createNewDatabaseEntry = (json=null) => {
         setTimeout(_ => createNewDatabaseEntry(json),500);
         return;
     }
-    if (!can_write_to_database) return;
+    if (!can_write_to_database) {
+        alert('You are not logged in!');
+        return;
+    }
     database_id = json.id;
     saveToDatabase(json);
     db.collection('scores').doc(uid).set({
@@ -32,13 +35,16 @@ openDatabaseEntry = (id) => {
 }
 
 saveToDatabase = (json) => {
-    if (!can_write_to_database) return;
+    if (!can_write_to_database) {
+        alert('You are not logged in!');
+        return;
+    }
     if (uid && json) {
         db.collection('scores').doc(uid).collection('scores').doc(database_id).set(json)
         .then(_ => {
             console.log('Saved');
         })
-        .catch(err => console.log(err));
+        .catch(err => alert(err));
     }
 }
 
