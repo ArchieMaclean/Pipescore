@@ -18,7 +18,29 @@ html,body {
     nav {
         background: theme(primary);
         width: 100vw;
-        height: 4rem;
+        height: 5rem;
+
+        h4 {
+            margin: 0;
+            position: absolute;
+            top: 1.7rem;
+            right: 1rem;
+            color: white;
+        }
+        button {
+            cursor: pointer;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            border-radius: .5rem;
+            padding: .5rem 1rem;
+            border: 2px solid white;
+            background: theme(primary);
+            float: left;
+            position: absolute;
+            top: 1.25rem;
+            left: 1rem;
+        }
     }
     main {
         margin: 2rem;

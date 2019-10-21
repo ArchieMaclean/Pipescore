@@ -1,10 +1,15 @@
-let app,db,database_id,uid;
+let app,db,database_id,uid,can_write_to_database=false;
 
 document.addEventListener('DOMContentLoaded',async _  => {
     app = await firebase.app();
     db = await firebase.firestore();
     firebase.auth().onAuthStateChanged(user => {
-        uid = user.uid;
+        if (user) {
+            uid = user.uid;
+            can_write_to_database = true;
+        } else {
+            uid = 'Not logged in';
+        }
     });
 });
 
@@ -14,6 +19,7 @@ createNewDatabaseEntry = (json=null) => {
         setTimeout(_ => createNewDatabaseEntry(json),500);
         return;
     }
+    if (!can_write_to_database) return;
     database_id = json.id;
     saveToDatabase(json);
     db.collection('scores').doc(uid).set({
@@ -26,6 +32,7 @@ openDatabaseEntry = (id) => {
 }
 
 saveToDatabase = (json) => {
+    if (!can_write_to_database) return;
     if (uid && json) {
         db.collection('scores').doc(uid).collection('scores').doc(database_id).set(json)
         .then(_ => {
