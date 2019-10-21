@@ -45,6 +45,7 @@ class Score {
 		document.getElementById('remove-stave').addEventListener('click',_ => this.stave.removeStave());
 		document.getElementById('delete-time-sig').addEventListener('click',_ => this.deleteSelectedNotes());
 		document.getElementById('add-time-sig').addEventListener('click',_ => this.addTimeSignature());
+		document.getElementById('delete-whole-gracenote').addEventListener('click', _ => this.deleteEntireSelectedGracenote());
 
 		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 		this.mouse_dragged_displacement = [0,0];
@@ -62,7 +63,7 @@ class Score {
 			this.time_sigs = [new TimeSignature(80,this.stave.offset,this.stave)];
 			// Add barlines to top line
 			// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
-			this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
+			this.barlines = [];
 			for (let i=0;i<8;i++) {
 				this.barlines.push(new Barline(width/4,this.stave.offset+STAVEWIDTH*i,this.stave));
 				this.barlines.push(new Barline(width/2,this.stave.offset+STAVEWIDTH*i,this.stave));
@@ -239,6 +240,15 @@ class Score {
 	}
 	deselectAllText() {
 		this.texts.forEach(t => t.deselect());
+	}
+	deleteEntireSelectedGracenote() {
+		this.gracenoteGroups.forEach(group => {
+			for (const n of this.selectedGracenotes) {
+				if (group.indexOf(n) !== -1) {
+					group.forEach(n => this.gracenotes.splice(this.gracenotes.indexOf(n),1));
+				}
+			}
+		})
 	}
 	deleteSelectedNotes() {
 		this.selectedNotes.forEach(note => {

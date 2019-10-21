@@ -60,6 +60,7 @@ class Note {
         }
 	}
 	drawTail(x,y) {
+		strokeWeight(2);
 		if (this.type === 'semibreve') strokeWeight(0);
 		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
 

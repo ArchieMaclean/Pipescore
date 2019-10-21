@@ -175,9 +175,9 @@ header nav .menu section {
 }
 
 header nav .menu section#apply-to-selected-gracenotes {
-  -webkit-box-flex: .4;
-      -ms-flex: .4;
-          flex: .4;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
 header nav .menu section#font-properties {

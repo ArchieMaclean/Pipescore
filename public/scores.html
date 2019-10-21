@@ -41,8 +41,8 @@
             data.forEach(score => {
                 text += `
 <div class="score">
-    <a href="/score/${uid}/${score.id}"><h3>${score.name}</h3></a>
-    <button class="delete" onclick="deleteScore('${score.id}','${score.name}')">Delete</button>
+    <a target="_blank" href="/score/${uid}/${score.id}"><h3>${score.name}</h3></a>
+    <button class="delete" onclick="deleteScore('${score.id}','${score.name.replace("'","")}')">Delete</button>
 </div>`;
             });
             element.innerHTML = text;
