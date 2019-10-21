@@ -25,9 +25,9 @@ class Note {
 		this.actual_y = getActualCoords(this.x,this.y)[1];	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
         this.type = type;
         this.name = name;
-        this.width = 15;
-        this.height = 10;
-		this.stem_height = 50;
+        this.width = 13;
+        this.height = STAVELINEWIDTH;
+		this.stem_height = 40;
 		this.selected = false;
 		this.connected_before = null;
 		this.connected_after = null;
@@ -48,19 +48,22 @@ class Note {
 		
 		if (this.dotted) {
 			fill(0); strokeWeight(0);
-			let y_dif;
-			(['A','f','d','b','g'].includes(this.name)) ? y_dif = -4 : y_dif = 3;
-			ellipse(x+this.width/2+2,y+y_dif,4.5,4.5);
+			let y_dif,x_dif;
+			(['A','f','d','b','g'].includes(this.name)) ? y_dif = -4 : y_dif = 2;
+			(['A','f','d','b','g'].includes(this.name)) ? x_dif = this.width/2+2 : x_dif = this.width/2+3;
+			ellipse(x+x_dif,y+y_dif,4.5,4.5);
 		}
 
 		if (this.name === 'A') {
 			strokeWeight(2);
-            line(x-11,y,x+11,y);
+            line(x-STAVELINEWIDTH+0.5,y,x+STAVELINEWIDTH-0.5,y);
         }
 	}
 	drawTail(x,y) {
 		if (this.type === 'semibreve') strokeWeight(0);
 		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
+
+		const shift_left = this.width/2;
         line(x-(this.width/2),y,x-(this.width/2),y+this.stem_height);
 
 		stroke(0);
@@ -71,7 +74,7 @@ class Note {
 
 		if (!(this.connected_before) && !(this.connected_after)) {
 			for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
-				image(tail_image,x-this.width/2-2,y+this.stem_height-20-10*current_y,10,25);
+				image(tail_image,x-shift_left,y+this.stem_height-20-9*current_y,10,25);
 				current_y++;
 			}
 		} else {
@@ -134,15 +137,15 @@ class Note {
 	unConnect() {
 		if (this.connected_after != null) {
 			this.connected_after.connected_before = null;
-			this.connected_after.stem_height = 50;
+			this.connected_after.stem_height = 40;
 		}
 		if (this.connected_before != null) {
 			this.connected_before.connected_after = null;
-			this.connected_before.stem_height = 50;
+			this.connected_before.stem_height = 40;
 		}
 		this.connected_after = null;
 		this.connected_before = null;
-		this.stem_height = 50;
+		this.stem_height = 40;
 	}
 	drag(dx,dy,getActualCoords,snapToLine) {
 		const old_y = this.y, old_x = this.x;

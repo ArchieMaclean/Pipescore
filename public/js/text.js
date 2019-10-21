@@ -28,7 +28,7 @@ class Text {
     get width() {
         const width_array = this.text.split('\n').map(t => textWidth(t));
         const largest = Math.max(...width_array);
-        return largest+5;
+        return largest*1.2;
     }
     get height() {
         const row_height = this.text.split('\n').length;
@@ -68,6 +68,7 @@ class Text {
         textarea.value = this.text;
         textarea.disabled = false;
         textarea.placeholder = 'Textbox text here...';
+        document.querySelector('#font-size').value = this.font_size;
     }
     deselect() {
         this.selected = false;

@@ -42,6 +42,20 @@ html main h1, body main h1 {
   font-size: 3rem;
 }
 
+html main a button, body main a button {
+  cursor: pointer;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  border: 2px solid #26A5FF;
+  background: #26A5FF;
+  float: right;
+  margin-top: -5rem;
+  margin-right: .2rem;
+}
+
 html div.score, body div.score {
   background: #BDE4FF;
   padding: 3rem;

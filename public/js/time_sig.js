@@ -21,7 +21,7 @@ class TimeSignature extends Barline {
     constructor(x,y,stave) {
         super(x,y,stave);
         this.getNumsFromUI();
-        this.click_margin = 30;
+        this.click_margin = 10;
     }
     getNumsFromUI() {
         this.numerator = parseInt(document.querySelector('#timesig-num').value);
@@ -41,11 +41,11 @@ class TimeSignature extends Barline {
         strokeWeight(0);
         textAlign(CENTER);
         textStyle(NORMAL);
-        textSize(28);
+        textSize(22);
         textFont(time_sig_font);
-        const shove = 7;
+        const shove = 8;
         text(num_text,x,y-shove);
-        text(den_text,x,y+26-shove);
+        text(den_text,x,y+STAVELINEWIDTH*2.2-shove);
 
         textFont('Montserrat');
     }

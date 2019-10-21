@@ -17,8 +17,8 @@
     along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 
-const STAVEWIDTH = 150;
-const STAVELINEWIDTH = 13;
+const STAVEWIDTH = 100;
+const STAVELINEWIDTH = 9;
 const MARGIN = 30;
 const SELECTED_COLOUR = [0,0,200];
 const CLICK_MARGIN = 5;
@@ -139,7 +139,7 @@ class Score {
 	}
 	equaliseNoteStemHeights() {
 		this.getNoteGroupChains().forEach(chain=>{
-			const lowest = this.getLowestNoteOfGroup(chain)+50;
+			const lowest = this.getLowestNoteOfGroup(chain)+40;
 			chain.forEach(n => {
 				n.stem_height = lowest-n.y;
 			});
@@ -260,37 +260,45 @@ class Score {
 		const selected_bar = this.selectedBarlines[0];
 		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
 		const index = ordered_bars.indexOf(selected_bar);
+		let new_bar;
 		if (index === -1) return;
 		else if (index != 0) {
 			const other_bar = ordered_bars[index-1];
 			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
-			this.barlines.push(new Barline(x,y,this.stave));
+			new_bar = new Barline(x,y,this.stave);
 		} else {
-			const actual_x = (selected_bar.actual_x)/2;
+			const actual_x = selected_bar.actual_x - (width-2*MARGIN)/4;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
-			this.barlines.push(new Barline(x,y,this.stave));
+			new_bar = new Barline(x,y,this.stave);
 		}
+		this.barlines.push(new_bar);
+		this.deselectAllBarlines();
+		new_bar.selected = true;
 	}
 	addBarAfter() {
 		if (this.selectedBarlines.length === 0) return;
 		const selected_bar = this.selectedBarlines[0];
 		const ordered_bars = this.barlines.sort((a,b) => a.actual_x > b.actual_x ? 1 : -1);
 		const index = ordered_bars.indexOf(selected_bar);
+		let new_bar;
 		if (index != ordered_bars.length-1) {
 			const other_bar = ordered_bars[index+1];
 			const actual_x = (selected_bar.actual_x + other_bar.actual_x)/2;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
-			this.barlines.push(new Barline(x,y,this.stave));
+			new_bar = new Barline(x,y,this.stave);
 		} else {
-			const actual_x = selected_bar.actual_x + 50;
+			const actual_x = selected_bar.actual_x + (width-2*MARGIN)/4;
 			const x = actual_x%width;
 			const y = Math.floor(actual_x/width) * STAVEWIDTH + this.stave.offset;
-			this.barlines.push(new Barline(x,y,this.stave));
+			new_bar = new Barline(x,y,this.stave);
 		}
+		this.barlines.push(new_bar);
+		this.deselectAllBarlines();
+		new_bar.selected = true;
 	}
 	addTimeSignature() {
 		this.time_sigs.push(new TimeSignature(Math.random()*(width-2*MARGIN)+MARGIN,0,this.stave));
@@ -307,6 +315,7 @@ class Score {
 							const dotted = document.getElementById('dot-notes-button').checked
 							if (y != null) {
 								this.notes.push(new Note(x,y,name,this.note_mode,dotted,this.stave.getActualCoordFromCanvasCoord));
+								this.deselectAllNotes();
 							}
 						}
 					}
@@ -324,6 +333,7 @@ class Score {
 									this.demo_note.standard_gracenote.forEach(gracenote => {
 										this.gracenotes.push(new Gracenote(x,this.stave.getCoordFromNoteName(gracenote,this.stave.getStavenum(this.demo_note.y)),gracenote,this.stave.getActualCoordFromCanvasCoord));
 										x += 10;
+										this.deselectAllGracenotes();
 									});
 								}
 							}
@@ -349,6 +359,7 @@ class Score {
 				} else if ((this.menu_mode === 'layout') && (selected_time_sig != null)) {
 					selected_time_sig.select();
 				} else if ((this.menu_mode === 'text') && (selected_text != null)) {
+					this.deselectAllText();
 					selected_text.select();
 				} else {
 					this.deselectAllNotes();
@@ -512,11 +523,13 @@ class Score {
 			selected_notes[note_ind].addConnected(selected_notes[note_ind-1]);
 			selected_notes[note_ind-1].addConnected(selected_notes[note_ind]);
 		}
+		this.deselectAllNotes();
 	}
 	ungroupSelectedNotes() {
 		this.selectedNotes.forEach(note=>{
 			note.unConnect();
 		});
+		this.deselectAllNotes();
 	}
 	toJSON() {
 		let mapped_notes = this.notes.slice();

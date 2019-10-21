@@ -22,8 +22,8 @@ class DemoNote {
 		this.x = mouseX;
 		this.y = mouseY;
 		this.col = [50,50,200,150];
-		this.width = 15;
-		this.height = 10;
+		this.width = 13;
+		this.height = STAVELINEWIDTH;
 		this.ledger = 11;
 		this.note = 'g';
 		this.standard_gracenote = null;
@@ -42,7 +42,7 @@ class DemoNote {
 				line(this.x-this.ledger,this.y,this.x+this.ledger,this.y);
 			}
 		} else {
-			let x = this.x;
+			let x = this.x-10;
 			for (const note of this.standard_gracenote) {
 				ellipse(x,getCoordFromNoteName(note,getStavenum(this.y)),this.width,this.height);
 				if (note === 'A') {

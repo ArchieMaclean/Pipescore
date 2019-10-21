@@ -19,7 +19,7 @@
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email-signup">
                 <label for="pwd">Password:</label>
-                <input type="password" name="pwd" id="pwd-signup" onchange="passwordMatch()" onkeyup="passwordMatch()">
+                <input type="password" name="pwd" id="pwd-signup" onchange="startPasswordMatch()">
                 <label for="pwd">Password Again:</label>
                 <input type="password" name="pwd-again" id="pwd-again" onchange="passwordMatch()" onkeyup="passwordMatch()">
                 <p id="password-match">Passwords do not match!</p>
@@ -56,12 +56,17 @@
             document.querySelector('#loading').style.display = 'none';
             const app = firebase.app();
 
+            firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    window.location = '/scores';
+                }
+            });
+
             document.querySelectorAll("input[type='submit']").forEach(el => el.addEventListener('click', e => e.preventDefault()));
         });
         async function loginGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             await firebase.auth().signInWithPopup(provider);
-            window.location = '/pipescore';
         }
         toggleVisibility = selector => {
             const el = document.querySelector(selector);
@@ -76,12 +81,16 @@
                 document.getElementById('password-match').style.display = 'block';
             }
         }
+        startPasswordMatch = _ => {
+            const form = document.querySelector('form#signup-email');
+            form[1].addEventListener('keyup',passwordMatch);
+            form[1].addEventListener('change',passwordMatch);
+        }
         signupEmail = _ => {
             document.querySelector('#loading').style.display = 'block';
             const email = document.querySelector('form#signup-email')[0].value;
             const password = document.querySelector('form#signup-email')[1].value;
             firebase.auth().createUserWithEmailAndPassword(email,password)
-            .then(_ => window.location='/pipescore')
             .catch(e => {
                 alert('An error occurred.');
                 document.querySelector('#loading').style.display = 'none';
@@ -92,7 +101,6 @@
             const email = document.querySelector('form#login-email')[0].value;
             const password = document.querySelector('form#login-email')[1].value;
             firebase.auth().signInWithEmailAndPassword(email,password)
-            .then(_ => window.location='/pipescore')
             .catch(e => {
                 alert('An error occurred.');
                 document.querySelector('#loading').style.display = 'none';

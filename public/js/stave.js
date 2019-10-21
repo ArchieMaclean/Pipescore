@@ -34,7 +34,7 @@ class Stave {
         stroke(0);
         strokeWeight(2);
         for (let stavenum=0;stavenum<this.num_staves;stavenum++) {
-            image(trebleClef,MARGIN-5,this.offset+stavenum*STAVEWIDTH,50,64);
+            image(trebleClef,MARGIN-10,this.offset+stavenum*STAVEWIDTH-1.3*STAVELINEWIDTH,50,64);
             for (let linenum=0;linenum<5;linenum++) {
                 const y = stavenum*STAVEWIDTH+linenum*STAVELINEWIDTH+this.offset;
                 line(MARGIN,y,width-MARGIN,y);
@@ -49,7 +49,7 @@ class Stave {
     }
     getStavenum(y) {
         y -= this.offset;
-        return (Math.floor(y/STAVEWIDTH) < 0) ? 0 : Math.floor(y/STAVEWIDTH);
+        return (Math.floor(y/STAVEWIDTH) < 0) ? 0 : Math.floor((y+2*STAVELINEWIDTH)/STAVEWIDTH);
     }
     getSnappedCoordFromCanvasCoord(x,y) {
         const position = {x:null,y:null,name:null};
@@ -78,7 +78,7 @@ class Stave {
                     }
                 }
             }
-            if ((y <= stave_y+STAVEWIDTH/3)) {
+            if ((y <= stave_y+STAVEWIDTH/8)) {
                 position.y = stave_y;
                 position.name = 'g';
                 break stavebreak;

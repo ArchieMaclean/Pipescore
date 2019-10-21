@@ -23,11 +23,14 @@ createNewDatabaseEntry = (json=null) => {
         alert('You are not logged in!');
         return;
     }
+    document.getElementById('loading').style.display = 'block';
     database_id = json.id;
-    saveToDatabase(json);
-    db.collection('scores').doc(uid).set({
-        id: uid,
-    }, { merge:true });
+    saveToDatabase(json).then(_ => {
+        db.collection('scores').doc(uid).set({
+            id: uid,
+        }, { merge:true });
+        window.location = `/score/${uid}/${database_id}`;
+    });
 }
 
 openDatabaseEntry = (id) => {
@@ -40,11 +43,17 @@ saveToDatabase = (json) => {
         return;
     }
     if (uid && json) {
-        db.collection('scores').doc(uid).collection('scores').doc(database_id).set(json)
-        .then(_ => {
-            console.log('Saved');
-        })
-        .catch(err => alert(err));
+        return new Promise((res,rej) => {
+            db.collection('scores').doc(uid).collection('scores').doc(database_id).set(json)
+            .then(_ => {
+                console.log('Saved');
+                res();
+            })
+            .catch(err => {
+                alert(err);
+                rej();
+            });
+        });
     }
 }
 
