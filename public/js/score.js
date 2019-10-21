@@ -63,6 +63,12 @@ class Score {
 			// Add barlines to top line
 			// Last is set to width-1 so it snaps to the end of the top line rather than the start of the second line
 			this.barlines = [new Barline(width/4,this.stave.offset,this.stave),new Barline(width/2,this.stave.offset,this.stave),new Barline(width*3/4,this.stave.offset,this.stave),new Barline(width-1,this.stave.offset,this.stave)];
+			for (let i=0;i<8;i++) {
+				this.barlines.push(new Barline(width/4,this.stave.offset+STAVEWIDTH*i,this.stave));
+				this.barlines.push(new Barline(width/2,this.stave.offset+STAVEWIDTH*i,this.stave));
+				this.barlines.push(new Barline(width*3/4,this.stave.offset+STAVEWIDTH*i,this.stave));
+				this.barlines.push(new Barline(width-1,this.stave.offset+STAVEWIDTH*i,this.stave));
+			}
 			this.createId();
 		}
 	}

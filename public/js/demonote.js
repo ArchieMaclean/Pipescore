@@ -42,7 +42,7 @@ class DemoNote {
 				line(this.x-this.ledger,this.y,this.x+this.ledger,this.y);
 			}
 		} else {
-			let x = this.x-10;
+			let x = this.x;
 			for (const note of this.standard_gracenote) {
 				ellipse(x,getCoordFromNoteName(note,getStavenum(this.y)),this.width,this.height);
 				if (note === 'A') {
