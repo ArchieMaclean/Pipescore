@@ -29,14 +29,21 @@
     </main>
     <div id="loading"><div id="inner"></div><div id="rotate"></div></div>
     <script>
+        function update(uid,data) {
+            const scores = [];
+            if (data) data.forEach(s => scores.push(s.data()));
+            updateDisplay(scores,uid);
+            document.getElementById('loading').style.display = 'none';
+        }
         function updateDisplay(data,uid) {
             const element = document.querySelector('#data');
             let text = ``;
             data.forEach(score => {
                 text += `
-<a href="/score/${uid}/${score.id}"><div class="score">
-    <h3>${score.name}</h3>
-</div></a>`;
+<div class="score">
+    <a href="/score/${uid}/${score.id}"><h3>${score.name}</h3></a>
+    <button class="delete" onclick="deleteScore('${score.id}','${score.name}')">Delete</button>
+</div>`;
             });
             element.innerHTML = text;
         }
@@ -47,19 +54,26 @@
             const app = firebase.app();
             const db = firebase.firestore();
             firebase.auth().onAuthStateChanged(user => {
+                let uid;
                 if (user) {
-                    const uid = user.uid;
+                    uid = user.uid;
                     document.getElementById('user').innerHTML = user.displayName;
                     const scores = db.collection('scores').doc(uid).collection('scores').get()
                     .then(data => {
-                        const scores = [];
-                        data.forEach(s => scores.push(s.data()));
-                        updateDisplay(scores,uid);
-                        document.getElementById('loading').style.display = 'none';
+                        update(uid,data);
                     });
                 } else {
                     window.location = '/login';
                 }
+                deleteScore = (id,name) => {
+                if (confirm(`Are you sure you want to delete ${name}? You cannot undo this.`)) {
+                    db.collection('scores').doc(uid).collection('scores').doc(id).delete()
+                    .then(_ => db.collection('scores').doc(uid).collection('scores').get())
+                    .then(data => {
+                        update(uid,data);
+                    });
+                }
+            }
             });
         });
     </script>
