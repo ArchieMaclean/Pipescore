@@ -29,19 +29,24 @@ function preload() {
 	blue_note_tail = loadImage('/res/images/blueNoteTail.png');
 }
 
+falsePromise = () => {
+	return new Promise((res,_) => res(false));
+}
+
 function loadScore(score) {
 	// returns false if new score needed
 
 	let path = window.location.pathname;
 
 	if (path.endsWith('/')) path = path.slice(0,path.length-1);
+	if (path === '/pipescore') return new Promise((res,_) => res(true));
 	if (!path.startsWith('/score/')) {
-		return false;
+		return falsePromise();
 	}
 	path = path.replace('/score/','');
 	path = path.split('/');
 	if (path.length !== 2) {
-		return false;
+		return falsePromise();
 	}
 	const author = path[0];
 	const score_id = path[1];
@@ -50,7 +55,8 @@ function loadScore(score) {
 	return new Promise((res,rej) => {
 		retrieveFromDatabase(author)
 		.then(data => {
-			res(data);
+			if (data) res(data);
+			else res(false);
 		})
 		.catch(e => rej(e));
 	});
@@ -65,7 +71,11 @@ function setup() {
 	cnv.mousePressed(mousePress);
 	mouseReleased = mouseRelease;
 	loadScore(score)
-	.then(s => score = Score.fromJSON(s));
+	.then(s => {
+		if (s === false) window.location = '/pipescore';
+		else if (s === true) return;
+		else score = Score.fromJSON(s)
+	});
 }
 
 function draw() {
