@@ -112,7 +112,12 @@ function save() {
 function keyPressed(e) {
 	if (keyCode === 83 && keyIsDown(17)) {
 		e.preventDefault();
-		save()
+		if (!created_database) {
+			createNewDatabaseEntry(score.toJSON());
+			created_database = true;
+		} else {
+			saveToDatabase(score.toJSON())
+		}
 	} else {
 		score.keyPressed();
 	}
