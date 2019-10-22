@@ -129,13 +129,13 @@ header nav ul#menu-titles li#score-name {
           flex: 5;
 }
 
-header nav ul#menu-titles li#save {
+header nav ul#menu-titles li#save, header nav ul#menu-titles li#undo {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
 }
 
-header nav ul#menu-titles li#save button {
+header nav ul#menu-titles li#save button, header nav ul#menu-titles li#undo button {
   cursor: pointer;
   color: white;
   font-family: inherit;

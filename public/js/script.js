@@ -75,6 +75,7 @@ function setup() {
 		if (s === false) window.location = '/pipescore';
 		else if (s !== true) {
 			score = Score.fromJSON(s);
+			score.history = [score.toJSON()];
 			created_database = true;
 		}
 		document.getElementById('loading').style.display = 'none';
@@ -97,6 +98,8 @@ function loadFromDB() {
 	retrieveFromDatabase()
 	.then(data => {
 		score = Score.fromJSON(data);
+		score.history = [score.toJSON()];
+		console.log(score.history)
 	});
 }
 
@@ -106,6 +109,17 @@ function save() {
 		created_database = true;
 	} else {
 		saveToDatabase(score.toJSON())
+	}
+}
+
+function undo() {
+	score.history.shift();
+	const h = score.history;
+	if (score.history.length > 0) {
+		const n = score.history[0];
+		score = Score.fromJSON(n);
+		score.history = h;
+		score.history.shift();
 	}
 }
 
@@ -154,4 +168,4 @@ window.addEventListener('error', e => {
 	error_div.innerHTML = `<p>Uh-oh, we encountered the following error:<br>
 <code>${e.message}</code></p>`;
 	error_div.style.display = 'block';
-})
+});

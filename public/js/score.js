@@ -71,6 +71,7 @@ class Score {
 				this.barlines.push(new Barline(width-1,this.stave.offset+STAVEWIDTH*i,this.stave));
 			}
 			this.createId();
+			this.history = [this.toJSON()];
 		}
 	}
 	createId() {
@@ -93,6 +94,12 @@ class Score {
 		this.drawTimeSignatures();
 		this.drawText();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
+	}
+	updateHistory() {
+		const next = this.toJSON();
+		if (JSON.stringify(next) != JSON.stringify(this.history[0])) {
+			this.history.unshift(next);
+		}
 	}
 	updateName() {
 		this.name = document.querySelector('#score-name input').value;
@@ -387,6 +394,7 @@ class Score {
 				}
 			}
 		}
+		this.updateHistory();
 	}
 	mouseReleased() {
 		for (const note of this.selectedNotes) {
@@ -396,6 +404,7 @@ class Score {
 		for (const bl of this.selectedBarlines) bl.reset();
 		this.mouse_dragged = false;
 		this.box_select = false;
+		this.updateHistory();
 	}
 	get selectedNotes() {
 		const selected = [];
@@ -474,6 +483,7 @@ class Score {
 		} else if (keyCode === 46) {	// delete
 			this.deleteSelectedNotes();
 		}
+		this.updateHistory();
 	}
 	mouseDraggedUpdate() {
 		if (mouseButton === LEFT) {
