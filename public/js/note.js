@@ -155,9 +155,11 @@ class Note {
 		const {x,y} = snapToLine(this.x,this.y);
 		if (x == null || y == null) {
 			this.x = old_x; this.y = old_y;
+			return false;
 		} else {
 			this.actual_x = getActualCoords(this.x,this.y)[0];
 			this.actual_y = getActualCoords(this.x,this.y)[1];
+			return true;
 		}
 	}
 }

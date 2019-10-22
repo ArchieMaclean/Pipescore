@@ -485,7 +485,12 @@ class Score {
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 				}
 				this.selectedNotes.forEach(note => {
-					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine);
+					const gracenote_group = this.gracenoteGroups[this.notes.indexOf(note)];
+					if (note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine)) {
+						for (let g of gracenote_group) {
+							g.drag(this.mouse_dragged_displacement[0],0,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine);
+						}
+					}
 				});
 				this.selectedGracenotes.forEach(note => {
 					note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine);
