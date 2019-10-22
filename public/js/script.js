@@ -126,7 +126,7 @@ function keyPressed(e) {
 function download() {
 	const file_contents = JSON.stringify(score.toJSON());
 	const el = document.createElement('a');
-	el.setAttribute('href','data:text/plain;charset=utf-8,' + encodeURIComponent(file_contents));
+	el.setAttribute('href','data:application/json;charset=utf-8,' + encodeURIComponent(file_contents));
 	el.setAttribute('download',score.name);
 	el.style.display = 'none';
 	document.body.appendChild(el);
@@ -135,13 +135,15 @@ function download() {
 }
 
 function savePDF() {
+	pixelDensity(10);
 	score.deselectAllNotes();
 	score.deselectAllGracenotes();
 	score.deselectAllBarlines();
 	score.deselectAllText();
 	score.deselectAllTimeSignatures();
 	score.draw();
-	pdf.save();
+	pdf.save();	
+	pixelDensity(1);
 }
 
 function mouseDragged() {
