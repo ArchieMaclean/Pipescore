@@ -20,7 +20,7 @@
 class Stave {
     constructor(setup=true,json=null) {
         if (setup) {
-            this.offset = STAVEWIDTH*2;
+            this.offset = STAVEWIDTH;
             this.num_staves = 8;
         } else {
             this.offset = json.offset;

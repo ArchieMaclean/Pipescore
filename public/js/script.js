@@ -18,7 +18,7 @@
 */
 
 
-let score, time_sig_font;
+let score, time_sig_font,pdf;
 let trebleClef,note_tail,blue_note_tail;	// images
 let created_database = false;
 
@@ -65,7 +65,7 @@ function loadScore(score) {
 function setup() {
 	const cnv = createCanvas(210*4,297*4);
 	cnv.parent('page');
-	const pdf = createPDF();
+	pdf = createPDF();
 	pdf.beginRecord();
 	score = new Score();
 	cnv.mousePressed(mousePress);
@@ -121,6 +121,27 @@ function keyPressed(e) {
 	} else {
 		score.keyPressed();
 	}
+}
+
+function download() {
+	const file_contents = JSON.stringify(score.toJSON());
+	const el = document.createElement('a');
+	el.setAttribute('href','data:text/plain;charset=utf-8,' + encodeURIComponent(file_contents));
+	el.setAttribute('download',score.name);
+	el.style.display = 'none';
+	document.body.appendChild(el);
+	el.click();
+	document.body.removeChild(el);
+}
+
+function savePDF() {
+	score.deselectAllNotes();
+	score.deselectAllGracenotes();
+	score.deselectAllBarlines();
+	score.deselectAllText();
+	score.deselectAllTimeSignatures();
+	score.draw();
+	pdf.save();
 }
 
 function mouseDragged() {

@@ -39,3 +39,5 @@ note_modes.forEach(note_mode => {
 document.getElementById('gracenote-type').addEventListener('click', _ => document.getElementById('place-gracenote').click());
 
 document.querySelector('#save>button').addEventListener('click',save);
+document.getElementById('download-pdf').addEventListener('click',_ => savePDF());
+document.getElementById('download').addEventListener('click',_ => download());
