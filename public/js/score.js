@@ -53,6 +53,7 @@ class Score {
 		this.mouse_original_x_y = [0,0];
 		this.note_mode = 'crotchet';
 		this.menu_mode = 'note';
+		this.last_gracenote_group = null;
 
 		if (setup) {
 			this.stave = new Stave();
@@ -147,9 +148,15 @@ class Score {
 		this.notes.forEach(note => {
 			note.draw(this.snapNoteToLine);
 		});
-		this.gracenoteGroups.forEach(group => {
-			group.forEach(note => note.draw(this.snapNoteToLine,group.slice()));
-		});
+		if (this.mouse_dragged && this.last_gracenote_group) {
+			this.last_gracenote_group.forEach(group => {
+				group.forEach(note => note.draw(this.snapNoteToLine,group.slice()));
+			});
+		} else {
+			this.gracenoteGroups.forEach(group => {
+				group.forEach(note => note.draw(this.snapNoteToLine,group.slice()));
+			});
+		}
 	}
 	equaliseNoteStemHeights() {
 		this.getNoteGroupChains().forEach(chain=>{
@@ -374,6 +381,8 @@ class Score {
 				const selected_time_sig = this.getSelectedTimeSignature();
 				if ((this.menu_mode === 'note') && (selected_note != null)) {
 					selected_note.selected = true;
+					this.notes = this.sortedNotes;
+					this.last_gracenote_group = this.gracenoteGroups;
 				} else if ((this.menu_mode === 'gracenote') && (selected_gracenote != null)) {
 					selected_gracenote.selected = true;
 				} else if ((this.menu_mode === 'layout') && (selected_barline != null)) {
@@ -404,6 +413,7 @@ class Score {
 		for (const bl of this.selectedBarlines) bl.reset();
 		this.mouse_dragged = false;
 		this.box_select = false;
+		this.last_gracenote_group = null;
 		this.updateHistory();
 	}
 	get selectedNotes() {
@@ -444,7 +454,7 @@ class Score {
 		return selected;
 	}
 	get sortedNotes() {
-		return this.notes.sort((a,b) => (a.actual_x > b.actual_x) ? 1 : -1);
+		return this.notes.slice().sort((a,b) => (a.actual_x > b.actual_x) ? 1 : -1);
 	}
 	get gracenoteGroups() {
 		const groups = new Array();
@@ -482,6 +492,8 @@ class Score {
 			this.dotSelectedNotes();
 		} else if (keyCode === 46) {	// delete
 			this.deleteSelectedNotes();
+		} else if (keyCode === 90 && keyIsDown(17)) {
+			undo();
 		}
 		this.updateHistory();
 	}
@@ -495,7 +507,7 @@ class Score {
 					this.mouse_dragged_displacement[1] += mouseY-this.mouse_last_x_y[1];
 				}
 				this.selectedNotes.forEach(note => {
-					const gracenote_group = this.gracenoteGroups[this.notes.indexOf(note)];
+					const gracenote_group = this.last_gracenote_group[this.notes.indexOf(note)];
 					if (note.drag(...this.mouse_dragged_displacement,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine)) {
 						for (let g of gracenote_group) {
 							g.drag(this.mouse_dragged_displacement[0],0,this.stave.getActualCoordFromCanvasCoord,this.snapNoteToLine);

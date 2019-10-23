@@ -64,8 +64,8 @@ class Note {
 		if (this.type === 'semibreve') strokeWeight(0);
 		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
 
-		const shift_left = this.width/2;
-        line(x-(this.width/2),y,x-(this.width/2),y+this.stem_height);
+		const shift_left = this.width/2-1;
+        line(x-shift_left,y,x-shift_left,y+this.stem_height);
 
 		stroke(0);
 		const num_of_tails = this.num_of_tails;
@@ -75,7 +75,7 @@ class Note {
 
 		if (!(this.connected_before) && !(this.connected_after)) {
 			for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
-				image(tail_image,x-shift_left,y+this.stem_height-20-9*current_y,10,25);
+				image(tail_image,x-shift_left-1,y+this.stem_height-20-9*current_y,10,25);
 				current_y++;
 			}
 		} else {
