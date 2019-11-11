@@ -112,14 +112,25 @@ function save() {
 	}
 }
 
-function undo() {
-	score.history.shift();
+function redo() {
 	const h = score.history;
-	if (score.history.length > 0) {
-		const n = score.history[0];
+	const c = score.current_history;
+	if (c < (h.length-1)) {
+		const n = h[c+1];
 		score = Score.fromJSON(n);
 		score.history = h;
-		score.history.shift();
+		score.current_history = c + 1;
+	}
+}
+
+function undo() {
+	const h = score.history;
+	const c = score.current_history;
+	if (c > 1) {
+		const n = h[c-1];
+		score = Score.fromJSON(n);
+		score.history = h;
+		score.current_history = c-2;
 	}
 }
 

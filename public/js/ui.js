@@ -40,5 +40,6 @@ document.getElementById('gracenote-type').addEventListener('click', _ => documen
 
 document.querySelector('#save>button').addEventListener('click',save);
 document.querySelector('#undo>button').addEventListener('click',undo);
+document.querySelector('#redo>button').addEventListener('click',redo);
 document.getElementById('download-pdf').addEventListener('click',_ => savePDF());
 document.getElementById('download').addEventListener('click',_ => download());
