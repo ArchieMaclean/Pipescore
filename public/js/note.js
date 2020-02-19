@@ -1,51 +1,57 @@
 /*
 	Note class - a class that holds information about each note. A new Note object is created every time a note is placed.
 
-    Copyright (C) 2019  Archie Maclean
+	Copyright (C) 2019  Archie Maclean
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see https://www.gnu.org/licenses/.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 
 class Note {
-    constructor(x,y,name,type,dotted,getActualCoords) {
+	constructor(x,y,name,type,dotted,getActualCoords) {
 		this.x = x;
-        this.y = y;
+		this.y = y;
 		this.actual_x = getActualCoords(this.x,this.y)[0];	// this is the actual x value, along only the first stave. this.x holds the value that is visible on the canvas
 		this.actual_y = getActualCoords(this.x,this.y)[1];	// this is the actual y value, y is just the value snapped to the line - starts off the same so dragging is fine
-        this.type = type;
-        this.name = name;
-        this.width = 13;
-        this.height = STAVELINEWIDTH;
+		this.type = type;
+		this.name = name;
+		this.width = 13;
+		this.height = STAVELINEWIDTH;
 		this.stem_height = 40;
 		this.selected = false;
 		this.connected_before = null;
 		this.connected_after = null;
 		this.dotted = dotted;
-    }
+		this.num_of_tails = this.calculate_num_of_tails();
+	}
 
-    draw(snapToLine) {
-		const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
-		this.name = name;
-		this.drawHead(x,y);
-		this.drawTail(x,y);
-    }
+	draw(snapToLine) {
+		if (this.selected) {
+			const {x,y,name} = snapToLine(this.actual_x,this.actual_y);
+			this.name = name;
+			this.drawHead(x,y);
+			this.drawTail(x,y);
+		} else {
+			this.drawHead(this.x,this.y);
+			this.drawTail(this.x,this.y);
+		}
+	}
 	drawHead(x,y) {
 		stroke(this.selected ? SELECTED_COLOUR : 0);
 		strokeWeight(((this.type === 'semibreve') || (this.type === 'minim')) ? 2 : 0);
 		this.selected ? fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : SELECTED_COLOUR) : fill(((this.type === 'semibreve') || (this.type === 'minim')) ? WHITE : 0);
 		ellipse(x,y,this.width,this.height);
-		
+
 		if (this.dotted) {
 			fill(0); strokeWeight(0);
 			let y_dif,x_dif;
@@ -56,8 +62,8 @@ class Note {
 
 		if (this.name === 'A') {
 			strokeWeight(2);
-            line(x-STAVELINEWIDTH+0.5,y,x+STAVELINEWIDTH-0.5,y);
-        }
+			line(x-STAVELINEWIDTH+0.5,y,x+STAVELINEWIDTH-0.5,y);
+		}
 	}
 	drawTail(x,y) {
 		strokeWeight(2);
@@ -65,16 +71,15 @@ class Note {
 		if ((this.type != 'semibreve') && (this.type != 'minim')) strokeWeight(2); 
 
 		const shift_left = this.width/2-1;
-        line(x-shift_left,y,x-shift_left,y+this.stem_height);
+		line(x-shift_left,y,x-shift_left,y+this.stem_height);
 
 		stroke(0);
-		const num_of_tails = this.num_of_tails;
 		let current_y = 0;
 		let tail_image;
 		this.selected ? tail_image=blue_note_tail : tail_image=note_tail;
 
 		if (!(this.connected_before) && !(this.connected_after)) {
-			for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
+			for (let tailnum=0;tailnum<this.num_of_tails;tailnum++) {
 				image(tail_image,x-shift_left-1,y+this.stem_height-20-9*current_y,10,25);
 				current_y++;
 			}
@@ -84,18 +89,18 @@ class Note {
 				current_y = 0;
 				if (note == null) continue;
 				const other_tail = note.num_of_tails;
-				if ((num_of_tails === other_tail) && (x > note.x)) {
-					for (let tailnum=0;tailnum<num_of_tails;tailnum++) {
+				if ((this.num_of_tails === other_tail) && (x > note.x)) {
+					for (let tailnum=0;tailnum<this.num_of_tails;tailnum++) {
 						this.drawConnectingLine(note,current_y);
 						current_y++;
 					}
-				} else if (num_of_tails > other_tail) {
+				} else if (this.num_of_tails > other_tail) {
 					for (let tailnum=0;tailnum<other_tail;tailnum++) {
 						this.drawConnectingLine(note,current_y);
 						current_y++;
 					}
 					const distance = 10*((x > note.x) ? -1 : 1);
-					for (let tailnum=0;tailnum<(num_of_tails-other_tail);tailnum++) {
+					for (let tailnum=0;tailnum<(this.num_of_tails-other_tail);tailnum++) {
 						line(x-this.width/2,y+this.stem_height-10*current_y,x-this.width/2+distance,y+this.stem_height-10*current_y);
 						current_y++;
 					}
@@ -118,7 +123,7 @@ class Note {
 		if (note.x < this.x) this.connected_before = note;
 		else this.connected_after = note;
 	}
-	get num_of_tails() {
+	calculate_num_of_tails() {
 		switch (this.type) {
 			case 'quaver': return 1;
 			case 'semiquaver': return 2;
@@ -161,5 +166,9 @@ class Note {
 			this.actual_y = getActualCoords(this.x,this.y)[1];
 			return true;
 		}
+	}
+	updateType(type) {
+		this.type = type;
+		this.num_of_tails = this.calculate_num_of_tails();
 	}
 }

@@ -1,5 +1,5 @@
 /*
-	Score class - a class that holds the main logic and information required for PipeScore. 
+    Score class - a class that holds the main logic and information required for PipeScore.
 
     Copyright (C) 2019  Archie Maclean
 
@@ -90,10 +90,8 @@ class Score {
 	draw() {
 		document.getElementById('programmable-styles').innerHTML = '';
 		background(255);
-		this.updateNoteMode();
 		this.stave.draw();
 		this.updateDemoNote();
-		this.updateName();
 		this.drawNotes();
 		this.drawBarlines();
 		this.drawTimeSignatures();
@@ -105,7 +103,6 @@ class Score {
 		if (JSON.stringify(next) != JSON.stringify(this.history[this.current_history])) {
 			this.history[this.current_history+1] = next;
 			this.current_history++;
-			console.log(this.history[this.current_history].notes[0].actual_y);
 		}
 	}
 	updateName() {
@@ -134,7 +131,7 @@ class Score {
 	}
 	changeSelectedNoteNames() {
 		this.selectedNotes.forEach(note => {
-			note.type = this.note_mode;
+			note.updateType(this.note_mode);
 			if (['semibreve','minim','crotchet'].indexOf(this.note_mode) != -1) {
 				note.unConnect();
 			}

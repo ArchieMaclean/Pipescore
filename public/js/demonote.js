@@ -1,24 +1,24 @@
 /*
 	DemoNote class - a class that deals with the blue note that follows the mouse and snaps to the stave.
 
-    Copyright (C) 2019  Archie Maclean
+	Copyright (C) 2019  Archie Maclean
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see https://www.gnu.org/licenses/.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 
 class DemoNote {
-    constructor() {
+	constructor() {
 		this.x = mouseX;
 		this.y = mouseY;
 		this.col = [50,50,200,150];
@@ -28,9 +28,9 @@ class DemoNote {
 		this.note = 'g';
 		this.standard_gracenote = null;
 		this.is_valid = false;
-    }
+	}
 
-    draw(menu_mode,getCoordFromNoteName,getStavenum) {
+	draw(menu_mode,getCoordFromNoteName,getStavenum) {
 		if (!this.is_valid) return;
 		strokeWeight(0);
 		fill(this.col);
@@ -51,9 +51,9 @@ class DemoNote {
 				x += 10;
 			}
 		}
-    }
+	}
 
-    update(snapToLine,menu_mode,box_select,selected_note,selected_grace) {
+	update(snapToLine,menu_mode,box_select,selected_note,selected_grace) {
 		if (box_select) {
 			this.is_valid = false;
 			return;

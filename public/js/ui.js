@@ -27,6 +27,7 @@ titles.forEach(title => {
 		[...document.querySelectorAll('.menu')].forEach(men => men.classList.remove('viewing'));
 		title.classList.toggle('viewing');
 		el.classList.toggle('viewing');
+		score.updateNoteMode();
 	});
 });
 
@@ -43,3 +44,4 @@ document.querySelector('#undo>button').addEventListener('click',undo);
 document.querySelector('#redo>button').addEventListener('click',redo);
 document.getElementById('download-pdf').addEventListener('click',_ => savePDF());
 document.getElementById('download').addEventListener('click',_ => download());
+document.querySelector('#score-name input').addEventListener('change', _ => score.updateName());
