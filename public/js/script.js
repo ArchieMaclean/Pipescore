@@ -113,6 +113,7 @@ function save() {
 }
 
 function redo() {
+	score.deselectAllNotes();
 	const h = score.history;
 	const c = score.current_history;
 	if (c < (h.length-1)) {
@@ -124,13 +125,14 @@ function redo() {
 }
 
 function undo() {
+	score.deselectAllNotes();
 	const h = score.history;
 	const c = score.current_history;
-	if (c > 1) {
+	if (c >= 1) {
 		const n = h[c-1];
 		score = Score.fromJSON(n);
 		score.history = h;
-		score.current_history = c-2;
+		score.current_history = c-1;
 	}
 }
 

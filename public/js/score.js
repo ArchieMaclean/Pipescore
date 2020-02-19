@@ -47,6 +47,9 @@ class Score {
 		document.getElementById('add-time-sig').addEventListener('click',_ => this.addTimeSignature());
 		document.getElementById('delete-whole-gracenote').addEventListener('click', _ => this.deleteEntireSelectedGracenote());
 
+		document.addEventListener('keyup', _ => this.updateHistory());
+		document.addEventListener('mouseup', _ => this.updateHistory());
+
 		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 		this.mouse_dragged_displacement = [0,0];
 		this.mouse_last_x_y = [0,0];
@@ -54,8 +57,6 @@ class Score {
 		this.note_mode = 'crotchet';
 		this.menu_mode = 'note';
 		this.last_gracenote_group = null;
-		this.history = [this.toJSON()];
-		this.current_history = 0;
 
 		if (setup) {
 			this.stave = new Stave();
@@ -75,6 +76,8 @@ class Score {
 			}
 			this.createId();
 		}
+		this.history = [this.toJSON()];
+		this.current_history = 0;
 	}
 	createId() {
 		const rand = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -96,14 +99,13 @@ class Score {
 		this.drawTimeSignatures();
 		this.drawText();
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
-
-		this.updateHistory();
 	}
 	updateHistory() {
 		const next = this.toJSON();
 		if (JSON.stringify(next) != JSON.stringify(this.history[this.current_history])) {
 			this.history[this.current_history+1] = next;
 			this.current_history++;
+			console.log(this.history[this.current_history].notes[0].actual_y);
 		}
 	}
 	updateName() {
@@ -577,15 +579,14 @@ class Score {
 	}
 	toJSON() {
 		if (!this.notes) return; // not setup yet
-		let mapped_notes = this.notes.slice();
-		mapped_notes = mapped_notes.map(n => {
-			const { x,y,name,type,dotted,connected_after,connected_before } = n;
-			const note = { x,y,name,type,dotted,connected_after,connected_before };
+		let mapped_notes = this.notes.slice().map(n => {
+			const { x,actual_y,name,type,dotted,connected_after,connected_before } = n;
+			const note = { x,actual_y,name,type,dotted,connected_after,connected_before };
 			if (note.connected_before) note.connected_before = this.notes.indexOf(note.connected_before);
 			if (note.connected_after) note.connected_after = this.notes.indexOf(note.connected_after);
 			return note;
 		});
-		return JSON.parse(JSON.stringify({
+		return {
 			name: this.name,
 			id: this.id,
 			stave: this.stave,
@@ -594,7 +595,7 @@ class Score {
 			texts: this.texts,
 			time_sigs: this.time_sigs,
 			barlines: this.barlines
-		}));
+		};
 	}
 	static fromJSON(json) {
 		const obj = new this(setup=false);
@@ -605,7 +606,7 @@ class Score {
 		obj.stave = new Stave(setup=false,json=obj_values.stave);
 		obj.demo_note = new DemoNote();
 		obj.notes = obj_values.notes.map(note => {
-			return new Note(note.x,note.y,note.name,note.type,note.dotted,obj.stave.getActualCoordFromCanvasCoord);
+			return new Note(note.x,note.actual_y,note.name,note.type,note.dotted,obj.stave.getActualCoordFromCanvasCoord);
 		});
 		for (let i=0;i<obj_values.notes.length;i++) {
 			const note = obj_values.notes[i];
