@@ -114,6 +114,7 @@ function save() {
 
 function redo() {
 	score.deselectAllNotes();
+	score.deselectAllGracenotes();
 	const h = score.history;
 	const c = score.current_history;
 	if (c < (h.length-1)) {
@@ -121,11 +122,13 @@ function redo() {
 		score = Score.fromJSON(n);
 		score.history = h;
 		score.current_history = c + 1;
+		score.ignore_next_click = true;
 	}
 }
 
 function undo() {
 	score.deselectAllNotes();
+	score.deselectAllGracenotes();
 	const h = score.history;
 	const c = score.current_history;
 	if (c >= 1) {
@@ -133,6 +136,7 @@ function undo() {
 		score = Score.fromJSON(n);
 		score.history = h;
 		score.current_history = c-1;
+		score.ignore_next_click = true;
 	}
 }
 

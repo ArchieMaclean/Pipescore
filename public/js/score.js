@@ -1,20 +1,20 @@
 /*
-    Score class - a class that holds the main logic and information required for PipeScore.
+	Score class - a class that holds the main logic and information required for PipeScore.
 
-    Copyright (C) 2019  Archie Maclean
+	Copyright (C) 2019  Archie Maclean
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see https://www.gnu.org/licenses/.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 
 const STAVEWIDTH = 100;
@@ -30,25 +30,6 @@ class Score {
 	constructor(setup=true) {
 		background(255);
 		strokeCap(SQUARE);
-		// Using arrow functions means I don't have to this-bind
-		document.getElementById('dot-notes-button').addEventListener('click',_ => this.dotSelectedNotes());
-		document.getElementById('group-notes-button').addEventListener('click',_ => this.groupSelectedNotes());
-		document.getElementById('ungroup-notes-button').addEventListener('click',_ => this.ungroupSelectedNotes());
-		document.getElementById('delete-notes-button').addEventListener('click',_ => this.deleteSelectedNotes());
-		document.getElementById('delete-gracenotes-button').addEventListener('click',_ => this.deleteSelectedNotes());
-		document.getElementById('add-bar-before').addEventListener('click',_ => this.addBarBefore());
-		document.getElementById('add-bar-after').addEventListener('click',_ => this.addBarAfter());
-		document.getElementById('delete-bar').addEventListener('click',_ => this.deleteSelectedNotes());
-		document.getElementById('delete-text').addEventListener('click',_ => this.deleteSelectedNotes());
-		document.getElementById('add-text').addEventListener('click',_ => this.addText());
-		document.getElementById('add-stave').addEventListener('click',_ => this.stave.addStave());
-		document.getElementById('remove-stave').addEventListener('click',_ => this.stave.removeStave());
-		document.getElementById('delete-time-sig').addEventListener('click',_ => this.deleteSelectedNotes());
-		document.getElementById('add-time-sig').addEventListener('click',_ => this.addTimeSignature());
-		document.getElementById('delete-whole-gracenote').addEventListener('click', _ => this.deleteEntireSelectedGracenote());
-
-		document.addEventListener('keyup', _ => this.updateHistory());
-		document.addEventListener('mouseup', _ => this.updateHistory());
 
 		this.snapNoteToLine = this.snapNoteToLine.bind(this);
 		this.mouse_dragged_displacement = [0,0];
@@ -78,6 +59,7 @@ class Score {
 		}
 		this.history = [this.toJSON()];
 		this.current_history = 0;
+		this.ignore_next_click = false;
 	}
 	createId() {
 		const rand = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -99,7 +81,13 @@ class Score {
 		if (this.mouse_dragged) this.mouseDraggedUpdate();
 	}
 	updateHistory() {
+		if (this.ignore_next_click === true) {
+			this.ignore_next_click = false;
+			return;
+		}
 		const next = this.toJSON();
+
+		// The only thing wrong now (I think) is that deselecting a gracenote changes the y value :(
 		if (JSON.stringify(next) != JSON.stringify(this.history[this.current_history])) {
 			this.history[this.current_history+1] = next;
 			this.current_history++;
@@ -583,15 +571,22 @@ class Score {
 			if (note.connected_after) note.connected_after = this.notes.indexOf(note.connected_after);
 			return note;
 		});
+
+		// This is needed to prevent referencing which breaks undoing
+		let new_gracenotes = this.gracenotes.slice().map(g => {
+			const { x,y,name } = g;
+			return { x,y,name };
+		});
+
 		return {
 			name: this.name,
 			id: this.id,
 			stave: this.stave,
 			notes: mapped_notes,
-			gracenotes: this.gracenotes,
-			texts: this.texts,
-			time_sigs: this.time_sigs,
-			barlines: this.barlines
+			gracenotes: new_gracenotes,
+			texts: this.texts.slice(),
+			time_sigs: this.time_sigs.slice(),
+			barlines: this.barlines.slice()
 		};
 	}
 	static fromJSON(json) {
@@ -614,6 +609,8 @@ class Score {
 		obj.texts = obj_values.texts.map(t => new Text(t.x,t.y,t.text));
 		obj.time_sigs = obj_values.time_sigs.map(ts => new TimeSignature(ts.x,ts.y,obj.stave))
 		obj.barlines = obj_values.barlines.map(b => new Barline(b.x,b.y,obj.stave));
+
+		obj.updateNoteMode();
 
 		return obj;
 	}
